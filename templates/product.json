@@ -11,6 +11,118 @@
   "sections": {
     "main": {
       "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "subtitle": {
+          "type": "subtitle",
+          "settings": {
+            "text": "AI Powered Smart Writing Set"
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "show_rating": true,
+            "review_count": 728
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "core_features": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Core Features",
+            "use_description": true,
+            "open_by_default": true
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "button_text": "Add to Cart",
+            "show_dynamic_checkout": true
+          }
+        },
+        "delivery_info": {
+          "type": "delivery_info",
+          "settings": {
+            "text": "Worry-Free Delivery available with ease!"
+          }
+        },
+        "payment_icons": {
+          "type": "payment_icons",
+          "settings": {
+            "show_payment_icons": true
+          }
+        },
+        "shipping_info": {
+          "type": "shipping_info",
+          "settings": {
+            "text": "Orders are typically shipped out within 1-2 business days."
+          }
+        },
+        "in_the_box": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "In the box",
+            "use_description": false,
+            "content": "<p>Add what's included in the box here</p>",
+            "open_by_default": false
+          }
+        },
+        "buy_together": {
+          "type": "buy_together",
+          "settings": {
+            "heading": "Buy together, save more",
+            "product_limit": 3,
+            "open_by_default": false
+          }
+        },
+        "trust_badges": {
+          "type": "trust_badges",
+          "settings": {
+            "badge_1_text": "Fast, Free Shipping",
+            "badge_1_subtext": "Ship out within 1-2 business days",
+            "badge_2_text": "Free 30-Day Return",
+            "badge_2_subtext": "No hassle returns and exchanges",
+            "badge_3_text": "Lifetime Customer Support",
+            "badge_3_subtext": "Quick support via email or phone call",
+            "badge_4_text": "One-Year Warranty",
+            "badge_4_subtext": "We protect your purchase up to 1 year"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "subtitle",
+        "rating",
+        "price",
+        "core_features",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "delivery_info",
+        "payment_icons",
+        "shipping_info",
+        "in_the_box",
+        "buy_together",
+        "trust_badges"
+      ],
       "settings": {}
     }
   },
