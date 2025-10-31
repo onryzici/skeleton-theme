@@ -357,7 +357,6 @@
                   </button>
                   <input
                     type="number"
-                    name="quantity"
                     id="quantity-{{ section.id }}"
                     value="1"
                     min="1"
@@ -381,6 +380,7 @@
               <div class="border-t border-gray-200 pt-6 mb-6" {{ block.shopify_attributes }}>
                 {% form 'product', product, id: product_form_id %}
                   <input type="hidden" name="id" value="{{ current_variant.id }}">
+                  <input type="hidden" name="quantity" id="form-quantity-{{ section.id }}" value="1">
 
                   <div class="flex flex-col lg:flex-row gap-3">
                     {% comment %} Add to Cart Button {% endcomment %}
@@ -788,6 +788,15 @@
 
     // Quantity selector
     const quantityBtns = document.querySelectorAll('.quantity-btn');
+    const quantityInput = document.getElementById('quantity-{{ section.id }}');
+    const formQuantityInput = document.getElementById('form-quantity-{{ section.id }}');
+
+    // Sync quantity input with form hidden input
+    function syncQuantity() {
+      if (quantityInput && formQuantityInput) {
+        formQuantityInput.value = quantityInput.value;
+      }
+    }
 
     quantityBtns.forEach(btn => {
       btn.addEventListener('click', function() {
@@ -799,8 +808,16 @@
         } else if (this.dataset.action === 'decrease' && value > 1) {
           input.value = value - 1;
         }
+
+        syncQuantity();
       });
     });
+
+    // Also sync when user types directly
+    if (quantityInput) {
+      quantityInput.addEventListener('change', syncQuantity);
+      quantityInput.addEventListener('input', syncQuantity);
+    }
 
     // Variant picker
     const variants = {{ product.variants | json }};
