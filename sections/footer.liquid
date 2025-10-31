@@ -1,56 +1,319 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{% comment %}
+  Footer Section
+  Modern footer with logo, description, quick links, information, and newsletter
+{% endcomment %}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+<footer class="bg-gray-50 border-t border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
+      {% comment %} Left Column - Logo & Description {% endcomment %}
+      <div class="lg:col-span-3">
+        {% if section.settings.logo != blank %}
+          <img
+            src="{{ section.settings.logo | image_url: width: 200 }}"
+            alt="{{ shop.name }}"
+            class="h-8 w-auto mb-6"
+            loading="lazy"
+          >
+        {% else %}
+          <h3 class="text-2xl font-bold font-sans mb-6">{{ shop.name }}</h3>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="text-sm text-gray-600 font-sans leading-relaxed mb-8">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% comment %} Contact Email {% endcomment %}
+        {% if section.settings.email != blank %}
+          <a href="mailto:{{ section.settings.email }}" class="flex items-center gap-2 text-sm text-gray-900 font-sans mb-4 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            {{ section.settings.email }}
+          </a>
+        {% endif %}
+
+        {% comment %} Language Selector {% endcomment %}
+        {% if section.settings.show_language_selector %}
+          <div class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-sm font-sans">
+            <span>🇺🇸</span>
+            <span>{{ localization.language.endonym_name }}</span>
+          </div>
+        {% endif %}
+      </div>
+
+      {% comment %} Quick Links Column {% endcomment %}
+      <div class="lg:col-span-2">
+        <h4 class="text-base font-semibold font-sans text-gray-900 mb-6">
+          {{ section.settings.quick_links_heading | default: 'Quick Links' }}
+        </h4>
+        {% if section.settings.quick_links_menu != blank %}
+          <ul class="space-y-3">
+            {% for link in linklists[section.settings.quick_links_menu].links %}
+              <li>
+                <a href="{{ link.url }}" class="text-sm text-gray-600 font-sans hover:text-gray-900 transition-colors">
+                  {{ link.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      {% comment %} Information Column {% endcomment %}
+      <div class="lg:col-span-2">
+        <h4 class="text-base font-semibold font-sans text-gray-900 mb-6">
+          {{ section.settings.information_heading | default: 'Information' }}
+        </h4>
+        {% if section.settings.information_menu != blank %}
+          <ul class="space-y-3">
+            {% for link in linklists[section.settings.information_menu].links %}
+              <li>
+                <a href="{{ link.url }}" class="text-sm text-gray-600 font-sans hover:text-gray-900 transition-colors">
+                  {{ link.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      {% comment %} Newsletter Column {% endcomment %}
+      <div class="lg:col-span-5">
+        <h4 class="text-2xl lg:text-3xl font-bold font-sans text-gray-900 mb-6">
+          {{ section.settings.newsletter_heading | default: 'Elevate Your Note-Taking' }}
+        </h4>
+
+        {% comment %} Newsletter Form {% endcomment %}
+        {% if section.settings.show_newsletter %}
+          {% form 'customer', class: 'mb-8' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="flex gap-2">
+              <input
+                type="email"
+                name="contact[email]"
+                class="flex-1 px-6 py-3 border border-gray-300 rounded-full text-sm font-sans focus:outline-none focus:border-gray-900 transition-colors"
+                placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your mail' }}"
+                required
+              >
+              <button
+                type="submit"
+                class="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors flex-shrink-0"
+                aria-label="Subscribe"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+            </div>
+          {% endform %}
+        {% endif %}
+
+        {% comment %} Social Media {% endcomment %}
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-gray-600 font-sans">
+            {{ section.settings.social_heading | default: 'Follow us at social media' }}
+          </p>
+          <div class="flex gap-4">
+            {% if section.settings.social_instagram != blank %}
+              <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" class="text-gray-900 hover:text-gray-600 transition-colors" aria-label="Instagram">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+            {% endif %}
+
+            {% if section.settings.social_facebook != blank %}
+              <a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" class="text-gray-900 hover:text-gray-600 transition-colors" aria-label="Facebook">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+            {% endif %}
+
+            {% if section.settings.social_twitter != blank %}
+              <a href="{{ section.settings.social_twitter }}" target="_blank" rel="noopener" class="text-gray-900 hover:text-gray-600 transition-colors" aria-label="Twitter">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            {% endif %}
+
+            {% if section.settings.social_youtube != blank %}
+              <a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" class="text-gray-900 hover:text-gray-600 transition-colors" aria-label="YouTube">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+            {% endif %}
+
+            {% if section.settings.social_linkedin != blank %}
+              <a href="{{ section.settings.social_linkedin }}" target="_blank" rel="noopener" class="text-gray-900 hover:text-gray-600 transition-colors" aria-label="LinkedIn">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {% comment %} Copyright {% endcomment %}
+    {% if section.settings.show_copyright %}
+      <div class="border-t border-gray-200 mt-12 pt-8 text-center">
+        <p class="text-sm text-gray-600 font-sans">
+          © {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.copyright_text | default: 'All rights reserved.' }}
+        </p>
+      </div>
     {% endif %}
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "header",
+      "content": "Logo & Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Once the novelty goes you are left wanting so much more. I feel the Ai needs to be incorporated in all aspects, perhaps answering. Turn voices and conversations into summaries, insights, and actionable items with ease."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Contact email",
+      "default": "support@example.com"
     },
     {
       "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "id": "show_language_selector",
+      "label": "Show language selector",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "quick_links_heading",
+      "label": "Quick Links heading",
+      "default": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links_menu",
+      "label": "Quick Links menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Information"
+    },
+    {
+      "type": "text",
+      "id": "information_heading",
+      "label": "Information heading",
+      "default": "Information"
+    },
+    {
+      "type": "link_list",
+      "id": "information_menu",
+      "label": "Information menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Elevate Your Note-Taking"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your mail"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social heading",
+      "default": "Follow us at social media"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter/X URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_linkedin",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "Show copyright",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
     }
   ]
 }
