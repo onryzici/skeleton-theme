@@ -1,0 +1,278 @@
+{% comment %}
+  Cart Drawer Snippet
+  Modern slide-out cart with smooth animations
+{% endcomment %}
+
+<style>
+  /* Cart Drawer Animations */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .cart-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .cart-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    border-radius: 32px 0 0 32px;
+  }
+
+  .cart-drawer.active {
+    transform: translateX(0);
+  }
+
+  .cart-item-image-wrapper {
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  }
+
+  /* Quantity button gradient */
+  .quantity-btn-gradient {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    transition: all 0.2s ease;
+  }
+
+  .quantity-btn-gradient:hover {
+    background: linear-gradient(135deg, #db2777, #7c3aed);
+    transform: scale(1.05);
+  }
+
+  /* Remove button */
+  .remove-btn {
+    transition: all 0.2s ease;
+  }
+
+  .remove-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  /* Scrollbar styling */
+  .cart-drawer-items::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .cart-drawer-items::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .cart-drawer-items::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    border-radius: 3px;
+  }
+</style>
+
+<!-- Overlay -->
+<div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <h2 class="text-2xl font-bold font-sans text-gray-900">
+      Cart (<span id="cartItemCount">{{ cart.item_count }}</span>)
+    </h2>
+    <button
+      type="button"
+      class="p-2 rounded-full hover:bg-gray-100 transition-colors"
+      id="closeCartDrawer"
+      aria-label="Close cart"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Cart Items -->
+  <div class="cart-drawer-items flex-1 overflow-y-auto p-6" id="cartDrawerItems">
+    {% if cart.item_count == 0 %}
+      <!-- Empty State -->
+      <div class="flex flex-col items-center justify-center h-full text-center py-12">
+        <svg class="w-24 h-24 text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <h3 class="text-xl font-semibold font-sans text-gray-900 mb-2">Your cart is empty</h3>
+        <p class="text-gray-600 font-sans mb-6">Add some products to get started</p>
+        <a
+          href="/collections/all"
+          class="px-6 py-3 bg-black text-white font-semibold font-sans rounded-full hover:bg-gray-800 transition-colors"
+        >
+          Continue Shopping
+        </a>
+      </div>
+    {% else %}
+      <!-- Cart Items List -->
+      <div class="space-y-4">
+        {% for item in cart.items %}
+          <div class="cart-item flex gap-4 p-4 border border-gray-200 rounded-2xl" data-line-item="{{ forloop.index }}">
+            <!-- Product Image -->
+            <div class="cart-item-image-wrapper w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden">
+              {% if item.image %}
+                <img
+                  src="{{ item.image | image_url: width: 160 }}"
+                  alt="{{ item.title | escape }}"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+              {% endif %}
+            </div>
+
+            <!-- Product Info -->
+            <div class="flex-1 min-w-0">
+              <h4 class="font-semibold font-sans text-sm text-gray-900 mb-1 truncate">
+                {{ item.product.title }}
+              </h4>
+
+              {% if item.variant.title != 'Default Title' %}
+                <p class="text-xs text-gray-500 font-sans mb-2">{{ item.variant.title }}</p>
+              {% endif %}
+
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center border border-gray-300 rounded-full overflow-hidden">
+                  <button
+                    type="button"
+                    class="quantity-decrease px-3 py-1.5 hover:bg-gray-50 transition-colors"
+                    data-line="{{ forloop.index }}"
+                    aria-label="Decrease quantity"
+                  >
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                    </svg>
+                  </button>
+
+                  <input
+                    type="number"
+                    class="quantity-input w-10 text-center border-0 text-sm font-sans focus:outline-none"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    data-line="{{ forloop.index }}"
+                    aria-label="Quantity"
+                  >
+
+                  <button
+                    type="button"
+                    class="quantity-increase px-3 py-1.5 hover:bg-gray-50 transition-colors"
+                    data-line="{{ forloop.index }}"
+                    aria-label="Increase quantity"
+                  >
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Remove Button -->
+                <button
+                  type="button"
+                  class="remove-btn p-2 rounded-full transition-colors"
+                  data-line="{{ forloop.index }}"
+                  aria-label="Remove item"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="text-right flex-shrink-0">
+              <p class="font-bold font-sans text-gray-900">
+                {{ item.final_line_price | money }}
+              </p>
+              {% if item.original_line_price > item.final_line_price %}
+                <p class="text-xs text-gray-400 line-through font-sans">
+                  {{ item.original_line_price | money }}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Footer -->
+  {% if cart.item_count > 0 %}
+    <div class="border-t border-gray-200 p-6 space-y-4">
+      <!-- Subtotal -->
+      <div class="flex items-center justify-between">
+        <span class="text-lg font-semibold font-sans text-gray-900">Subtotal:</span>
+        <span class="text-2xl font-bold font-sans text-gray-900" id="cartSubtotal">
+          {{ cart.total_price | money }}
+        </span>
+      </div>
+
+      <p class="text-sm text-gray-600 font-sans text-center">
+        Taxes and shipping calculated at checkout
+      </p>
+
+      <!-- Checkout Button -->
+      <button
+        type="button"
+        onclick="window.location.href='/checkout'"
+        class="w-full px-6 py-4 bg-black text-white font-semibold text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 flex items-center justify-center gap-2"
+      >
+        Checkout
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </button>
+
+      <!-- Continue Shopping -->
+      <button
+        type="button"
+        class="w-full px-6 py-3 border-2 border-gray-900 text-gray-900 font-semibold text-base font-sans rounded-full hover:bg-gray-50 transition-colors"
+        id="continueShoppingBtn"
+      >
+        Continue Shopping
+      </button>
+    </div>
+  {% endif %}
+
+</div>
+
+<script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>

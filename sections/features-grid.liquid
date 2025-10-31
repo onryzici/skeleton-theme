@@ -1,0 +1,641 @@
+{% comment %}
+  Features Grid Section - Complex Grid Layout
+  - Custom asymmetric grid with specific positioning
+  - Image-only cards
+  - Fully responsive
+{% endcomment %}
+
+<style>
+  /* CSS Variables for dynamic settings */
+  #shopify-section-{{ section.id }} {
+    --fg-pad-top: {{ section.settings.padding_top_mobile | default: 48 }}px;
+    --fg-pad-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+    --fg-bg: {{ section.settings.bg_color | default: '#ffffff' }};
+    --fg-title-color: {{ section.settings.title_color | default: '#0b0b0c' }};
+    --fg-desc-color: {{ section.settings.desc_color | default: 'rgba(11,11,12,0.7)' }};
+    --fg-card-radius: {{ section.settings.card_radius | default: 20 }}px;
+    --fg-card-padding: {{ section.settings.card_padding | default: 12 }}px;
+    --fg-gap: {{ section.settings.grid_gap | default: 16 }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} {
+      --fg-pad-top: {{ section.settings.padding_top_desktop | default: 80 }}px;
+      --fg-pad-bottom: {{ section.settings.padding_bottom_desktop | default: 80 }}px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} {
+      --fg-gap: 12px;
+    }
+  }
+
+  /* Section background and padding */
+  #shopify-section-{{ section.id }} .fg-section {
+    padding-top: var(--fg-pad-top);
+    padding-bottom: var(--fg-pad-bottom);
+    background: var(--fg-bg);
+    width: 100%;
+  }
+
+
+  /* Card styling with variables */
+  #shopify-section-{{ section.id }} .fg-card {
+    border-radius: var(--fg-card-radius);
+    padding: var(--fg-card-padding);
+  }
+
+  #shopify-section-{{ section.id }} .fg-card-image {
+    border-radius: calc(var(--fg-card-radius) - 8px);
+  }
+
+  /* Complex Grid Layout - Desktop */
+  #shopify-section-{{ section.id }} .fg-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 2.15fr;
+    gap: var(--fg-gap);
+    height: 842px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .fg-left {
+    display: grid;
+    grid-template-rows: 150px 380px 280px;
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right {
+    display: grid;
+    grid-template-rows: 686px 140px;
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right-top {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right-top-left {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right-top-right {
+    display: grid;
+    grid-template-rows: 1.5fr 1fr;
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right-top-right-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--fg-gap);
+  }
+
+  #shopify-section-{{ section.id }} .fg-right-bottom {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--fg-gap);
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #shopify-section-{{ section.id }} .fg-header {
+    animation: fadeInDown 0.6s ease forwards;
+  }
+
+  #shopify-section-{{ section.id }} .fg-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  /* Staggered animation delays */
+  {% for i in (1..15) %}
+    #shopify-section-{{ section.id }} .fg-block-{{ i }} {
+      animation-delay: {{ i | minus: 1 | times: 0.05 | plus: 0.1 }}s;
+    }
+  {% endfor %}
+
+  /* Custom backgrounds per block */
+  {% for block in section.blocks %}
+    #shopify-section-{{ section.id }} .fg-block-{{ forloop.index }} {
+      {% if block.settings.bg_type == 'gradient' %}
+        {% assign color1 = block.settings.bg_color_1 | default: '#f5f7fa' %}
+        {% assign color2 = block.settings.bg_color_2 | default: '#e8ecf1' %}
+        {% assign direction = block.settings.gradient_direction | default: '135deg' %}
+        background: linear-gradient({{ direction }}, {{ color1 }} 0%, {{ color2 }} 100%) !important;
+      {% elsif block.settings.bg_type == 'solid' %}
+        {% assign color1 = block.settings.bg_color_1 | default: '#f5f7fa' %}
+        background: {{ color1 }} !important;
+      {% elsif block.settings.custom_bg != blank %}
+        background: {{ block.settings.custom_bg }} !important;
+      {% endif %}
+    }
+  {% endfor %}
+
+  /* Responsive - Tablet */
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }} .fg-grid {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .fg-left {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .fg-right {
+      grid-template-rows: auto;
+    }
+
+    #shopify-section-{{ section.id }} .fg-right-top {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .fg-right-top-left {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto;
+    }
+
+    #shopify-section-{{ section.id }} .fg-right-bottom {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .fg-card {
+      min-height: 180px;
+    }
+  }
+
+  /* Responsive - Mobile */
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .fg-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--fg-gap);
+    }
+
+    #shopify-section-{{ section.id }} .fg-left,
+    #shopify-section-{{ section.id }} .fg-right {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--fg-gap);
+      grid-template-rows: auto;
+    }
+
+    #shopify-section-{{ section.id }} .fg-right-top,
+    #shopify-section-{{ section.id }} .fg-right-top-left,
+    #shopify-section-{{ section.id }} .fg-right-top-right,
+    #shopify-section-{{ section.id }} .fg-right-top-right-bottom,
+    #shopify-section-{{ section.id }} .fg-right-bottom {
+      display: contents;
+    }
+
+    #shopify-section-{{ section.id }} .fg-card {
+      min-height: 160px;
+      aspect-ratio: 1;
+    }
+
+    /* Mobile visibility per block */
+    {% for block in section.blocks %}
+      {% unless block.settings.show_on_mobile %}
+        #shopify-section-{{ section.id }} .fg-block-{{ forloop.index }} {
+          display: none !important;
+        }
+      {% endunless %}
+    {% endfor %}
+  }
+</style>
+
+<div class="fg-section w-full">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    {% if section.settings.section_title != blank or section.settings.section_description != blank %}
+      <div class="fg-header text-center mb-8 lg:mb-12">
+        {% if section.settings.section_title != blank %}
+          <h2 class="fg-title text-3xl lg:text-5xl font-bold font-sans text-gray-900 mb-4">
+            {{ section.settings.section_title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.section_description != blank %}
+          <div class="fg-desc text-base lg:text-lg font-sans text-gray-600 max-w-2xl mx-auto">
+            {{ section.settings.section_description }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Complex Features Grid -->
+    <div class="fg-grid">
+
+      <!-- Left Column -->
+      <div class="fg-left">
+        {% for i in (0..2) %}
+          {% assign block = section.blocks[i] %}
+          {% if block %}
+            <div class="fg-card fg-block-{{ i | plus: 1 }} bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <div class="flex-1 min-h-0 relative overflow-hidden">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 2000 }}"
+                    alt="{{ block.settings.image_alt | default: 'Feature image' }}"
+                    loading="lazy"
+                    srcset="{{ block.settings.image | image_url: width: 800 }} 800w,
+                            {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                            {{ block.settings.image | image_url: width: 2000 }} 2000w"
+                    sizes="(max-width: 767px) 100vw, (max-width: 991px) 33vw, 20vw"
+                    class="fg-card-image w-full h-full object-contain block"
+                  >
+                </div>
+              {% else %}
+                <div class="flex items-center justify-center h-full min-h-[100px] bg-gray-100 text-gray-400 text-xs rounded-xl">
+                  Add image {{ i | plus: 1 }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Right Column -->
+      <div class="fg-right">
+
+        <!-- Right Top -->
+        <div class="fg-right-top">
+
+          <!-- Right Top Left - 2 cards -->
+          <div class="fg-right-top-left">
+            {% for i in (3..4) %}
+              {% assign block = section.blocks[i] %}
+              {% if block %}
+                <div class="fg-card fg-block-{{ i | plus: 1 }} bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" {{ block.shopify_attributes }}>
+                  {% if block.settings.image != blank %}
+                    <div class="flex-1 min-h-0 relative overflow-hidden">
+                      <img
+                        src="{{ block.settings.image | image_url: width: 2000 }}"
+                        alt="{{ block.settings.image_alt | default: 'Feature image' }}"
+                        loading="lazy"
+                        srcset="{{ block.settings.image | image_url: width: 800 }} 800w,
+                                {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                                {{ block.settings.image | image_url: width: 2000 }} 2000w"
+                        sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 15vw"
+                        class="fg-card-image w-full h-full object-contain block"
+                      >
+                    </div>
+                  {% else %}
+                    <div class="flex items-center justify-center h-full min-h-[100px] bg-gray-100 text-gray-400 text-xs rounded-xl">
+                      Add image {{ i | plus: 1 }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Right Top Right -->
+          <div class="fg-right-top-right">
+            {% assign block6 = section.blocks[5] %}
+            {% if block6 %}
+              <div class="fg-card fg-block-6 bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" {{ block6.shopify_attributes }}>
+                {% if block6.settings.image != blank %}
+                  <div class="flex-1 min-h-0 relative overflow-hidden">
+                    <img
+                      src="{{ block6.settings.image | image_url: width: 3000 }}"
+                      alt="{{ block6.settings.image_alt | default: 'Feature image' }}"
+                      loading="lazy"
+                      srcset="{{ block6.settings.image | image_url: width: 1200 }} 1200w,
+                              {{ block6.settings.image | image_url: width: 2000 }} 2000w,
+                              {{ block6.settings.image | image_url: width: 3000 }} 3000w"
+                      sizes="(max-width: 767px) 100vw, (max-width: 991px) 100vw, 45vw"
+                      class="fg-card-image w-full h-full object-contain block"
+                    >
+                  </div>
+                {% else %}
+                  <div class="flex items-center justify-center h-full min-h-[100px] bg-gray-100 text-gray-400 text-xs rounded-xl">
+                    Add image 6
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <!-- 3 small cards -->
+            <div class="fg-right-top-right-bottom">
+              {% for i in (6..8) %}
+                {% assign block = section.blocks[i] %}
+                {% if block %}
+                  <div class="fg-card fg-block-{{ i | plus: 1 }} bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" {{ block.shopify_attributes }}>
+                    {% if block.settings.image != blank %}
+                      <div class="flex-1 min-h-0 relative overflow-hidden">
+                        <img
+                          src="{{ block.settings.image | image_url: width: 1600 }}"
+                          alt="{{ block.settings.image_alt | default: 'Feature image' }}"
+                          loading="lazy"
+                          srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+                                  {{ block.settings.image | image_url: width: 1000 }} 1000w,
+                                  {{ block.settings.image | image_url: width: 1600 }} 1600w"
+                          sizes="(max-width: 767px) 100vw, (max-width: 991px) 33vw, 15vw"
+                          class="fg-card-image w-full h-full object-contain block"
+                        >
+                      </div>
+                    {% else %}
+                      <div class="flex items-center justify-center h-full min-h-[100px] bg-gray-100 text-gray-400 text-xs rounded-xl">
+                        Add image {{ i | plus: 1 }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Bottom - 6 cards -->
+        <div class="fg-right-bottom">
+          {% for i in (9..14) %}
+            {% assign block = section.blocks[i] %}
+            {% if block %}
+              <div class="fg-card fg-block-{{ i | plus: 1 }} bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" {{ block.shopify_attributes }}>
+                {% if block.settings.image != blank %}
+                  <div class="flex-1 min-h-0 relative overflow-hidden">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 1600 }}"
+                      alt="{{ block.settings.image_alt | default: 'Feature image' }}"
+                      loading="lazy"
+                      srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+                              {{ block.settings.image | image_url: width: 1000 }} 1000w,
+                              {{ block.settings.image | image_url: width: 1600 }} 1600w"
+                      sizes="(max-width: 767px) 50vw, (max-width: 991px) 33vw, 12vw"
+                      class="fg-card-image w-full h-full object-contain block"
+                    >
+                  </div>
+                {% else %}
+                  <div class="flex items-center justify-center h-full min-h-[100px] bg-gray-100 text-gray-400 text-xs rounded-xl">
+                    Add image {{ i | plus: 1 }}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Features Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 152,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 152,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card padding (image spacing)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Features"
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "Section description"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#0b0b0c"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "rgba(11,11,12,0.7)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_card",
+      "name": "Feature Image",
+      "limit": 15,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_on_mobile",
+          "label": "Show on mobile",
+          "default": true,
+          "info": "Uncheck to hide this card on mobile devices"
+        },
+        {
+          "type": "header",
+          "content": "Custom Background"
+        },
+        {
+          "type": "select",
+          "id": "bg_type",
+          "label": "Background type",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default gradient"
+            },
+            {
+              "value": "solid",
+              "label": "Solid color"
+            },
+            {
+              "value": "gradient",
+              "label": "Custom gradient"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_1",
+          "label": "Background color 1",
+          "default": "#f5f7fa",
+          "info": "Main color (for solid) or gradient start color"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_2",
+          "label": "Background color 2 (gradient only)",
+          "default": "#e8ecf1",
+          "info": "Gradient end color"
+        },
+        {
+          "type": "select",
+          "id": "gradient_direction",
+          "label": "Gradient direction",
+          "options": [
+            {
+              "value": "135deg",
+              "label": "Diagonal ↘"
+            },
+            {
+              "value": "45deg",
+              "label": "Diagonal ↗"
+            },
+            {
+              "value": "to right",
+              "label": "Horizontal →"
+            },
+            {
+              "value": "to bottom",
+              "label": "Vertical ↓"
+            }
+          ],
+          "default": "135deg"
+        },
+        {
+          "type": "text",
+          "id": "custom_bg",
+          "label": "Advanced custom CSS (optional)",
+          "info": "Example: radial-gradient(circle, #667eea 0%, #764ba2 100%)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Grid",
+      "blocks": [
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"},
+        {"type": "feature_card"}
+      ]
+    }
+  ]
+}
+{% endschema %}

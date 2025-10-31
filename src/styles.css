@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  /* Apply Mont font globally with !important */
+  body,
+  h1, h2, h3, h4, h5, h6,
+  p, span, a, button,
+  input, select, textarea,
+  label, li, td, th {
+    font-family: 'Mont', ui-sans-serif, system-ui, sans-serif !important;
+  }
+}
+
+/* Mont Font Family */
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Heavy_DEMO.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Mont Italic Styles */
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_Thin_Italic.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_Regular_Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_Bold_Italic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+/* Özel CSS stillerin buraya ekleyebilirsin */
+
+/* Modern Sticky Header with Blur Effect */
+.header-wrapper {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+}
+
+.header-wrapper.scrolled {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Shopify Payment Button Styles */
+.shopify-payment-button__button {
+  @apply w-full rounded-full font-semibold py-3 px-6 transition-colors;
+}
+
+.shopify-payment-button__button--unbranded {
+  @apply bg-white border-2 border-black text-black hover:bg-gray-50;
+}
+
+/* Details/Summary Arrow Animation */
+details[open] summary svg {
+  transform: rotate(180deg);
+}
+
+/* Quantity Input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

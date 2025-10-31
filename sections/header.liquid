@@ -1,66 +1,204 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{% comment %}
+  Header Section
+  Main navigation with logo, menu, and utility icons
+{% endcomment %}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+<div class="full-width header-wrapper sticky top-0 z-50 transition-all duration-300">
+  <header class="header max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center h-16 lg:h-20">
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
-    {% endif %}
+      {% comment %} Logo - Left {% endcomment %}
+      <div class="flex-shrink-0 mr-8 lg:mr-12">
+        <a href="{{ routes.root_url }}" class="flex items-center">
+          {% if section.settings.logo != blank %}
+            <img
+              src="{{ section.settings.logo | image_url: width: 200 }}"
+              alt="{{ shop.name }}"
+              class="h-8 lg:h-10 w-auto"
+              width="{{ section.settings.logo.width }}"
+              height="{{ section.settings.logo.height }}"
+              loading="lazy"
+            >
+          {% else %}
+            <span class="text-xl lg:text-2xl font-bold font-sans">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+      </div>
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
+      {% comment %} Navigation Menu - Center {% endcomment %}
+      <nav class="hidden lg:flex items-center space-x-6 flex-1">
+        {% for link in section.settings.menu.links %}
+          <a
+            href="{{ link.url }}"
+            class="text-sm font-medium font-sans text-gray-900 hover:text-gray-600 transition-colors whitespace-nowrap"
+          >
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
-  </div>
-</header>
+      {% comment %} Icons - Right {% endcomment %}
+      <div class="flex items-center space-x-4 lg:space-x-6 ml-auto">
 
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+        {% comment %} Search Icon {% endcomment %}
+        <a
+          href="{{ routes.search_url }}"
+          class="text-gray-900 hover:text-gray-600 transition-colors"
+          aria-label="Search"
+        >
+          <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </a>
+
+        {% comment %} Account Icon {% endcomment %}
+        {% if shop.customer_accounts_enabled %}
+          <a
+            href="{{ routes.account_url }}"
+            class="text-gray-900 hover:text-gray-600 transition-colors"
+            aria-label="Account"
+          >
+            <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% comment %} Cart Icon {% endcomment %}
+        <button
+          type="button"
+          onclick="openCartDrawer()"
+          class="text-gray-900 hover:text-gray-600 transition-colors relative"
+          aria-label="Cart"
+        >
+          <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          {% if cart.item_count > 0 %}
+            <span class="header-cart-count absolute -top-2 -right-2 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {{ cart.item_count }}
+            </span>
+          {% endif %}
+        </button>
+
+        {% comment %} Mobile Menu Toggle {% endcomment %}
+        <button
+          type="button"
+          class="lg:hidden text-gray-900 hover:text-gray-600"
+          aria-label="Menu"
+          id="mobile-menu-toggle"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    {% comment %} Mobile Menu {% endcomment %}
+    <div class="lg:hidden hidden border-t border-gray-200" id="mobile-menu">
+      <div class="py-3 space-y-1">
+        {% for link in section.settings.menu.links %}
+          <a
+            href="{{ link.url }}"
+            class="block px-3 py-2 text-base font-medium font-sans text-gray-900 hover:text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+          >
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </header>
+</div>
+
+<script>
+  // Mobile menu toggle
+  document.getElementById('mobile-menu-toggle')?.addEventListener('click', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Sticky header with blur effect on scroll
+  let lastScroll = 0;
+  const headerWrapper = document.querySelector('.header-wrapper');
+
+  window.addEventListener('scroll', function() {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll > 10) {
+      headerWrapper.classList.add('scrolled');
+    } else {
+      headerWrapper.classList.remove('scrolled');
+    }
+
+    lastScroll = currentScroll;
+  });
+</script>
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Header",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Recommended size: 200x50px"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 150
+    },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Select a menu to display in the header"
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable search",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sticky Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true,
+      "info": "Header will stay at the top when scrolling"
     }
   ]
 }
 {% endschema %}
+
+<style>
+  {% if section.settings.logo != blank %}
+    .header .flex-shrink-0 img {
+      width: {{ section.settings.logo_width }}px;
+      height: auto;
+    }
+  {% endif %}
+
+  {% unless section.settings.enable_sticky_header %}
+    .header-wrapper {
+      position: relative !important;
+    }
+  {% endunless %}
+</style>

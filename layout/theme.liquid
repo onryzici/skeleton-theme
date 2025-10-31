@@ -7,17 +7,23 @@
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
+    {% # Tailwind CSS %}
+    {{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="font-sans antialiased">
     {% sections 'header-group' %}
 
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    {% # Cart Drawer %}
+    {% section 'cart-drawer' %}
   </body>
 </html>

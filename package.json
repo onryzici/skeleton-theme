@@ -1,0 +1,19 @@
+{
+  "name": "skeleton-theme",
+  "version": "1.0.0",
+  "description": "Shopify theme with Tailwind CSS",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/styles.css -o ./assets/tailwind.css --watch",
+    "build": "tailwindcss -i ./src/styles.css -o ./assets/tailwind.css --minify"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "tailwindcss"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^4.1.16"
+  }
+}

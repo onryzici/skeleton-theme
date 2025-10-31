@@ -11,12 +11,22 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "announcement_text": "Welcome to our store!",
+        "bg_color_start": "#a855f7",
+        "bg_color_end": "#ec4899"
+      }
+    },
     "header": {
       "type": "header",
       "settings": {}
     }
   },
   "order": [
+    "announcement-bar",
     "header"
-  ],
+  ]
 }
