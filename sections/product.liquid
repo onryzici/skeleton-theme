@@ -60,6 +60,31 @@
     transition: transform 0.3s ease;
   }
 
+  /* Fix details/summary layout - force content below summary */
+  #shopify-section-{{ section.id }} details {
+    display: block !important;
+  }
+
+  #shopify-section-{{ section.id }} details summary {
+    display: flex !important;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} details summary::after {
+    content: none !important;
+  }
+
+  #shopify-section-{{ section.id }} details .collapsible-content {
+    display: block !important;
+    width: 100% !important;
+    clear: both !important;
+    float: none !important;
+  }
+
+  #shopify-section-{{ section.id }} details > * {
+    box-sizing: border-box;
+  }
+
   /* Thumbnail active state */
   #shopify-section-{{ section.id }} .thumbnail-btn.active {
     border-color: #1f2937;
