@@ -274,23 +274,25 @@
               </div>
 
             {% when 'collapsible_tab' %}
-              <details class="border-t border-gray-200 py-4 lg:py-5 group" {% if block.settings.open_by_default %}open{% endif %} {{ block.shopify_attributes }}>
-                <summary class="flex justify-between items-center cursor-pointer list-none">
-                  <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
-                    {{ block.settings.heading }}
-                  </span>
-                  <svg class="w-5 h-5 text-gray-600 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </summary>
-                <div class="mt-4 text-sm lg:text-base text-gray-700 font-sans leading-relaxed space-y-3">
-                  {% if block.settings.use_description and product.description != blank %}
-                    {{ product.description }}
-                  {% elsif block.settings.content != blank %}
-                    {{ block.settings.content }}
-                  {% endif %}
-                </div>
-              </details>
+              <div class="border-t border-gray-200 py-4 lg:py-5" {{ block.shopify_attributes }}>
+                <details class="group" {% if block.settings.open_by_default %}open{% endif %}>
+                  <summary class="flex justify-between items-center cursor-pointer list-none">
+                    <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
+                      {{ block.settings.heading }}
+                    </span>
+                    <svg class="w-5 h-5 text-gray-600 chevron transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </summary>
+                  <div class="collapsible-content mt-4 text-sm lg:text-base text-gray-700 font-sans leading-relaxed space-y-3">
+                    {% if block.settings.use_description and product.description != blank %}
+                      {{ product.description }}
+                    {% elsif block.settings.content != blank %}
+                      {{ block.settings.content }}
+                    {% endif %}
+                  </div>
+                </details>
+              </div>
 
             {% when 'variant_picker' %}
               {% if product.has_only_default_variant == false %}
@@ -902,6 +904,67 @@
         }
 
         updateVariant();
+      });
+    });
+  })();
+</script>
+
+<script>
+  // Smooth animation for all collapsible tabs
+  (function() {
+    const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details:not([data-animated])');
+
+    collapsibleTabs.forEach(details => {
+      details.setAttribute('data-animated', 'true');
+      const summary = details.querySelector('summary');
+      const content = details.querySelector('.collapsible-content');
+
+      if (!summary || !content) return;
+
+      // Set initial styles
+      content.style.overflow = 'hidden';
+      content.style.transition = 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease';
+
+      if (details.open) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.opacity = '1';
+      } else {
+        content.style.maxHeight = '0';
+        content.style.opacity = '0';
+      }
+
+      summary.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (details.open) {
+          // Closing
+          const startHeight = content.scrollHeight;
+          content.style.maxHeight = startHeight + 'px';
+
+          requestAnimationFrame(() => {
+            content.style.maxHeight = '0';
+            content.style.opacity = '0';
+          });
+
+          setTimeout(() => {
+            details.open = false;
+          }, 500);
+        } else {
+          // Opening
+          details.open = true;
+          const endHeight = content.scrollHeight;
+          content.style.maxHeight = '0';
+          content.style.opacity = '0';
+
+          requestAnimationFrame(() => {
+            content.style.maxHeight = endHeight + 'px';
+            content.style.opacity = '1';
+          });
+
+          setTimeout(() => {
+            content.style.maxHeight = '3000px';
+          }, 500);
+        }
       });
     });
   })();
