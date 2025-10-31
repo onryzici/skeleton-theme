@@ -4,6 +4,16 @@
 {% endcomment %}
 
 <style>
+  /* Full-width background */
+  #shopify-section-{{ section.id }} section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
   /* FAQ Accordion Animation */
   #shopify-section-{{ section.id }} .faq-content {
     max-height: 0;
@@ -38,7 +48,7 @@
   }
 </style>
 
-<section class="py-12 lg:py-20 px-4 sm:px-6 lg:px-8">
+<section class="bg-gray-50 py-12 lg:py-20 px-4 sm:px-6 lg:px-8">
   <div class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
 
@@ -62,9 +72,9 @@
       <div class="lg:col-span-8 space-y-4">
         {% for block in section.blocks %}
           {% if block.type == 'faq_item' %}
-            <div class="border-b border-gray-200 pb-4" {{ block.shopify_attributes }}>
+            <div class="bg-white rounded-2xl shadow-sm" {{ block.shopify_attributes }}>
               <details class="group" {% if block.settings.open_by_default %}open{% endif %} data-faq-item>
-                <summary class="flex justify-between items-start cursor-pointer list-none py-4 w-full">
+                <summary class="flex justify-between items-start cursor-pointer list-none px-6 py-6 w-full">
                   <span class="text-lg lg:text-xl font-semibold font-sans text-gray-900 pr-4 flex-1">
                     {{ block.settings.question }}
                   </span>
@@ -72,7 +82,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
-                <div class="faq-content pb-4 text-base text-gray-600 font-sans leading-relaxed">
+                <div class="faq-content px-6 pb-6 text-base text-gray-600 font-sans leading-relaxed">
                   {{ block.settings.answer }}
                 </div>
               </details>
