@@ -275,7 +275,7 @@
 
             {% when 'collapsible_tab' %}
               <div class="border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
-                <details class="group">
+                <details class="group block">
                   <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
                     <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
                       {{ block.settings.heading }}
@@ -284,7 +284,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                   </summary>
-                  <div class="collapsible-content pb-4 text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed">
+                  <div class="collapsible-content pb-4 w-full block text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed clear-both">
                     {% if block.settings.use_description and product.description != blank %}
                       {{ product.description }}
                     {% elsif block.settings.content != blank %}
