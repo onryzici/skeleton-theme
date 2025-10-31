@@ -274,17 +274,17 @@
               </div>
 
             {% when 'collapsible_tab' %}
-              <div class="border-t border-gray-200 py-4 lg:py-5" {{ block.shopify_attributes }}>
+              <div class="border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
                 <details class="group">
-                  <summary class="flex justify-between items-center cursor-pointer list-none">
+                  <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
                     <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
                       {{ block.settings.heading }}
                     </span>
-                    <svg class="w-5 h-5 text-gray-600 chevron transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-gray-600 chevron flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                   </summary>
-                  <div class="collapsible-content mt-4 text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed">
+                  <div class="collapsible-content pb-4 text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed">
                     {% if block.settings.use_description and product.description != blank %}
                       {{ product.description }}
                     {% elsif block.settings.content != blank %}
