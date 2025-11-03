@@ -1,0 +1,352 @@
+{% comment %}
+  Search Drawer Snippet
+  Modern slide-out search with smooth animations
+{% endcomment %}
+
+<style>
+  /* Search Drawer Animations */
+  .search-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .search-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    border-radius: 32px 0 0 32px;
+  }
+
+  .search-drawer.active {
+    transform: translateX(0);
+  }
+
+  /* Search Results Scrollbar */
+  .search-drawer-results::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .search-drawer-results::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .search-drawer-results::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    border-radius: 3px;
+  }
+
+  /* Search Input Focus */
+  .search-drawer-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  /* Result Item Hover */
+  .search-result-item {
+    transition: all 0.2s ease;
+  }
+
+  .search-result-item:hover {
+    background: #f9fafb;
+    transform: translateX(-4px);
+  }
+</style>
+
+<!-- Overlay -->
+<div class="search-drawer-overlay" id="searchDrawerOverlay"></div>
+
+<!-- Search Drawer -->
+<div class="search-drawer" id="searchDrawer" role="dialog" aria-modal="true" aria-label="Search">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <h2 class="text-2xl font-bold font-sans text-gray-900">
+      Search
+    </h2>
+    <button
+      type="button"
+      class="p-2 rounded-full hover:bg-gray-100 transition-colors"
+      id="closeSearchDrawer"
+      aria-label="Close search"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Search Input -->
+  <div class="p-6">
+    <form action="{{ routes.search_url }}" method="get" role="search" id="searchDrawerForm">
+      <div class="relative">
+        <input
+          type="search"
+          name="q"
+          class="search-drawer-input w-full px-6 py-4 pr-14 border-2 border-gray-200 rounded-full text-base font-sans transition-all"
+          placeholder="Search products..."
+          autocomplete="off"
+          id="searchDrawerInput"
+        >
+        <button
+          type="submit"
+          class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-white rounded-full hover:bg-gray-800 transition-colors flex items-center justify-center"
+          aria-label="Search"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Search Results -->
+  <div class="search-drawer-results flex-1 overflow-y-auto px-6 pb-6" id="searchDrawerResults">
+
+    <!-- Empty State / Popular Searches -->
+    <div id="searchEmptyState">
+      <h3 class="text-sm font-semibold font-sans text-gray-900 mb-4 uppercase tracking-wider">
+        Popular Searches
+      </h3>
+      <div class="space-y-2">
+        {% assign popular_collections = collections | sort: 'products_count' | reverse | limit: 5 %}
+        {% for collection in popular_collections %}
+          <a
+            href="{{ collection.url }}"
+            class="search-result-item flex items-center gap-3 p-3 rounded-xl border border-gray-200"
+          >
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <span class="text-sm font-sans text-gray-700">{{ collection.title }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="searchLoadingState" class="hidden text-center py-12">
+      <div class="inline-block w-8 h-8 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+      <p class="text-sm text-gray-600 font-sans mt-4">Searching...</p>
+    </div>
+
+    <!-- Results Container -->
+    <div id="searchResultsContainer" class="hidden">
+      <h3 class="text-sm font-semibold font-sans text-gray-900 mb-4 uppercase tracking-wider">
+        Results (<span id="searchResultCount">0</span>)
+      </h3>
+      <div id="searchResultsList" class="space-y-3">
+        <!-- Results will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- No Results State -->
+    <div id="searchNoResults" class="hidden text-center py-12">
+      <svg class="w-24 h-24 text-gray-300 mb-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <h3 class="text-xl font-semibold font-sans text-gray-900 mb-2">No results found</h3>
+      <p class="text-gray-600 font-sans">Try searching for something else</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // Search Drawer Controller
+  (function() {
+    const searchDrawer = document.getElementById('searchDrawer');
+    const searchOverlay = document.getElementById('searchDrawerOverlay');
+    const closeBtn = document.getElementById('closeSearchDrawer');
+    const searchInput = document.getElementById('searchDrawerInput');
+    const searchForm = document.getElementById('searchDrawerForm');
+
+    // State elements
+    const emptyState = document.getElementById('searchEmptyState');
+    const loadingState = document.getElementById('searchLoadingState');
+    const resultsContainer = document.getElementById('searchResultsContainer');
+    const noResultsState = document.getElementById('searchNoResults');
+    const resultsList = document.getElementById('searchResultsList');
+    const resultCount = document.getElementById('searchResultCount');
+
+    let searchTimeout;
+
+    // Open drawer function
+    window.openSearchDrawer = function() {
+      searchDrawer.classList.add('active');
+      searchOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Focus on input after animation
+      setTimeout(() => {
+        searchInput.focus();
+      }, 400);
+    };
+
+    // Close drawer function
+    function closeSearchDrawer() {
+      searchDrawer.classList.remove('active');
+      searchOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      showEmptyState();
+    }
+
+    // Close on button click
+    closeBtn.addEventListener('click', closeSearchDrawer);
+
+    // Close on overlay click
+    searchOverlay.addEventListener('click', closeSearchDrawer);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && searchDrawer.classList.contains('active')) {
+        closeSearchDrawer();
+      }
+    });
+
+    // Show different states
+    function showEmptyState() {
+      emptyState.classList.remove('hidden');
+      loadingState.classList.add('hidden');
+      resultsContainer.classList.add('hidden');
+      noResultsState.classList.add('hidden');
+    }
+
+    function showLoadingState() {
+      emptyState.classList.add('hidden');
+      loadingState.classList.remove('hidden');
+      resultsContainer.classList.add('hidden');
+      noResultsState.classList.add('hidden');
+    }
+
+    function showResults(count) {
+      emptyState.classList.add('hidden');
+      loadingState.classList.add('hidden');
+      noResultsState.classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
+      resultCount.textContent = count;
+    }
+
+    function showNoResults() {
+      emptyState.classList.add('hidden');
+      loadingState.classList.add('hidden');
+      resultsContainer.classList.add('hidden');
+      noResultsState.classList.remove('hidden');
+    }
+
+    // Live search functionality
+    searchInput.addEventListener('input', function(e) {
+      const query = e.target.value.trim();
+
+      clearTimeout(searchTimeout);
+
+      if (query.length < 2) {
+        showEmptyState();
+        return;
+      }
+
+      showLoadingState();
+
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+
+    // Perform search via AJAX
+    async function performSearch(query) {
+      try {
+        const response = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`);
+        const data = await response.json();
+
+        const products = data.resources.results.products || [];
+
+        if (products.length === 0) {
+          showNoResults();
+          return;
+        }
+
+        // Display results
+        displayResults(products);
+        showResults(products.length);
+
+      } catch (error) {
+        console.error('Search error:', error);
+        showNoResults();
+      }
+    }
+
+    // Display search results
+    function displayResults(products) {
+      resultsList.innerHTML = '';
+
+      products.forEach(product => {
+        const resultItem = document.createElement('a');
+        resultItem.href = product.url;
+        resultItem.className = 'search-result-item flex items-start gap-4 p-4 rounded-xl border border-gray-200';
+
+        resultItem.innerHTML = `
+          <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+            ${product.featured_image ?
+              `<img src="${product.featured_image}" alt="${product.title}" class="w-full h-full object-cover" loading="lazy">` :
+              `<div class="w-full h-full bg-gray-200"></div>`
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold font-sans text-sm text-gray-900 mb-1 line-clamp-2">
+              ${product.title}
+            </h4>
+            <p class="text-sm font-bold font-sans text-gray-900">
+              ${formatMoney(product.price)}
+            </p>
+            ${product.compare_at_price && product.compare_at_price > product.price ?
+              `<p class="text-xs text-gray-400 line-through font-sans">
+                ${formatMoney(product.compare_at_price)}
+              </p>` : ''
+            }
+          </div>
+        `;
+
+        resultsList.appendChild(resultItem);
+      });
+    }
+
+    // Format money (basic implementation)
+    function formatMoney(cents) {
+      return (cents / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
+    // Prevent form submission, use live search instead
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = searchInput.value.trim();
+      if (query.length > 0) {
+        window.location.href = `/search?q=${encodeURIComponent(query)}`;
+      }
+    });
+
+  })();
+</script>
