@@ -1,0 +1,590 @@
+{% comment %}
+  Media Tabs Section
+  Interactive tabbed layout with media (image/video/gif) support
+  Each tab shows different media with expandable content
+{% endcomment %}
+
+<style>
+
+  /* Section styling */
+  #shopify-section-{{ section.id }} .media-tabs-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    background: {{ section.settings.section_bg_color | default: '#ffffff' }};
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .media-tabs-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
+    }
+  }
+
+  /* Media container styling */
+  #shopify-section-{{ section.id }} .media-container {
+    border-radius: {{ section.settings.media_radius }}px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  /* Set aspect ratio for container */
+  #shopify-section-{{ section.id }} .media-container::before {
+    content: '';
+    display: block;
+    padding-bottom: {% if section.settings.media_ratio == 'square' %}100%{% elsif section.settings.media_ratio == 'video' %}56.25%{% elsif section.settings.media_ratio == '[4/3]' %}75%{% elsif section.settings.media_ratio == '[3/4]' %}133.33%{% else %}100%{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .media-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+    will-change: transform, opacity;
+  }
+
+  #shopify-section-{{ section.id }} .media-item.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-110%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .media-item.entering {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+
+  #shopify-section-{{ section.id }} .media-item.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #shopify-section-{{ section.id }} .media-item > div {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Ensure media items respect container radius during animation */
+  #shopify-section-{{ section.id }} .media-item img,
+  #shopify-section-{{ section.id }} .media-item video,
+  #shopify-section-{{ section.id }} .media-item iframe {
+    border-radius: {{ section.settings.media_radius }}px;
+  }
+
+  /* Tabs container minimum height to prevent layout shift */
+  #shopify-section-{{ section.id }} .tabs-container {
+    min-height: 400px;
+  }
+
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .tabs-container {
+      min-height: 450px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .tabs-container {
+      min-height: 500px;
+    }
+  }
+
+
+  /* Tab item styling */
+  #shopify-section-{{ section.id }} .tab-item {
+    border-left: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .tab-item:hover {
+    background: transparent;
+  }
+
+  #shopify-section-{{ section.id }} .tab-item.active {
+    border-left-color: {{ section.settings.tab_active_color | default: '#111827' }};
+    background: transparent;
+  }
+
+  /* Tab icon rotation */
+  #shopify-section-{{ section.id }} .tab-icon {
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .tab-item.active .tab-icon {
+    transform: rotate(45deg);
+  }
+
+  /* Tab content animation */
+  #shopify-section-{{ section.id }} .tab-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .tab-item.active .tab-content {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 0.75rem;
+  }
+
+</style>
+
+<div class="media-tabs-section w-full">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% if section.settings.heading != blank %}
+      <div class="section-heading text-center mb-8 lg:mb-12">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-sans text-gray-900 leading-tight"
+            style="color: {{ section.settings.heading_color | default: '#111827' }};">
+          {{ section.settings.heading }}
+        </h2>
+      </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start
+                {% if section.settings.media_position == 'right' %}lg:grid-flow-dense{% endif %}">
+
+      {% comment %} Media Column {% endcomment %}
+      <div class="media-column
+                  {% if section.settings.media_position == 'right' %}lg:col-start-2{% endif %}">
+        <div class="media-container relative" id="media-container-{{ section.id }}">
+          {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+              <div class="media-item {% unless forloop.first %}hidden{% endunless %}"
+                   data-tab-media="{{ forloop.index0 }}"
+                   {{ block.shopify_attributes }}>
+
+                {% if block.settings.media_type == 'video' and block.settings.video_url != blank %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    {% if block.settings.video_url contains 'youtube.com' or block.settings.video_url contains 'youtu.be' %}
+                      {% assign video_id = block.settings.video_url | split: 'v=' | last | split: '&' | first %}
+                      {% if block.settings.video_url contains 'youtu.be' %}
+                        {% assign video_id = block.settings.video_url | split: 'youtu.be/' | last | split: '?' | first %}
+                      {% endif %}
+                      <iframe
+                        src="https://www.youtube.com/embed/{{ video_id }}"
+                        class="w-full h-full rounded-2xl"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    {% elsif block.settings.video_url contains 'vimeo.com' %}
+                      {% assign video_id = block.settings.video_url | split: 'vimeo.com/' | last %}
+                      <iframe
+                        src="https://player.vimeo.com/video/{{ video_id }}"
+                        class="w-full h-full rounded-2xl"
+                        frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    {% else %}
+                      <video
+                        src="{{ block.settings.video_url }}"
+                        class="w-full h-full object-cover rounded-2xl"
+                        playsinline
+                        autoplay
+                        muted
+                        loop
+                      ></video>
+                    {% endif %}
+                  </div>
+                {% elsif block.settings.image != blank %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 1600 }}"
+                      alt="{{ block.settings.image.alt | default: block.settings.tab_title | escape }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      loading="lazy"
+                      srcset="{{ block.settings.image | image_url: width: 800 }} 800w,
+                              {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                              {{ block.settings.image | image_url: width: 1600 }} 1600w"
+                      sizes="(max-width: 767px) 100vw, 50vw"
+                      class="w-full h-full object-{{ section.settings.media_fit }} rounded-2xl"
+                    >
+                  </div>
+                {% else %}
+                  <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-2xl">
+                    <div class="text-center text-gray-400 p-8">
+                      <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                      </svg>
+                      <p class="text-sm font-sans">Add media (image or video)</p>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="aspect-video flex items-center justify-center bg-gray-200 rounded-2xl">
+              <div class="text-center text-gray-400 p-8">
+                <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                <p class="text-sm font-sans">Add tabs with media</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% comment %} Tabs Column {% endcomment %}
+      <div class="tabs-container
+                  {% if section.settings.media_position == 'right' %}lg:col-start-1 lg:row-start-1{% endif %}">
+        <div class="space-y-2">
+          {% for block in section.blocks %}
+            <div class="tab-item p-4 lg:p-6 {% if forloop.first %}active{% endif %}"
+                 data-tab-index="{{ forloop.index0 }}"
+                 data-section-id="{{ section.id }}"
+                 {{ block.shopify_attributes }}>
+
+              <div class="flex items-start justify-between gap-4">
+                <h3 class="text-base lg:text-lg font-semibold font-sans text-gray-900 flex-1 leading-tight"
+                    style="color: {{ section.settings.tab_title_color | default: '#111827' }};">
+                  {{ block.settings.tab_title | default: 'Tab Title' }}
+                </h3>
+
+                <div class="tab-icon flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                  <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="tab-content">
+                <p class="text-sm lg:text-base font-sans text-gray-600 leading-relaxed"
+                   style="color: {{ section.settings.tab_description_color | default: '#4b5563' }};">
+                  {{ block.settings.tab_description }}
+                </p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const tabItems = document.querySelectorAll('[data-section-id="' + sectionId + '"]');
+    const mediaContainer = document.getElementById('media-container-' + sectionId);
+
+    if (!tabItems.length || !mediaContainer) return;
+
+    tabItems.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        const tabIndex = this.getAttribute('data-tab-index');
+
+        // Get current and target media
+        const currentMedia = mediaContainer.querySelector('.media-item.active');
+        const targetMedia = mediaContainer.querySelector('[data-tab-media="' + tabIndex + '"]');
+
+        if (!targetMedia || targetMedia === currentMedia) return;
+
+        // Remove active class from all tabs
+        tabItems.forEach(function(t) {
+          t.classList.remove('active');
+        });
+
+        // Add active class to clicked tab
+        this.classList.add('active');
+
+        // Hide current media (slide up)
+        if (currentMedia) {
+          currentMedia.classList.remove('active');
+          currentMedia.classList.add('hidden');
+        }
+
+        // Prepare target media (position at bottom)
+        targetMedia.classList.add('entering');
+        targetMedia.classList.remove('hidden');
+
+        // Start animation after a brief moment
+        setTimeout(function() {
+          targetMedia.classList.remove('entering');
+          targetMedia.classList.add('active');
+        }, 50);
+      });
+    });
+
+    // Set first media as active on load
+    const firstMedia = mediaContainer.querySelector('.media-item:not(.hidden)');
+    if (firstMedia) {
+      firstMedia.classList.add('active');
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Media Tabs",
+  "tag": "section",
+  "class": "section-media-tabs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "AI Intelligence"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#111827"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Media position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Media Settings"
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "video",
+          "label": "Video (16:9)"
+        },
+        {
+          "value": "[4/3]",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "[3/4]",
+          "label": "Portrait (3:4)"
+        }
+      ],
+      "default": "video"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Media fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (show full media)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover (fill area)"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "range",
+      "id": "media_radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Media corner radius",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Tab Colors"
+    },
+    {
+      "type": "color",
+      "id": "tab_title_color",
+      "label": "Tab title color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "tab_description_color",
+      "label": "Tab description color",
+      "default": "#4b5563"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active tab border color",
+      "default": "#111827"
+    },
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab title",
+          "default": "Feature title"
+        },
+        {
+          "type": "textarea",
+          "id": "tab_description",
+          "label": "Tab description",
+          "default": "Describe your feature in detail here. This content will be shown when the tab is active."
+        },
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image / GIF"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image",
+          "info": "Choose between image/GIF or video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image or GIF",
+          "info": "Upload an image or GIF file"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "YouTube, Vimeo, or direct video file URL (.mp4, .webm). Direct video files will autoplay muted."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media Tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Capture voice notes even without internet.",
+            "tab_description": "Never miss an idea. Record your thoughts instantly, even when you're offline."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Record and transcribe your meetings automatically.",
+            "tab_description": "XNote's MeetBot captures every word from Google Meet, Zoom, and Teams, linking conversations directly to your handwritten pages."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Identify who said what in every conversation.",
+            "tab_description": "Advanced speaker detection ensures you always know who contributed what in your meetings."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Transcribe and understand multiple languages.",
+            "tab_description": "Break language barriers with multi-language transcription and translation capabilities."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
