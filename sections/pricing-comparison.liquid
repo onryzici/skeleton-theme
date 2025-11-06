@@ -68,7 +68,7 @@
     </div>
 
     {% comment %} Pricing Comparison Content {% endcomment %}
-    <div class="pricing-content">
+    <div class="pricing-content border border-gray-200 rounded-[2.5rem] p-8 lg:p-12">
 
       {% comment %} Collect plans and features {% endcomment %}
       {%- liquid
@@ -76,7 +76,7 @@
         assign features = section.blocks | where: "type", "feature"
       -%}
 
-      <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 lg:gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-12">
 
         {% comment %} Left Side - Product Image {% endcomment %}
         <div class="flex items-center justify-center lg:justify-start">
@@ -98,14 +98,14 @@
         <div class="overflow-x-auto">
           <div class="min-w-[700px]">
 
-            <div class="flex gap-4">
+            <div class="flex gap-6">
 
               {% comment %} Feature Names Column {% endcomment %}
-              <div class="w-[180px] flex-shrink-0">
-                <div class="h-[80px] mb-6"></div> {%comment%} Spacer for plan badges {%endcomment%}
-                <div class="space-y-8">
+              <div class="w-[200px] flex-shrink-0">
+                <div class="h-[100px] mb-10"></div> {%comment%} Spacer for plan badges {%endcomment%}
+                <div class="space-y-12">
                   {% for feature in features %}
-                    <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[40px] flex items-center" {{ feature.shopify_attributes }}>
+                    <div class="text-base font-medium font-sans text-gray-900 min-h-[56px] flex items-center" {{ feature.shopify_attributes }}>
                       {{ feature.settings.feature_name }}
                     </div>
                   {% endfor %}
@@ -114,11 +114,11 @@
 
               {% comment %} Plan Columns {% endcomment %}
               {% for plan in plans %}
-                <div class="flex-1 border border-gray-200 rounded-3xl p-6" {{ plan.shopify_attributes }}>
+                <div class="flex-1 border border-gray-200 rounded-3xl p-8" {{ plan.shopify_attributes }}>
 
                   {% comment %} Plan Badge {% endcomment %}
-                  <div class="text-center h-[80px] mb-6 flex items-start justify-center">
-                    <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
+                  <div class="text-center h-[100px] mb-10 flex items-start justify-center">
+                    <div class="inline-block px-6 py-2.5 rounded-full font-semibold font-sans text-base
                       {% if plan.settings.badge_style == 'green' %}
                         bg-green-100 text-green-700
                       {% elsif plan.settings.badge_style == 'purple' %}
@@ -131,9 +131,9 @@
                   </div>
 
                   {% comment %} Features for this plan {% endcomment %}
-                  <div class="space-y-8">
+                  <div class="space-y-12">
                     {% for feature in features %}
-                      <div class="text-center min-h-[40px] flex items-center justify-center">
+                      <div class="text-center min-h-[56px] flex items-center justify-center px-2">
                         {% assign plan_index = forloop.parentloop.index %}
                         {% if plan_index == 1 %}
                           {% assign plan_value = feature.settings.plan1_value %}
@@ -150,7 +150,7 @@
                         {% elsif plan_value == 'none' %}
                           <span class="text-gray-300 text-xl">—</span>
                         {% else %}
-                          <span class="text-sm lg:text-base text-gray-900 font-bold font-sans">{{ plan_value }}</span>
+                          <span class="text-base text-gray-900 font-bold font-sans leading-snug">{{ plan_value }}</span>
                         {% endif %}
                       </div>
                     {% endfor %}
