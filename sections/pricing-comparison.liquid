@@ -49,7 +49,7 @@
   }
 </style>
 
-<section class="pricing-section {% if section.settings.background_color == 'gray' %}bg-gray-50{% else %}bg-white{% endif %}">
+<section class="pricing-section bg-white">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
     {% comment %} Section Header {% endcomment %}
@@ -68,111 +68,104 @@
     </div>
 
     {% comment %} Pricing Comparison Content {% endcomment %}
-    <div class="pricing-content p-6 lg:p-12">
-      <div class="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-8 lg:gap-12 xl:gap-16">
+    <div class="pricing-content">
+
+      {% comment %} Collect plans and features {% endcomment %}
+      {%- liquid
+        assign plans = section.blocks | where: "type", "plan"
+        assign features = section.blocks | where: "type", "feature"
+      -%}
+
+      <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 lg:gap-12">
 
         {% comment %} Left Side - Product Image {% endcomment %}
         <div class="flex items-center justify-center lg:justify-start">
           {% if section.settings.product_image != blank %}
             <img
-              src="{{ section.settings.product_image | image_url: width: 800 }}"
+              src="{{ section.settings.product_image | image_url: width: 600 }}"
               alt="{{ section.settings.heading | escape }}"
-              class="w-full max-w-[320px] lg:max-w-none h-auto object-contain"
+              class="w-full max-w-[250px] lg:max-w-none h-auto object-contain"
               loading="lazy"
-              width="400"
-              height="400"
+              width="300"
+              height="300"
             >
           {% else %}
-            {{ 'product-1' | placeholder_svg_tag: 'w-full max-w-[320px] lg:max-w-none h-auto text-gray-300' }}
+            {{ 'product-1' | placeholder_svg_tag: 'w-full max-w-[250px] lg:max-w-none h-auto text-gray-300' }}
           {% endif %}
         </div>
 
-        {% comment %} Right Side - Plans Comparison {% endcomment %}
+        {% comment %} Right Side - Plans Grid {% endcomment %}
         <div class="overflow-x-auto">
-          <div class="min-w-[600px]">
+          <div class="min-w-[700px]">
 
-            {% comment %} Plan Headers {% endcomment %}
-            <div class="grid grid-cols-[200px_repeat(3,1fr)] gap-4 mb-8">
-              <div></div> {% comment %} Empty cell for features column {% endcomment %}
+            <div class="flex gap-4">
 
-              {% for block in section.blocks %}
-                {% if block.type == 'plan' %}
-                  <div class="text-center" {{ block.shopify_attributes }}>
-                    {% comment %} Plan Badge {% endcomment %}
+              {% comment %} Feature Names Column {% endcomment %}
+              <div class="w-[180px] flex-shrink-0">
+                <div class="h-[80px] mb-6"></div> {%comment%} Spacer for plan badges {%endcomment%}
+                <div class="space-y-8">
+                  {% for feature in features %}
+                    <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[40px] flex items-center" {{ feature.shopify_attributes }}>
+                      {{ feature.settings.feature_name }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              {% comment %} Plan Columns {% endcomment %}
+              {% for plan in plans %}
+                <div class="flex-1 border border-gray-200 rounded-3xl p-6" {{ plan.shopify_attributes }}>
+
+                  {% comment %} Plan Badge {% endcomment %}
+                  <div class="text-center h-[80px] mb-6 flex items-start justify-center">
                     <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
-                      {% if block.settings.badge_style == 'green' %}
+                      {% if plan.settings.badge_style == 'green' %}
                         bg-green-100 text-green-700
-                      {% elsif block.settings.badge_style == 'purple' %}
+                      {% elsif plan.settings.badge_style == 'purple' %}
                         bg-purple-100 text-purple-700
                       {% else %}
                         bg-gray-100 text-gray-700
                       {% endif %}">
-                      {{ block.settings.plan_name }}
+                      {{ plan.settings.plan_name }}
                     </div>
                   </div>
-                {% endif %}
-              {% endfor %}
-            </div>
 
-            {% comment %} Features Comparison Rows {% endcomment %}
-            <div class="space-y-6">
-              {% for feature_block in section.blocks %}
-                {% if feature_block.type == 'feature' %}
-                  <div class="grid grid-cols-[200px_repeat(3,1fr)] gap-4 items-center py-4 border-t border-gray-100" {{ feature_block.shopify_attributes }}>
+                  {% comment %} Features for this plan {% endcomment %}
+                  <div class="space-y-8">
+                    {% for feature in features %}
+                      <div class="text-center min-h-[40px] flex items-center justify-center">
+                        {% assign plan_index = forloop.parentloop.index %}
+                        {% if plan_index == 1 %}
+                          {% assign plan_value = feature.settings.plan1_value %}
+                        {% elsif plan_index == 2 %}
+                          {% assign plan_value = feature.settings.plan2_value %}
+                        {% else %}
+                          {% assign plan_value = feature.settings.plan3_value %}
+                        {% endif %}
 
-                    {% comment %} Feature Name {% endcomment %}
-                    <div class="text-sm lg:text-base font-medium font-sans text-gray-900">
-                      {{ feature_block.settings.feature_name }}
-                    </div>
-
-                    {% comment %} Plan 1 Value {% endcomment %}
-                    <div class="text-center">
-                      {% if feature_block.settings.plan1_value == 'check' %}
-                        <svg class="w-6 h-6 mx-auto text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                        </svg>
-                      {% elsif feature_block.settings.plan1_value == 'none' %}
-                        <span class="text-gray-300">—</span>
-                      {% else %}
-                        <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ feature_block.settings.plan1_value }}</span>
-                      {% endif %}
-                    </div>
-
-                    {% comment %} Plan 2 Value {% endcomment %}
-                    <div class="text-center">
-                      {% if feature_block.settings.plan2_value == 'check' %}
-                        <svg class="w-6 h-6 mx-auto text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                        </svg>
-                      {% elsif feature_block.settings.plan2_value == 'none' %}
-                        <span class="text-gray-300">—</span>
-                      {% else %}
-                        <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ feature_block.settings.plan2_value }}</span>
-                      {% endif %}
-                    </div>
-
-                    {% comment %} Plan 3 Value {% endcomment %}
-                    <div class="text-center">
-                      {% if feature_block.settings.plan3_value == 'check' %}
-                        <svg class="w-6 h-6 mx-auto text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                        </svg>
-                      {% elsif feature_block.settings.plan3_value == 'none' %}
-                        <span class="text-gray-300">—</span>
-                      {% else %}
-                        <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ feature_block.settings.plan3_value }}</span>
-                      {% endif %}
-                    </div>
-
+                        {% if plan_value == 'check' %}
+                          <svg class="w-6 h-6 {% if plan.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                          </svg>
+                        {% elsif plan_value == 'none' %}
+                          <span class="text-gray-300 text-xl">—</span>
+                        {% else %}
+                          <span class="text-sm lg:text-base text-gray-900 font-bold font-sans">{{ plan_value }}</span>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
                   </div>
-                {% endif %}
+
+                </div>
               {% endfor %}
+
             </div>
 
           </div>
         </div>
 
       </div>
+
     </div>
 
   </div>
@@ -207,26 +200,6 @@
       "id": "product_image",
       "label": "Product image",
       "info": "Recommended: Square image, min 800x800px"
-    },
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
-    {
-      "type": "select",
-      "id": "background_color",
-      "label": "Background color",
-      "options": [
-        {
-          "value": "white",
-          "label": "White"
-        },
-        {
-          "value": "gray",
-          "label": "Gray"
-        }
-      ],
-      "default": "gray"
     },
     {
       "type": "header",
@@ -304,13 +277,6 @@
             }
           ],
           "default": "gray"
-        },
-        {
-          "type": "text",
-          "id": "price",
-          "label": "Price",
-          "default": "$ 99.99/yr",
-          "info": "Use 'Free' or '0' for free plan"
         }
       ]
     },
@@ -356,24 +322,21 @@
           "type": "plan",
           "settings": {
             "plan_name": "Start Plan",
-            "badge_style": "green",
-            "price": "Free"
+            "badge_style": "green"
           }
         },
         {
           "type": "plan",
           "settings": {
             "plan_name": "Pro Plan",
-            "badge_style": "gray",
-            "price": "$ 99.99/yr"
+            "badge_style": "gray"
           }
         },
         {
           "type": "plan",
           "settings": {
             "plan_name": "Unlimited Plan",
-            "badge_style": "purple",
-            "price": "$ 299.99/yr"
+            "badge_style": "purple"
           }
         },
         {
