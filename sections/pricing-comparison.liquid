@@ -103,7 +103,7 @@
           <div class="grid grid-cols-[180px_repeat(3,1fr)] gap-4">
             <div></div> {%comment%} Empty cell for feature names column {%endcomment%}
             {% for plan in plans %}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center" {{ plan.shopify_attributes }}>
+              <div class="text-center" {{ plan.shopify_attributes }}>
                 <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
                   {% if plan.settings.badge_style == 'green' %}
                     bg-green-100 text-green-700
@@ -118,57 +118,77 @@
             {% endfor %}
           </div>
 
-          {% comment %} Feature Rows - Each feature is its own row {% endcomment %}
-          {% for feature in features %}
-            <div class="grid grid-cols-[180px_repeat(3,1fr)] gap-4 items-center" {{ feature.shopify_attributes }}>
+          {% comment %} Single bordered container for all 3 plan columns {% endcomment %}
+          <div class="grid grid-cols-[180px_repeat(3,1fr)] gap-4">
 
-              {%comment%} Feature Name {%endcomment%}
-              <div class="text-sm lg:text-base font-medium font-sans text-gray-900">
-                {{ feature.settings.feature_name }}
-              </div>
-
-              {%comment%} Plan 1 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
-                {% if feature.settings.plan1_value == 'check' %}
-                  <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif feature.settings.plan1_value == 'none' %}
-                  <span class="text-gray-300 text-xl">—</span>
-                {% else %}
-                  <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan1_value }}</span>
-                {% endif %}
-              </div>
-
-              {%comment%} Plan 2 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
-                {% if feature.settings.plan2_value == 'check' %}
-                  <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif feature.settings.plan2_value == 'none' %}
-                  <span class="text-gray-300 text-xl">—</span>
-                {% else %}
-                  <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan2_value }}</span>
-                {% endif %}
-              </div>
-
-              {%comment%} Plan 3 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
-                {% assign plan3 = plans[2] %}
-                {% if feature.settings.plan3_value == 'check' %}
-                  <svg class="w-6 h-6 {% if plan3.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif feature.settings.plan3_value == 'none' %}
-                  <span class="text-gray-300 text-xl">—</span>
-                {% else %}
-                  <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan3_value }}</span>
-                {% endif %}
-              </div>
-
+            {%comment%} Feature Names Column {%endcomment%}
+            <div class="space-y-6">
+              {% for feature in features %}
+                <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[64px] flex items-center" {{ feature.shopify_attributes }}>
+                  {{ feature.settings.feature_name }}
+                </div>
+              {% endfor %}
             </div>
-          {% endfor %}
+
+            {%comment%} Plan 1 Column - Single bordered box {%endcomment%}
+            <div class="border border-gray-200 rounded-3xl p-6">
+              <div class="space-y-6">
+                {% for feature in features %}
+                  <div class="text-center min-h-[64px] flex items-center justify-center">
+                    {% if feature.settings.plan1_value == 'check' %}
+                      <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    {% elsif feature.settings.plan1_value == 'none' %}
+                      <span class="text-gray-300 text-xl">—</span>
+                    {% else %}
+                      <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan1_value }}</span>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            {%comment%} Plan 2 Column - Single bordered box {%endcomment%}
+            <div class="border border-gray-200 rounded-3xl p-6">
+              <div class="space-y-6">
+                {% for feature in features %}
+                  <div class="text-center min-h-[64px] flex items-center justify-center">
+                    {% if feature.settings.plan2_value == 'check' %}
+                      <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    {% elsif feature.settings.plan2_value == 'none' %}
+                      <span class="text-gray-300 text-xl">—</span>
+                    {% else %}
+                      <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan2_value }}</span>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            {%comment%} Plan 3 Column - Single bordered box {%endcomment%}
+            <div class="border border-gray-200 rounded-3xl p-6">
+              <div class="space-y-6">
+                {% assign plan3 = plans[2] %}
+                {% for feature in features %}
+                  <div class="text-center min-h-[64px] flex items-center justify-center">
+                    {% if feature.settings.plan3_value == 'check' %}
+                      <svg class="w-6 h-6 {% if plan3.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    {% elsif feature.settings.plan3_value == 'none' %}
+                      <span class="text-gray-300 text-xl">—</span>
+                    {% else %}
+                      <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ feature.settings.plan3_value }}</span>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
 
         </div>
 
