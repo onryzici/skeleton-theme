@@ -103,7 +103,14 @@
           <div class="grid grid-cols-[180px_repeat(3,1fr)] gap-4">
             <div></div> {%comment%} Empty cell for feature names column {%endcomment%}
             {% for plan in plans %}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center" {{ plan.shopify_attributes }}>
+              <div class="border-gray-200 p-6 text-center
+                {% if forloop.first %}
+                  border-t border-l rounded-tl-3xl
+                {% elsif forloop.last %}
+                  border-t border-r rounded-tr-3xl
+                {% else %}
+                  border-t
+                {% endif %}" {{ plan.shopify_attributes }}>
                 <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
                   {% if plan.settings.badge_style == 'green' %}
                     bg-green-100 text-green-700
@@ -128,7 +135,9 @@
               </div>
 
               {%comment%} Plan 1 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
+              <div class="border-gray-200 p-6 text-center flex items-center justify-center min-h-[64px]
+                border-l
+                {% if forloop.last %}border-b rounded-bl-3xl{% endif %}">
                 {% if feature.settings.plan1_value == 'check' %}
                   <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -141,7 +150,8 @@
               </div>
 
               {%comment%} Plan 2 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
+              <div class="border-gray-200 p-6 text-center flex items-center justify-center min-h-[64px]
+                {% if forloop.last %}border-b{% endif %}">
                 {% if feature.settings.plan2_value == 'check' %}
                   <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -154,7 +164,9 @@
               </div>
 
               {%comment%} Plan 3 Value {%endcomment%}
-              <div class="border border-gray-200 rounded-3xl p-6 text-center flex items-center justify-center min-h-[64px]">
+              <div class="border-gray-200 p-6 text-center flex items-center justify-center min-h-[64px]
+                border-r
+                {% if forloop.last %}border-b rounded-br-3xl{% endif %}">
                 {% assign plan3 = plans[2] %}
                 {% if feature.settings.plan3_value == 'check' %}
                   <svg class="w-6 h-6 {% if plan3.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
