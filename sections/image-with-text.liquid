@@ -210,7 +210,7 @@
 
               {% when 'heading' %}
                 <div class="iwt-block-{{ forloop.index }} mb-6 lg:mb-8" {{ block.shopify_attributes }}>
-                  <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold font-sans text-gray-900 leading-tight"
+                  <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium font-sans text-gray-900 leading-tight"
                       style="color: {{ block.settings.heading_color | default: '#111827' }};">
                     {{ block.settings.heading }}
                   </h2>
