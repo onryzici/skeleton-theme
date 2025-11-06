@@ -4,24 +4,32 @@
 {% endcomment %}
 
 <style>
-  /* FAQ Accordion Animation */
+  /* FAQ Accordion Animation - Ultra Smooth Grid-Based */
   #shopify-section-{{ section.id }} .faq-content {
-    max-height: 0;
+    display: grid !important;
+    grid-template-rows: 0fr !important;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} details.is-active .faq-content {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .faq-content > div {
     overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-    opacity: 0;
   }
 
-  #shopify-section-{{ section.id }} details[open] .faq-content {
-    opacity: 1;
-  }
-
-  #shopify-section-{{ section.id }} details[open] .chevron {
-    transform: rotate(180deg);
+  #shopify-section-{{ section.id }} details.is-active .chevron {
+    transform: rotate(180deg) !important;
   }
 
   #shopify-section-{{ section.id }} .chevron {
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    transform: rotate(0deg);
   }
 
   #shopify-section-{{ section.id }} details {
@@ -30,11 +38,34 @@
 
   #shopify-section-{{ section.id }} details summary {
     display: flex !important;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} details summary::marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} details summary:hover {
+    opacity: 0.7;
   }
 
   #shopify-section-{{ section.id }} details .faq-content {
-    display: block !important;
+    display: grid !important;
     width: 100% !important;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .faq-content,
+    #shopify-section-{{ section.id }} .chevron {
+      transition-duration: 0.01ms !important;
+    }
   }
 </style>
 
@@ -72,8 +103,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
-                <div class="faq-content px-6 pb-6 text-base text-gray-600 font-sans leading-relaxed">
-                  {{ block.settings.answer }}
+                <div class="faq-content">
+                  <div>
+                    <div class="px-6 pb-6 text-base text-gray-600 font-sans leading-relaxed">
+                      {{ block.settings.answer }}
+                    </div>
+                  </div>
                 </div>
               </details>
             </div>
@@ -86,58 +121,36 @@
 </section>
 
 <script>
-  // Smooth animation for FAQ accordions
+  // Ultra smooth grid-based FAQ animation - no height calculations needed!
   (function() {
     const faqItems = document.querySelectorAll('#shopify-section-{{ section.id }} details[data-faq-item]');
 
     faqItems.forEach(details => {
       const summary = details.querySelector('summary');
-      const content = details.querySelector('.faq-content');
+      if (!summary) return;
 
-      if (!summary || !content) return;
+      // Force details to always be "open" in DOM, but control visibility with CSS
+      const wasOpenByDefault = details.hasAttribute('open');
+      details.setAttribute('open', '');
 
-      // Set initial styles
-      content.style.overflow = 'hidden';
-
-      if (details.open) {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        content.style.opacity = '1';
-      } else {
-        content.style.maxHeight = '0';
-        content.style.opacity = '0';
+      // Initialize state - add is-active class if open by default
+      if (wasOpenByDefault) {
+        details.classList.add('is-active');
       }
 
+      // Simple class toggle - CSS grid handles the smooth animation
       summary.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        details.classList.toggle('is-active');
+      }, true); // Capture phase
 
-        if (details.open) {
-          // Closing
-          const startHeight = content.scrollHeight;
-          content.style.maxHeight = startHeight + 'px';
-
-          requestAnimationFrame(() => {
-            content.style.maxHeight = '0';
-            content.style.opacity = '0';
-          });
-
-          setTimeout(() => {
-            details.open = false;
-          }, 500);
-        } else {
-          // Opening
-          details.open = true;
-          const endHeight = content.scrollHeight;
-          content.style.maxHeight = '0';
-          content.style.opacity = '0';
-
-          requestAnimationFrame(() => {
-            content.style.maxHeight = endHeight + 'px';
-            content.style.opacity = '1';
-          });
-
-          setTimeout(() => {
-            content.style.maxHeight = '3000px';
-          }, 500);
+      // Keyboard accessibility
+      summary.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.stopPropagation();
+          details.classList.toggle('is-active');
         }
       });
     });

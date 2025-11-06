@@ -4,7 +4,7 @@
 {% endcomment %}
 
 <style>
-  /* Search Drawer Animations */
+  /* Search Drawer Animations - GPU Accelerated */
   .search-drawer-overlay {
     position: fixed;
     inset: 0;
@@ -12,8 +12,9 @@
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    backdrop-filter: blur(4px);
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    will-change: opacity;
+    /* Removed backdrop-filter for better performance */
   }
 
   .search-drawer-overlay.active {
@@ -30,16 +31,19 @@
     max-width: 520px;
     background: white;
     z-index: 1000;
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate3d(100%, 0, 0); /* Use translate3d for GPU acceleration */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     border-radius: 32px 0 0 32px;
+    will-change: transform;
+    backface-visibility: hidden; /* Prevent flickering */
+    -webkit-font-smoothing: antialiased;
   }
 
   .search-drawer.active {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   /* Search Results Scrollbar */
@@ -63,14 +67,21 @@
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
   }
 
-  /* Result Item Hover */
+  /* Result Item Hover - GPU Accelerated */
   .search-result-item {
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    will-change: transform;
   }
 
   .search-result-item:hover {
     background: #f9fafb;
-    transform: translateX(-4px);
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  /* Optimize search result rendering */
+  .search-result-item img {
+    will-change: auto;
+    content-visibility: auto;
   }
 </style>
 
@@ -287,9 +298,10 @@
       }
     }
 
-    // Display search results
+    // Display search results - Optimized with DocumentFragment
     function displayResults(products) {
-      resultsList.innerHTML = '';
+      // Use DocumentFragment for better performance
+      const fragment = document.createDocumentFragment();
 
       products.forEach(product => {
         const resultItem = document.createElement('a');
@@ -299,7 +311,7 @@
         resultItem.innerHTML = `
           <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
             ${product.featured_image ?
-              `<img src="${product.featured_image}" alt="${product.title}" class="w-full h-full object-cover" loading="lazy">` :
+              `<img src="${product.featured_image}" alt="${product.title}" class="w-full h-full object-cover" loading="lazy" decoding="async">` :
               `<div class="w-full h-full bg-gray-200"></div>`
             }
           </div>
@@ -318,7 +330,13 @@
           </div>
         `;
 
-        resultsList.appendChild(resultItem);
+        fragment.appendChild(resultItem);
+      });
+
+      // Single DOM update for better performance
+      requestAnimationFrame(() => {
+        resultsList.innerHTML = '';
+        resultsList.appendChild(fragment);
       });
     }
 

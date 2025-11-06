@@ -41,23 +41,59 @@
     opacity: 0;
   }
 
-  /* Collapsible Sections */
+  /* Collapsible Sections - Ultra Smooth Grid-Based */
   #shopify-section-{{ section.id }} .collapsible-content {
-    max-height: 0;
+    display: grid !important;
+    grid-template-rows: 0fr !important;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} details.is-active .collapsible-content {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .collapsible-content > div {
     overflow: hidden;
-    transition: max-height 0.4s ease;
   }
 
-  #shopify-section-{{ section.id }} .collapsible-content.active {
-    max-height: 1000px;
-  }
-
-  #shopify-section-{{ section.id }} details[open] .chevron {
-    transform: rotate(180deg);
+  #shopify-section-{{ section.id }} details.is-active .chevron {
+    transform: rotate(180deg) !important;
   }
 
   #shopify-section-{{ section.id }} .chevron {
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    transform: rotate(0deg);
+  }
+
+  /* Smooth hover effect on summary */
+  #shopify-section-{{ section.id }} details summary {
+    transition: opacity 0.25s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  #shopify-section-{{ section.id }} details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} details summary::marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} details summary:hover {
+    opacity: 0.7;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .collapsible-content,
+    #shopify-section-{{ section.id }} .chevron {
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* Fix details/summary layout - force content below summary */
@@ -119,7 +155,7 @@
     display: none !important;
   }
 
-  /* Buy Together styles */
+  /* Buy Together styles - Grid-based animation */
   #shopify-section-{{ section.id }} .buy-together-wrapper details {
     display: block;
   }
@@ -129,15 +165,20 @@
   }
 
   #shopify-section-{{ section.id }} .buy-together-wrapper .bundle-content {
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 0.5s ease, opacity 0.4s ease;
+    display: grid !important;
+    grid-template-rows: 0fr !important;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0 !important;
   }
 
-  #shopify-section-{{ section.id }} .buy-together-wrapper details[open] .bundle-content {
-    max-height: 3000px;
-    opacity: 1;
+  #shopify-section-{{ section.id }} .buy-together-wrapper details.is-active .bundle-content {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .buy-together-wrapper .bundle-content > * {
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .bundle-item {
@@ -309,12 +350,16 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                   </summary>
-                  <div class="collapsible-content pb-4 w-full block text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed clear-both">
-                    {% if block.settings.use_description and product.description != blank %}
-                      {{ product.description }}
-                    {% elsif block.settings.content != blank %}
-                      {{ block.settings.content }}
-                    {% endif %}
+                  <div class="collapsible-content">
+                    <div>
+                      <div class="pb-4 w-full block text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed clear-both">
+                        {% if block.settings.use_description and product.description != blank %}
+                          {{ product.description }}
+                        {% elsif block.settings.content != blank %}
+                          {{ block.settings.content }}
+                        {% endif %}
+                      </div>
+                    </div>
                   </div>
                 </details>
               </div>
@@ -476,7 +521,8 @@
                         </svg>
                       </summary>
 
-                      <div class="bundle-content pb-4 space-y-3" id="bundle-wrapper-{{ section.id }}">
+                      <div class="bundle-content">
+                        <div class="pb-4 space-y-3" id="bundle-wrapper-{{ section.id }}">
                       {% comment %} Bundle Products from Collection {% endcomment %}
                       {% for bundle_product in bundle_collection.products limit: block.settings.product_limit %}
                         {% unless bundle_product.id == product.id %}
@@ -538,6 +584,7 @@
                           Add selected to Cart
                         </button>
                       </div>
+                        </div>
                       </div>
                     </details>
                   </div>
@@ -688,44 +735,33 @@
                       // Initial total calculation
                       updateTotal();
 
-                      // Smooth accordion animation
+                      // Ultra smooth grid-based animation - CSS handles it automatically!
                       const details = wrapper.closest('details');
-                      const content = wrapper;
+                      const summary = details?.querySelector('summary');
 
-                      if (details) {
-                        const summary = details.querySelector('summary');
+                      if (summary) {
+                        // Force details to always be "open" in DOM, but control visibility with CSS
+                        const wasOpenByDefault = details.hasAttribute('open');
+                        details.setAttribute('open', '');
 
+                        // Initialize state - add is-active class if open by default
+                        if (wasOpenByDefault) {
+                          details.classList.add('is-active');
+                        }
+
+                        // Simple class toggle - CSS grid handles the smooth animation
                         summary.addEventListener('click', function(e) {
                           e.preventDefault();
+                          e.stopPropagation();
+                          details.classList.toggle('is-active');
+                        }, true); // Capture phase
 
-                          if (details.open) {
-                            // Closing
-                            const startHeight = content.scrollHeight;
-                            content.style.maxHeight = startHeight + 'px';
-
-                            requestAnimationFrame(() => {
-                              content.style.maxHeight = '0';
-                              content.style.opacity = '0';
-                            });
-
-                            setTimeout(() => {
-                              details.open = false;
-                            }, 500);
-                          } else {
-                            // Opening
-                            details.open = true;
-                            const endHeight = content.scrollHeight;
-                            content.style.maxHeight = '0';
-                            content.style.opacity = '0';
-
-                            requestAnimationFrame(() => {
-                              content.style.maxHeight = endHeight + 'px';
-                              content.style.opacity = '1';
-                            });
-
-                            setTimeout(() => {
-                              content.style.maxHeight = '3000px';
-                            }, 500);
+                        // Keyboard accessibility
+                        summary.addEventListener('keydown', (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            details.classList.toggle('is-active');
                           }
                         });
                       }
@@ -952,60 +988,37 @@
 </script>
 
 <script>
-  // Smooth animation for all collapsible tabs
+  // Ultra smooth grid-based collapsible animation - no height calculations needed!
   (function() {
-    const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details:not([data-animated])');
+    const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details .collapsible-content');
 
-    collapsibleTabs.forEach(details => {
-      details.setAttribute('data-animated', 'true');
-      const summary = details.querySelector('summary');
-      const content = details.querySelector('.collapsible-content');
+    collapsibleTabs.forEach(content => {
+      const details = content.closest('details');
+      const summary = details?.querySelector('summary');
+      if (!summary) return;
 
-      if (!summary || !content) return;
+      // Force details to always be "open" in DOM, but control visibility with CSS
+      const wasOpenByDefault = details.hasAttribute('open');
+      details.setAttribute('open', '');
 
-      // Set initial styles
-      content.style.overflow = 'hidden';
-      content.style.transition = 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease';
-
-      if (details.open) {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        content.style.opacity = '1';
-      } else {
-        content.style.maxHeight = '0';
-        content.style.opacity = '0';
+      // Initialize state - add is-active class if open by default
+      if (wasOpenByDefault) {
+        details.classList.add('is-active');
       }
 
+      // Simple class toggle - CSS grid handles the smooth animation
       summary.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        details.classList.toggle('is-active');
+      }, true); // Capture phase
 
-        if (details.open) {
-          // Closing
-          const startHeight = content.scrollHeight;
-          content.style.maxHeight = startHeight + 'px';
-
-          requestAnimationFrame(() => {
-            content.style.maxHeight = '0';
-            content.style.opacity = '0';
-          });
-
-          setTimeout(() => {
-            details.open = false;
-          }, 500);
-        } else {
-          // Opening
-          details.open = true;
-          const endHeight = content.scrollHeight;
-          content.style.maxHeight = '0';
-          content.style.opacity = '0';
-
-          requestAnimationFrame(() => {
-            content.style.maxHeight = endHeight + 'px';
-            content.style.opacity = '1';
-          });
-
-          setTimeout(() => {
-            content.style.maxHeight = '3000px';
-          }, 500);
+      // Keyboard accessibility
+      summary.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.stopPropagation();
+          details.classList.toggle('is-active');
         }
       });
     });

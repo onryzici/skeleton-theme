@@ -30,23 +30,48 @@
     opacity: 0;
   }
 
-  /* Collapsible Tab Styles */
+  /* Collapsible Tab Styles - Ultra Smooth Grid-Based */
   #shopify-section-{{ section.id }} .collapsible-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
   }
 
   #shopify-section-{{ section.id }} .collapsible-content.active {
-    max-height: 800px;
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .collapsible-content > div {
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .collapsible-trigger svg {
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   #shopify-section-{{ section.id }} .collapsible-trigger.active svg {
     transform: rotate(45deg);
+  }
+
+  /* Smooth hover effect */
+  #shopify-section-{{ section.id }} .collapsible-trigger {
+    transition: opacity 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .collapsible-trigger:hover {
+    opacity: 0.7;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .collapsible-content,
+    #shopify-section-{{ section.id }} .collapsible-trigger svg {
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* Image slider dots */
@@ -183,7 +208,7 @@
                   <button
                     type="button"
                     class="collapsible-trigger w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
-                    onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');"
+                    data-collapsible-trigger
                   >
                     <div class="flex items-center gap-3">
                       {% if block.settings.icon_type == 'star' %}
@@ -206,8 +231,10 @@
                     </svg>
                   </button>
                   <div class="collapsible-content">
-                    <div class="px-5 pt-2 pb-4 text-sm text-gray-600 leading-relaxed">
-                      {{ block.settings.content }}
+                    <div>
+                      <div class="px-5 pt-2 pb-4 text-sm text-gray-600 leading-relaxed">
+                        {{ block.settings.content }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -501,3 +528,29 @@
   ]
 }
 {% endschema %}
+
+<script>
+  // Ultra smooth grid-based collapsible animation - no height calculations needed!
+  (function() {
+    const triggers = document.querySelectorAll('#shopify-section-{{ section.id }} [data-collapsible-trigger]');
+
+    triggers.forEach(trigger => {
+      const content = trigger.nextElementSibling;
+      if (!content) return;
+
+      // Simple toggle - CSS grid handles the smooth animation
+      trigger.addEventListener('click', function() {
+        this.classList.toggle('active');
+        content.classList.toggle('active');
+      });
+
+      // Keyboard accessibility
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          trigger.click();
+        }
+      });
+    });
+  })();
+</script>

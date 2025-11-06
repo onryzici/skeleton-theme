@@ -11,6 +11,11 @@ class CartDrawer {
     this.continueBtn = document.getElementById('continueShoppingBtn');
     this.itemsContainer = document.getElementById('cartDrawerItems');
 
+    // Performance optimizations
+    this.isUpdating = false;
+    this.updateQueue = null;
+    this.debounceTimer = null;
+
     this.init();
   }
 
@@ -57,47 +62,121 @@ class CartDrawer {
   }
 
   async refreshCart() {
+    // Prevent multiple simultaneous updates
+    if (this.isUpdating) {
+      this.updateQueue = true;
+      return;
+    }
+
+    this.isUpdating = true;
+    this.showLoadingState();
+
     try {
       // Use Shopify Section Rendering API for faster updates
-      const response = await fetch(`${window.location.pathname}?sections=cart-drawer`);
+      const response = await fetch(`${window.location.pathname}?sections=cart-drawer`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+
       const sections = await response.json();
 
       if (sections['cart-drawer']) {
-        // Parse the section HTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(sections['cart-drawer'], 'text/html');
+        // Use requestAnimationFrame for smooth DOM updates
+        requestAnimationFrame(() => {
+          // Parse the section HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(sections['cart-drawer'], 'text/html');
 
-        // Update cart count
-        const newCount = doc.getElementById('cartItemCount');
-        const countElement = document.getElementById('cartItemCount');
-        if (newCount && countElement) {
-          countElement.textContent = newCount.textContent;
-        }
+          // Batch DOM updates to minimize reflows
+          this.batchUpdate(() => {
+            // Update cart count
+            const newCount = doc.getElementById('cartItemCount');
+            const countElement = document.getElementById('cartItemCount');
+            if (newCount && countElement) {
+              countElement.textContent = newCount.textContent;
+            }
 
-        // Update header cart count
-        const headerCartCount = document.querySelector('.header-cart-count');
-        if (headerCartCount && newCount) {
-          headerCartCount.textContent = newCount.textContent;
-        }
+            // Update header cart count
+            const headerCartCount = document.querySelector('.header-cart-count');
+            if (headerCartCount && newCount) {
+              headerCartCount.textContent = newCount.textContent;
+            }
 
-        // Update drawer items
-        const newItemsContainer = doc.getElementById('cartDrawerItems');
-        if (newItemsContainer && this.itemsContainer) {
-          this.itemsContainer.innerHTML = newItemsContainer.innerHTML;
-        }
+            // Update drawer items
+            const newItemsContainer = doc.getElementById('cartDrawerItems');
+            if (newItemsContainer && this.itemsContainer) {
+              this.itemsContainer.innerHTML = newItemsContainer.innerHTML;
+            }
 
-        // Update subtotal
-        const newSubtotal = doc.getElementById('cartSubtotal');
-        const currentSubtotal = document.getElementById('cartSubtotal');
-        if (newSubtotal && currentSubtotal) {
-          currentSubtotal.textContent = newSubtotal.textContent;
-        }
+            // Update subtotal
+            const newSubtotal = doc.getElementById('cartSubtotal');
+            const currentSubtotal = document.getElementById('cartSubtotal');
+            if (newSubtotal && currentSubtotal) {
+              currentSubtotal.textContent = newSubtotal.textContent;
+            }
+          });
 
-        // Controls are now handled by event delegation - no need to re-init
+          this.hideLoadingState();
+          this.isUpdating = false;
+
+          // Process queued update if any
+          if (this.updateQueue) {
+            this.updateQueue = false;
+            this.refreshCart();
+          }
+        });
       }
 
     } catch (error) {
       console.error('Error refreshing cart:', error);
+      this.hideLoadingState();
+      this.isUpdating = false;
+    }
+  }
+
+  // Batch DOM updates to minimize reflows
+  batchUpdate(callback) {
+    // Use opacity instead of display to maintain layout
+    const oldOpacity = this.itemsContainer.style.opacity;
+    const oldTransition = this.itemsContainer.style.transition;
+
+    this.itemsContainer.style.transition = 'none';
+    this.itemsContainer.style.opacity = '0';
+
+    // Force a reflow
+    void this.itemsContainer.offsetHeight;
+
+    // Execute updates
+    callback();
+
+    // Restore with smooth fade-in
+    requestAnimationFrame(() => {
+      this.itemsContainer.style.transition = 'opacity 0.2s ease';
+      this.itemsContainer.style.opacity = oldOpacity || '1';
+
+      // Cleanup
+      setTimeout(() => {
+        this.itemsContainer.style.transition = oldTransition;
+      }, 200);
+    });
+  }
+
+  showLoadingState() {
+    // Add loading indicator without blocking UI
+    if (!this.loadingOverlay) {
+      this.loadingOverlay = document.createElement('div');
+      this.loadingOverlay.className = 'cart-loading-overlay';
+      this.loadingOverlay.innerHTML = '<div class="cart-loading-spinner"></div>';
+      this.drawer.appendChild(this.loadingOverlay);
+    }
+    this.loadingOverlay.classList.add('active');
+  }
+
+  hideLoadingState() {
+    if (this.loadingOverlay) {
+      this.loadingOverlay.classList.remove('active');
     }
   }
 
@@ -149,24 +228,29 @@ class CartDrawer {
   }
 
   async updateQuantity(line, quantity) {
-    try {
-      const response = await fetch('/cart/change.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          line: parseInt(line),
-          quantity: quantity
-        })
-      });
+    // Debounce rapid clicks
+    clearTimeout(this.debounceTimer);
 
-      if (response.ok) {
-        this.refreshCart();
+    this.debounceTimer = setTimeout(async () => {
+      try {
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            line: parseInt(line),
+            quantity: quantity
+          })
+        });
+
+        if (response.ok) {
+          await this.refreshCart();
+        }
+      } catch (error) {
+        console.error('Error updating quantity:', error);
       }
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    }
+    }, 150); // 150ms debounce for smoother experience
   }
 
   async removeItem(line) {
@@ -183,7 +267,7 @@ class CartDrawer {
       });
 
       if (response.ok) {
-        this.refreshCart();
+        await this.refreshCart();
       }
     } catch (error) {
       console.error('Error removing item:', error);
