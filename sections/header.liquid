@@ -30,7 +30,7 @@
         {% for link in section.settings.menu.links %}
           <a
             href="{{ link.url }}"
-            class="nav-link relative text-base font-medium font-sans text-gray-900 hover:text-gray-600 transition-colors whitespace-nowrap py-2 {% if link.active %}active{% endif %}"
+            class="nav-link relative text-base font-medium font-sans text-gray-900 hover:text-gray-600 transition-colors whitespace-nowrap py-2"
           >
             {{ link.title }}
           </a>
@@ -38,7 +38,7 @@
       </nav>
 
       {% comment %} Icons - Right {% endcomment %}
-      <div class="flex items-center space-x-5 lg:space-x-7 ml-auto">
+      <div class="flex items-center space-x-3 lg:space-x-4 ml-auto">
 
         {% comment %} Search Icon {% endcomment %}
         <button
@@ -120,17 +120,43 @@
     mobileMenu.classList.toggle('hidden');
   });
 
-  // Sticky header with blur effect on scroll
+  // Set active nav link based on current URL
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+      const linkPath = new URL(link.href).pathname;
+
+      // Check if current page matches link
+      if (currentPath === linkPath ||
+          (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Sticky header with hide on scroll down, show on scroll up
   let lastScroll = 0;
   const headerWrapper = document.querySelector('.header-wrapper');
 
   window.addEventListener('scroll', function() {
     const currentScroll = window.pageYOffset;
 
+    // Add scrolled class for blur effect
     if (currentScroll > 10) {
       headerWrapper.classList.add('scrolled');
     } else {
       headerWrapper.classList.remove('scrolled');
+    }
+
+    // Hide on scroll down, show on scroll up
+    if (currentScroll > lastScroll && currentScroll > 100) {
+      // Scrolling down & past 100px
+      headerWrapper.classList.add('header-hidden');
+    } else if (currentScroll < lastScroll) {
+      // Scrolling up
+      headerWrapper.classList.remove('header-hidden');
     }
 
     lastScroll = currentScroll;
@@ -197,6 +223,7 @@
     -webkit-backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     border-bottom: 1px solid transparent;
+    transform: translateY(0);
   }
 
   .header-wrapper.scrolled {
@@ -205,6 +232,11 @@
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  /* Hide header on scroll down */
+  .header-wrapper.header-hidden {
+    transform: translateY(-100%);
   }
 
   /* Navigation link active state with underline */
