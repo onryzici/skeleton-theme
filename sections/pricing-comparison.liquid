@@ -50,9 +50,9 @@
 </style>
 
 <section class="pricing-section bg-white">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    {% comment %} Section Header {% endcomment %}
+  {% comment %} Section Header {% endcomment %}
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="pricing-header text-center mb-12 lg:mb-16">
       {% if section.settings.heading != blank %}
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
@@ -66,9 +66,11 @@
         </p>
       {% endif %}
     </div>
+  </div>
 
-    {% comment %} Pricing Comparison Content {% endcomment %}
-    <div class="pricing-content border border-gray-200 rounded-[2.5rem] p-8 lg:p-12">
+  {% comment %} Pricing Comparison Content - Wider than container {% endcomment %}
+  <div class="pricing-content max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border border-gray-200 rounded-[2.5rem] p-8 lg:p-12">
 
       {% comment %} Collect plans and features {% endcomment %}
       {%- liquid
@@ -167,8 +169,8 @@
       </div>
 
     </div>
-
   </div>
+
 </section>
 
 {% schema %}
