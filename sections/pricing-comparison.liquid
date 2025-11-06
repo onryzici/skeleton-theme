@@ -69,7 +69,7 @@
   </div>
 
   {% comment %} Pricing Comparison Content - Wider than container {% endcomment %}
-  <div class="pricing-content max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="pricing-content max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
     <div class="border border-gray-200 rounded-[2.5rem] p-8 lg:p-12">
 
       {% comment %} Collect plans and features {% endcomment %}
@@ -78,7 +78,7 @@
         assign features = section.blocks | where: "type", "feature"
       -%}
 
-      <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-12">
+      <div class="grid grid-cols-1 xl:grid-cols-[280px_1fr] gap-8 lg:gap-12">
 
         {% comment %} Left Side - Product Image {% endcomment %}
         <div class="flex items-center justify-center lg:justify-start">
@@ -97,73 +97,71 @@
         </div>
 
         {% comment %} Right Side - Plans Grid {% endcomment %}
-        <div class="overflow-x-auto">
-          <div class="min-w-[1000px]">
+        <div>
 
-            <div class="flex gap-4">
+          {% comment %} Plan Badges Row {% endcomment %}
+          <div class="grid grid-cols-[160px_repeat(3,1fr)] gap-4 mb-6">
+            <div></div> {%comment%} Empty cell for feature names column {%endcomment%}
+            {% for plan in plans %}
+              <div class="text-center" {{ plan.shopify_attributes }}>
+                <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
+                  {% if plan.settings.badge_style == 'green' %}
+                    bg-green-100 text-green-700
+                  {% elsif plan.settings.badge_style == 'purple' %}
+                    bg-purple-100 text-purple-700
+                  {% else %}
+                    bg-gray-100 text-gray-700
+                  {% endif %}">
+                  {{ plan.settings.plan_name }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
 
-              {% comment %} Feature Names Column {% endcomment %}
-              <div class="w-[160px] flex-shrink-0">
-                <div class="h-[80px] mb-6"></div> {%comment%} Spacer for plan badges {%endcomment%}
+          {% comment %} Plan Columns with Features {% endcomment %}
+          <div class="grid grid-cols-[160px_repeat(3,1fr)] gap-4">
+
+            {%comment%} Feature Names Column {%endcomment%}
+            <div class="space-y-6">
+              {% for feature in features %}
+                <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[48px] flex items-center" {{ feature.shopify_attributes }}>
+                  {{ feature.settings.feature_name }}
+                </div>
+              {% endfor %}
+            </div>
+
+            {% comment %} Plan Value Columns {% endcomment %}
+            {% for plan in plans %}
+              <div class="border border-gray-200 rounded-3xl p-6">
                 <div class="space-y-6">
                   {% for feature in features %}
-                    <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[48px] flex items-center" {{ feature.shopify_attributes }}>
-                      {{ feature.settings.feature_name }}
+                    <div class="text-center min-h-[48px] flex items-center justify-center px-2">
+                      {% assign plan_index = forloop.parentloop.index %}
+                      {% if plan_index == 1 %}
+                        {% assign plan_value = feature.settings.plan1_value %}
+                      {% elsif plan_index == 2 %}
+                        {% assign plan_value = feature.settings.plan2_value %}
+                      {% else %}
+                        {% assign plan_value = feature.settings.plan3_value %}
+                      {% endif %}
+
+                      {% if plan_value == 'check' %}
+                        <svg class="w-6 h-6 {% if plan.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                      {% elsif plan_value == 'none' %}
+                        <span class="text-gray-300 text-xl">—</span>
+                      {% else %}
+                        <span class="text-sm lg:text-base text-gray-900 font-bold font-sans leading-snug">{{ plan_value }}</span>
+                      {% endif %}
                     </div>
                   {% endfor %}
                 </div>
               </div>
-
-              {% comment %} Plan Columns {% endcomment %}
-              {% for plan in plans %}
-                <div class="flex-1 min-w-[240px] border border-gray-200 rounded-3xl p-6" {{ plan.shopify_attributes }}>
-
-                  {% comment %} Plan Badge {% endcomment %}
-                  <div class="text-center h-[80px] mb-6 flex items-start justify-center">
-                    <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
-                      {% if plan.settings.badge_style == 'green' %}
-                        bg-green-100 text-green-700
-                      {% elsif plan.settings.badge_style == 'purple' %}
-                        bg-purple-100 text-purple-700
-                      {% else %}
-                        bg-gray-100 text-gray-700
-                      {% endif %}">
-                      {{ plan.settings.plan_name }}
-                    </div>
-                  </div>
-
-                  {% comment %} Features for this plan {% endcomment %}
-                  <div class="space-y-6">
-                    {% for feature in features %}
-                      <div class="text-center min-h-[48px] flex items-center justify-center px-4">
-                        {% assign plan_index = forloop.parentloop.index %}
-                        {% if plan_index == 1 %}
-                          {% assign plan_value = feature.settings.plan1_value %}
-                        {% elsif plan_index == 2 %}
-                          {% assign plan_value = feature.settings.plan2_value %}
-                        {% else %}
-                          {% assign plan_value = feature.settings.plan3_value %}
-                        {% endif %}
-
-                        {% if plan_value == 'check' %}
-                          <svg class="w-6 h-6 {% if plan.settings.badge_style == 'purple' %}text-purple-500{% else %}text-gray-400{% endif %}" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                          </svg>
-                        {% elsif plan_value == 'none' %}
-                          <span class="text-gray-300 text-xl">—</span>
-                        {% else %}
-                          <span class="text-base text-gray-900 font-bold font-sans leading-snug">{{ plan_value }}</span>
-                        {% endif %}
-                      </div>
-                    {% endfor %}
-                  </div>
-
-                </div>
-              {% endfor %}
-
-            </div>
+            {% endfor %}
 
           </div>
+
         </div>
 
       </div>
