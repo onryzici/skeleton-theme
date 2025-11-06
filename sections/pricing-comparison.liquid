@@ -102,10 +102,10 @@
 
               {% comment %} Feature Names Column {% endcomment %}
               <div class="w-[160px] flex-shrink-0">
-                <div class="h-[100px] mb-10"></div> {%comment%} Spacer for plan badges {%endcomment%}
-                <div class="space-y-12">
+                <div class="h-[80px] mb-6"></div> {%comment%} Spacer for plan badges {%endcomment%}
+                <div class="space-y-6">
                   {% for feature in features %}
-                    <div class="text-base font-medium font-sans text-gray-900 min-h-[56px] flex items-center" {{ feature.shopify_attributes }}>
+                    <div class="text-sm lg:text-base font-medium font-sans text-gray-900 min-h-[48px] flex items-center" {{ feature.shopify_attributes }}>
                       {{ feature.settings.feature_name }}
                     </div>
                   {% endfor %}
@@ -117,8 +117,8 @@
                 <div class="flex-1 min-w-[220px] border border-gray-200 rounded-3xl p-6" {{ plan.shopify_attributes }}>
 
                   {% comment %} Plan Badge {% endcomment %}
-                  <div class="text-center h-[100px] mb-10 flex items-start justify-center">
-                    <div class="inline-block px-6 py-2.5 rounded-full font-semibold font-sans text-base
+                  <div class="text-center h-[80px] mb-6 flex items-start justify-center">
+                    <div class="inline-block px-6 py-2 rounded-full font-semibold font-sans text-sm lg:text-base
                       {% if plan.settings.badge_style == 'green' %}
                         bg-green-100 text-green-700
                       {% elsif plan.settings.badge_style == 'purple' %}
@@ -131,9 +131,9 @@
                   </div>
 
                   {% comment %} Features for this plan {% endcomment %}
-                  <div class="space-y-12">
+                  <div class="space-y-6">
                     {% for feature in features %}
-                      <div class="text-center min-h-[56px] flex items-center justify-center px-4">
+                      <div class="text-center min-h-[48px] flex items-center justify-center px-4">
                         {% assign plan_index = forloop.parentloop.index %}
                         {% if plan_index == 1 %}
                           {% assign plan_value = feature.settings.plan1_value %}
