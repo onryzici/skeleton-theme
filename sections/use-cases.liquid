@@ -1,0 +1,329 @@
+{% comment %}
+  Use Cases Section
+  Showcase different use cases or target audiences with image cards
+{% endcomment %}
+
+<style>
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  /* Card hover effect */
+  #shopify-section-{{ section.id }} .use-case-card {
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Image overlay effect */
+  #shopify-section-{{ section.id }} .use-case-image {
+    transition: transform 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .use-case-card:hover .use-case-image {
+    transform: scale(1.05);
+  }
+
+  /* Text overlay with gradient fade */
+  #shopify-section-{{ section.id }} .use-case-content {
+    background: linear-gradient(to right,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .use-case-card,
+    #shopify-section-{{ section.id }} .use-case-image {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Section padding */
+  #shopify-section-{{ section.id }} .use-cases-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .use-cases-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
+    }
+  }
+</style>
+
+<section class="use-cases-section {% if section.settings.background_color == 'gray' %}bg-gray-50{% else %}bg-white{% endif %}">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Section Header {% endcomment %}
+    <div class="text-center mb-12 lg:mb-16">
+      {% if section.settings.heading != blank %}
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans max-w-3xl mx-auto">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+
+    {% comment %} Use Case Cards {% endcomment %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {% for block in section.blocks %}
+        {% if block.type == 'use_case' %}
+          <div class="use-case-card rounded-3xl overflow-hidden" {{ block.shopify_attributes }}>
+
+            {% comment %} Card Image with Overlay Content {% endcomment %}
+            <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
+              {% if block.settings.image != blank %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  class="use-case-image w-full h-full object-cover"
+                  loading="lazy"
+                  width="800"
+                  height="600"
+                >
+              {% else %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300' }}
+              {% endif %}
+
+              {% comment %} Optional Badge {% endcomment %}
+              {% if block.settings.badge_text != blank %}
+                <div class="absolute top-4 right-4 z-10">
+                  <span class="inline-block px-4 py-2 bg-gradient-to-br from-pink-500 to-purple-600 text-white text-xs lg:text-sm font-semibold font-sans rounded-full">
+                    {{ block.settings.badge_text }}
+                  </span>
+                </div>
+              {% endif %}
+
+              {% comment %} Overlay Content - Bottom Left with Gradient Fade {% endcomment %}
+              <div class="use-case-content absolute bottom-0 left-0 right-0 px-5 py-4 lg:px-6 lg:py-5 rounded-tl-3xl rounded-bl-3xl">
+                {% if block.settings.title != blank %}
+                  <h3 class="text-lg lg:text-xl font-semibold font-sans text-gray-900">
+                    {{ block.settings.title }}
+                  </h3>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% comment %} Optional CTA Button {% endcomment %}
+    {% if section.settings.button_text != blank %}
+      <div class="text-center mt-12 lg:mt-16">
+        <a
+          href="{{ section.settings.button_link | default: '#' }}"
+          class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-base lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+        >
+          {{ section.settings.button_text }}
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Use Cases",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built for how you actually work"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Personalized AI note-taking enhances your productivity"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background color",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "gray",
+          "label": "Gray"
+        }
+      ],
+      "default": "gray",
+      "info": "Always displays 3 cards per row on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "info": "Leave empty to hide button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "use_case",
+      "name": "Use Case Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Professional"
+        },
+        {
+          "type": "header",
+          "content": "Badge (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "info": "Optional badge to display in top-right corner (e.g., 'Popular', 'New', 'Best Seller')"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Use Cases",
+      "blocks": [
+        {
+          "type": "use_case",
+          "settings": {
+            "title": "Professional"
+          }
+        },
+        {
+          "type": "use_case",
+          "settings": {
+            "title": "Student/Educator",
+            "badge_text": "Popular"
+          }
+        },
+        {
+          "type": "use_case",
+          "settings": {
+            "title": "Creator/Researcher"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -91,30 +91,39 @@ class CartDrawer {
 
           // Batch DOM updates to minimize reflows
           this.batchUpdate(() => {
-            // Update cart count
-            const newCount = doc.getElementById('cartItemCount');
-            const countElement = document.getElementById('cartItemCount');
-            if (newCount && countElement) {
-              countElement.textContent = newCount.textContent;
+            // Update the entire cart drawer content to ensure footer shows/hides correctly
+            const newDrawer = doc.getElementById('cartDrawer');
+            if (newDrawer && this.drawer) {
+              // Save the current scroll position
+              const scrollTop = this.itemsContainer?.scrollTop || 0;
+
+              // Update entire drawer content
+              this.drawer.innerHTML = newDrawer.innerHTML;
+
+              // Re-initialize references since DOM was replaced
+              this.itemsContainer = document.getElementById('cartDrawerItems');
+              this.closeBtn = document.getElementById('closeCartDrawer');
+              this.continueBtn = document.getElementById('continueShoppingBtn');
+
+              // Re-attach event listeners
+              if (this.closeBtn) {
+                this.closeBtn.addEventListener('click', () => this.close());
+              }
+              if (this.continueBtn) {
+                this.continueBtn.addEventListener('click', () => this.close());
+              }
+
+              // Restore scroll position
+              if (this.itemsContainer) {
+                this.itemsContainer.scrollTop = scrollTop;
+              }
             }
 
             // Update header cart count
+            const newCount = doc.getElementById('cartItemCount');
             const headerCartCount = document.querySelector('.header-cart-count');
             if (headerCartCount && newCount) {
               headerCartCount.textContent = newCount.textContent;
-            }
-
-            // Update drawer items
-            const newItemsContainer = doc.getElementById('cartDrawerItems');
-            if (newItemsContainer && this.itemsContainer) {
-              this.itemsContainer.innerHTML = newItemsContainer.innerHTML;
-            }
-
-            // Update subtotal
-            const newSubtotal = doc.getElementById('cartSubtotal');
-            const currentSubtotal = document.getElementById('cartSubtotal');
-            if (newSubtotal && currentSubtotal) {
-              currentSubtotal.textContent = newSubtotal.textContent;
             }
           });
 
