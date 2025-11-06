@@ -38,13 +38,13 @@
       </nav>
 
       {% comment %} Icons - Right {% endcomment %}
-      <div class="flex items-center space-x-3 lg:space-x-4 ml-auto">
+      <div class="flex items-center space-x-2 lg:space-x-3 ml-auto">
 
         {% comment %} Search Icon {% endcomment %}
         <button
           type="button"
           onclick="openSearchDrawer()"
-          class="text-gray-900 hover:text-gray-600 transition-colors p-2"
+          class="text-gray-900 hover:text-gray-600 transition-colors p-1.5"
           aria-label="Search"
         >
           <svg class="w-5 h-5 lg:w-[22px] lg:h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -56,7 +56,7 @@
         {% if shop.customer_accounts_enabled %}
           <a
             href="{{ routes.account_url }}"
-            class="text-gray-900 hover:text-gray-600 transition-colors p-2"
+            class="text-gray-900 hover:text-gray-600 transition-colors p-1.5"
             aria-label="Account"
           >
             <svg class="w-5 h-5 lg:w-[22px] lg:h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -69,14 +69,14 @@
         <button
           type="button"
           onclick="openCartDrawer()"
-          class="text-gray-900 hover:text-gray-600 transition-colors relative p-2"
+          class="text-gray-900 hover:text-gray-600 transition-colors relative p-1.5"
           aria-label="Cart"
         >
           <svg class="w-5 h-5 lg:w-[22px] lg:h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           {% if cart.item_count > 0 %}
-            <span class="header-cart-count absolute -top-2 -right-2 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            <span class="header-cart-count absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
               {{ cart.item_count }}
             </span>
           {% endif %}
