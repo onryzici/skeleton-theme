@@ -82,13 +82,13 @@
 
   @media (min-width: 1024px) {
     #shopify-section-{{ section.id }} .use-cases-section {
-      padding-top: {{ section.settings.padding_top_desktop }}px !important;
-      padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
     }
   }
 </style>
 
-<section class="use-cases-section {% if section.settings.background_color == 'gray' %}bg-gray-50{% else %}bg-white{% endif %}">
+<div class="use-cases-section {% if section.settings.background_color == 'gray' %}bg-gray-50{% else %}bg-white{% endif %}">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
     {% comment %} Section Header {% endcomment %}
@@ -167,7 +167,7 @@
     {% endif %}
 
   </div>
-</section>
+</div>
 
 {% schema %}
 {

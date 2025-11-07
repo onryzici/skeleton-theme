@@ -69,8 +69,16 @@
   }
 </style>
 
-<section class="full-width bg-gray-50">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+<div class="bg-gray-50" style="padding-top: 48px; padding-bottom: 48px;">
+  <style>
+    @media (min-width: 1024px) {
+      #shopify-section-{{ section.id }} .faq-section-wrapper {
+        padding-top: 80px !important;
+        padding-bottom: 80px !important;
+      }
+    }
+  </style>
+  <div class="faq-section-wrapper container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
 
       {% comment %} Left Column - Heading & Button {% endcomment %}
@@ -118,7 +126,7 @@
 
     </div>
   </div>
-</section>
+</div>
 
 <script>
   // Ultra smooth grid-based FAQ animation - no height calculations needed!

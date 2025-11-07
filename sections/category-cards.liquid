@@ -1,0 +1,258 @@
+{% comment %}
+  Category Cards Section
+  Display image cards with titles in a horizontal layout (slider on mobile)
+{% endcomment %}
+
+<style>
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .category-heading {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .category-cards-container {
+    animation: fadeInUp 0.6s ease forwards 0.2s;
+    opacity: 0;
+  }
+
+  /* Card hover effect */
+  #shopify-section-{{ section.id }} .category-card {
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .category-card:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Image overlay effect */
+  #shopify-section-{{ section.id }} .category-image {
+    transition: transform 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .category-card:hover .category-image {
+    transform: scale(1.05);
+  }
+
+  /* Mobile horizontal scroll with snap */
+  #shopify-section-{{ section.id }} .category-scroll-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .category-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .category-heading,
+    #shopify-section-{{ section.id }} .category-cards-container,
+    #shopify-section-{{ section.id }} .category-card,
+    #shopify-section-{{ section.id }} .category-image {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Section padding */
+  #shopify-section-{{ section.id }} .category-cards-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .category-cards-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
+    }
+  }
+</style>
+
+<section class="category-cards-section bg-white">
+
+  {% comment %} Section Heading - Centered {% endcomment %}
+  {% if section.settings.heading != blank %}
+    <div class="category-heading text-center mb-8 lg:mb-12">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900">
+        {{ section.settings.heading }}
+      </h2>
+    </div>
+  {% endif %}
+
+  {% comment %} Category Cards {% endcomment %}
+  <div class="category-cards-container">
+    {% comment %} Mobile: Horizontal scroll, Desktop: Grid {% endcomment %}
+    <div class="lg:container lg:mx-auto lg:px-4 lg:px-6 xl:px-8">
+      <div class="category-scroll-container overflow-x-auto snap-x snap-mandatory lg:overflow-visible px-4 sm:px-6 lg:px-0">
+        <div class="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-6 min-w-max lg:min-w-0">
+
+          {% for block in section.blocks %}
+            {% if block.type == 'category' %}
+              <div class="category-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-center" {{ block.shopify_attributes }}>
+
+                {% comment %} Card with Image Background {% endcomment %}
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100">
+                  {% if block.settings.image != blank %}
+                    <img
+                      src="{{ block.settings.image | image_url: width: 600 }}"
+                      alt="{{ block.settings.title | escape }}"
+                      class="category-image w-full h-full object-cover"
+                      loading="lazy"
+                      width="600"
+                      height="600"
+                    >
+                  {% else %}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300' }}
+                  {% endif %}
+
+                  {% comment %} Overlay with Title - Bottom Left {% endcomment %}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
+                    {% if block.settings.title != blank %}
+                      <h3 class="text-xl lg:text-2xl font-semibold font-sans text-white">
+                        {{ block.settings.title }}
+                      </h3>
+                    {% endif %}
+                  </div>
+                </div>
+
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Category Cards",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Meetings"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Recommended: Square image, min 800x800px"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Meetings"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Cards",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Meetings"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Lectures"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Therapy Sessions"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Interviews"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Research"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
