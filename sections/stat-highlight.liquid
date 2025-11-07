@@ -1,0 +1,258 @@
+{% comment %}
+  Stat Highlight Section
+  Large image on left, stat/metric text on right
+{% endcomment %}
+
+<style>
+  /* Animations */
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .stat-image {
+    animation: fadeInLeft 0.8s ease forwards;
+  }
+
+  #shopify-section-{{ section.id }} .stat-content {
+    animation: fadeInRight 0.8s ease forwards 0.2s;
+    opacity: 0;
+  }
+
+  /* Image hover effect */
+  #shopify-section-{{ section.id }} .stat-image img {
+    transition: transform 0.6s ease;
+  }
+
+  #shopify-section-{{ section.id }} .stat-image:hover img {
+    transform: scale(1.02);
+  }
+
+  /* Section padding */
+  #shopify-section-{{ section.id }} .stat-highlight-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .stat-highlight-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .stat-image,
+    #shopify-section-{{ section.id }} .stat-content {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>
+
+<div class="stat-highlight-section full-width bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Gri container - tüm içerik burada {% endcomment %}
+    <div class="bg-gray-50 rounded-[2rem] lg:rounded-[3rem] overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 items-stretch h-full">
+
+        {% comment %} Image Side {% endcomment %}
+        <div class="stat-image {% if section.settings.image_position == 'right' %}lg:order-2{% endif %}">
+          <div class="bg-gray-100 h-full min-h-[400px] lg:min-h-[500px]">
+            {% if section.settings.image != blank %}
+              <img
+                src="{{ section.settings.image | image_url: width: 1200 }}"
+                alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+                class="w-full h-full object-cover"
+                loading="lazy"
+                width="1200"
+                height="800"
+              >
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300' }}
+            {% endif %}
+          </div>
+        </div>
+
+        {% comment %} Content Side {% endcomment %}
+        <div class="stat-content {% if section.settings.image_position == 'right' %}lg:order-1{% endif %} p-8 lg:p-12 flex flex-col justify-center">
+
+        {% if section.settings.heading != blank %}
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.stat_number != blank %}
+          <div class="text-6xl sm:text-7xl lg:text-8xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
+            {{ section.settings.stat_number }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.button_text != blank %}
+          <div class="mt-8">
+            <a
+              href="{{ section.settings.button_link | default: '#' }}"
+              class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-base lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              {{ section.settings.button_text }}
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+          </div>
+        {% endif %}
+
+      </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Stat Highlight",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: Landscape image, min 1200x800px"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Reduce wasted meeting time by up to"
+    },
+    {
+      "type": "text",
+      "id": "stat_number",
+      "label": "Stat number",
+      "default": "30%",
+      "info": "Large number display (e.g., '30%', '10x', '2.5M')"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "stay focused, not repetitive."
+    },
+    {
+      "type": "header",
+      "content": "Button (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "info": "Leave empty to hide button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stat Highlight"
+    }
+  ]
+}
+{% endschema %}

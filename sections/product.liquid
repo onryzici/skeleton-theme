@@ -110,17 +110,6 @@
     content: none !important;
   }
 
-  #shopify-section-{{ section.id }} details .collapsible-content {
-    display: block !important;
-    width: 100% !important;
-    clear: both !important;
-    float: none !important;
-  }
-
-  #shopify-section-{{ section.id }} details > * {
-    box-sizing: border-box;
-  }
-
   /* Thumbnail active state */
   #shopify-section-{{ section.id }} .thumbnail-btn.active {
     border-color: #1f2937;
@@ -179,6 +168,10 @@
 
   #shopify-section-{{ section.id }} .buy-together-wrapper .bundle-content > * {
     overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .buy-together-wrapper details.is-active .chevron {
+    transform: rotate(180deg) !important;
   }
 
   #shopify-section-{{ section.id }} .bundle-item {
@@ -248,7 +241,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16">
 
       {% comment %} Left Side - Product Media {% endcomment %}
-      <div class="product-media flex gap-4">
+      <div class="product-media flex gap-4 sticky top-24 self-start">
 
         {% comment %} Variant Thumbnails {% endcomment %}
         {% if section.settings.show_thumbnails and product.media.size > 1 %}
@@ -341,7 +334,7 @@
 
             {% when 'collapsible_tab' %}
               <div class="border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
-                <details class="group block">
+                <details class="group block" data-collapsible-tab>
                   <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
                     <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
                       {{ block.settings.heading }}
@@ -511,7 +504,7 @@
 
                 {% if bundle_collection.products.size > 0 %}
                   <div class="buy-together-wrapper border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
-                    <details class="group" {% if block.settings.open_by_default %}open{% endif %}>
+                    <details class="group" {% if block.settings.open_by_default %}open{% endif %} data-collapsible-tab>
                       <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
                         <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
                           {{ block.settings.heading | default: 'Buy together, save more' }}
@@ -829,6 +822,43 @@
     </div>
 
   </div>
+
+  <script>
+    // Collapsible tabs animation handler - Ultra smooth grid-based
+    (function() {
+      const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details[data-collapsible-tab]');
+
+      collapsibleTabs.forEach(details => {
+        const summary = details.querySelector('summary');
+        if (!summary) return;
+
+        // Force details to always be "open" in DOM, but control visibility with CSS
+        const wasOpenByDefault = details.hasAttribute('open');
+        details.setAttribute('open', '');
+
+        // Initialize state - add is-active class if open by default
+        if (wasOpenByDefault) {
+          details.classList.add('is-active');
+        }
+
+        // Simple class toggle - CSS grid handles the smooth animation
+        summary.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          details.classList.toggle('is-active');
+        }, true); // Capture phase
+
+        // Keyboard accessibility
+        summary.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            details.classList.toggle('is-active');
+          }
+        });
+      });
+    })();
+  </script>
+
 </div>
 
 <script>
