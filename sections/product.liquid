@@ -69,11 +69,15 @@
     transform: rotate(0deg);
   }
 
-  /* Smooth hover effect on summary */
-  #shopify-section-{{ section.id }} details summary {
-    transition: opacity 0.25s ease;
+  #shopify-section-{{ section.id }} details[data-collapsible-tab] {
+    display: block !important;
+  }
+
+  #shopify-section-{{ section.id }} details[data-collapsible-tab] summary {
+    display: flex !important;
     user-select: none;
     -webkit-user-select: none;
+    transition: opacity 0.25s ease;
   }
 
   #shopify-section-{{ section.id }} details summary::-webkit-details-marker {
@@ -824,7 +828,7 @@
   </div>
 
   <script>
-    // Collapsible tabs animation handler - Ultra smooth grid-based
+    // Ultra smooth grid-based collapsible animation
     (function() {
       const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details[data-collapsible-tab]');
 
@@ -852,6 +856,7 @@
         summary.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
+            e.stopPropagation();
             details.classList.toggle('is-active');
           }
         });

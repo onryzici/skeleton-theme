@@ -1,6 +1,6 @@
 {% comment %}
   Pricing Comparison Section
-  Compare subscription plans with features in a clean table layout
+  Clean grid-based layout with perfect alignment
 {% endcomment %}
 
 <style>
@@ -48,12 +48,26 @@
     }
   }
 
-  /* Ensure all rows align perfectly */
-  #shopify-section-{{ section.id }} .feature-row,
-  #shopify-section-{{ section.id }} .value-row {
-    min-height: 100px;
-    display: flex;
-    align-items: center;
+  /* Plan column borders */
+  #shopify-section-{{ section.id }} .plan-header {
+    border: 1px solid rgb(17 24 39 / 0.7);
+    border-bottom: none;
+    border-radius: 2rem 2rem 0 0;
+    padding: 0.75rem;
+  }
+
+  #shopify-section-{{ section.id }} .plan-cell {
+    border-left: 1px solid rgb(17 24 39 / 0.7);
+    border-right: 1px solid rgb(17 24 39 / 0.7);
+    padding: 0.75rem;
+  }
+
+  #shopify-section-{{ section.id }} .plan-cell-last {
+    border: 1px solid rgb(17 24 39 / 0.7);
+    border-top: none;
+    border-radius: 0 0 2rem 2rem;
+    padding: 0.75rem;
+    padding-bottom: 1rem;
   }
 </style>
 
@@ -62,15 +76,15 @@
   {% comment %} Section Header {% endcomment %}
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="pricing-header text-center mb-12 lg:mb-16">
-      {% if section.settings.heading != blank %}
+      {% if section.settings.title != blank %}
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
-          {{ section.settings.heading }}
+          {{ section.settings.title }}
         </h2>
       {% endif %}
 
-      {% if section.settings.subheading != blank %}
+      {% if section.settings.subtitle != blank %}
         <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans max-w-4xl mx-auto">
-          {{ section.settings.subheading }}
+          {{ section.settings.subtitle }}
         </p>
       {% endif %}
     </div>
@@ -78,19 +92,18 @@
 
   {% comment %} Pricing Comparison Content {% endcomment %}
   <div class="pricing-content max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="border-2 border-gray-900 rounded-[2.5rem] p-8 lg:p-12">
+    <div class="border border-gray-900/50 rounded-[2.5rem] p-8 lg:p-12">
 
-      {% comment %} Collect feature rows {% endcomment %}
-      {%- assign rows = section.blocks | where: "type", "row" -%}
+      {%- assign plan_titles = section.settings.plan_titles | split: '|' -%}
 
-      <div class="flex gap-8 lg:gap-12 items-start">
+      <div class="grid grid-cols-[200px_200px_1fr_1fr_1fr] lg:grid-cols-[250px_200px_1fr_1fr_1fr] gap-x-4 lg:gap-x-6">
 
-        {% comment %} Left Side - Product Image {% endcomment %}
-        <div class="flex-shrink-0 w-[200px] lg:w-[250px] flex items-center justify-center">
-          {% if section.settings.product_image != blank %}
+        {% comment %} Image - spans all rows {% endcomment %}
+        <div class="flex items-start justify-center pt-4" style="grid-row: 1 / -1; grid-column: 1;">
+          {% if section.settings.left_image != blank %}
             <img
-              src="{{ section.settings.product_image | image_url: width: 600 }}"
-              alt="{{ section.settings.heading | escape }}"
+              src="{{ section.settings.left_image | image_url: width: 600 }}"
+              alt="{{ section.settings.title | escape }}"
               class="w-full h-auto object-contain"
               loading="lazy"
               width="300"
@@ -101,96 +114,71 @@
           {% endif %}
         </div>
 
-        {% comment %} Middle - Feature Names {% endcomment %}
-        <div class="flex-shrink-0 w-[180px] lg:w-[200px]">
-          {% for row in rows %}
-            <div class="feature-row justify-start px-4">
-              <span class="text-sm lg:text-base font-medium font-sans text-gray-900">
-                {{ row.settings.feature_name }}
-              </span>
-            </div>
-          {% endfor %}
-        </div>
+        {% comment %} Empty cell for col 2 header {% endcomment %}
+        <div style="grid-row: 1; grid-column: 2;"></div>
 
-        {% comment %} Right Side - 3 Plan Columns {% endcomment %}
-        <div class="flex-1 grid grid-cols-3 gap-4 lg:gap-6">
+        {% comment %} Plan Headers - Col 3, 4, 5 {% endcomment %}
+        {% for i in (0..2) %}
+          <div class="plan-header text-center" style="grid-row: 1; grid-column: {{ i | plus: 3 }};">
+            <span class="inline-block px-3 lg:px-4 py-1.5 rounded-full text-xs lg:text-sm font-semibold font-sans
+              {% if i == 0 %}bg-green-100 text-green-700
+              {% elsif i == 1 %}bg-gray-100 text-gray-700
+              {% else %}bg-purple-100 text-purple-700{% endif %}">
+              {{ plan_titles[i] | default: 'Plan' }}
+            </span>
+          </div>
+        {% endfor %}
 
-          {% comment %} Plan 1 Card {% endcomment %}
-          <div class="border-2 border-gray-900 rounded-[2rem] p-4 lg:p-6">
-            {% comment %} Plan Badge {% endcomment %}
-            <div class="text-center mb-6">
-              <div class="inline-block px-4 py-2 rounded-full font-semibold font-sans text-xs lg:text-sm bg-green-100 text-green-700">
-                {{ section.settings.plan1_name }}
-              </div>
-            </div>
+        {% comment %} Feature Rows {% endcomment %}
+        {% for block in section.blocks %}
+          {%- assign row_number = forloop.index | plus: 1 -%}
+          {%- assign is_last = forloop.last -%}
 
-            {% comment %} Plan Values {% endcomment %}
-            {% for row in rows %}
-              <div class="value-row justify-center text-center">
-                {% if row.settings.plan1_value == 'check' %}
-                  <svg class="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif row.settings.plan1_value == 'none' %}
-                  <span class="text-gray-300 text-lg lg:text-xl">—</span>
-                {% else %}
-                  <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans leading-tight">{{ row.settings.plan1_value }}</span>
-                {% endif %}
-              </div>
-            {% endfor %}
+          {% comment %} Feature name - Col 2 {% endcomment %}
+          <div class="flex items-center py-3" style="grid-row: {{ row_number }}; grid-column: 2;">
+            <span class="text-sm lg:text-base font-medium font-sans text-gray-900">{{ block.settings.c2 }}</span>
           </div>
 
-          {% comment %} Plan 2 Card {% endcomment %}
-          <div class="border-2 border-gray-900 rounded-[2rem] p-4 lg:p-6">
-            {% comment %} Plan Badge {% endcomment %}
-            <div class="text-center mb-6">
-              <div class="inline-block px-4 py-2 rounded-full font-semibold font-sans text-xs lg:text-sm bg-gray-100 text-gray-700">
-                {{ section.settings.plan2_name }}
-              </div>
-            </div>
-
-            {% comment %} Plan Values {% endcomment %}
-            {% for row in rows %}
-              <div class="value-row justify-center text-center">
-                {% if row.settings.plan2_value == 'check' %}
-                  <svg class="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif row.settings.plan2_value == 'none' %}
-                  <span class="text-gray-300 text-lg lg:text-xl">—</span>
-                {% else %}
-                  <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans leading-tight">{{ row.settings.plan2_value }}</span>
-                {% endif %}
-              </div>
-            {% endfor %}
+          {% comment %} Plan 1 value - Col 3 {% endcomment %}
+          <div class="{% if is_last %}plan-cell-last{% else %}plan-cell{% endif %} flex items-center justify-center text-center" style="grid-row: {{ row_number }}; grid-column: 3;">
+            {% if block.settings.p1_check %}
+              <svg class="w-5 h-5 lg:w-6 lg:h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            {% elsif block.settings.c3 != blank %}
+              <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ block.settings.c3 }}</span>
+            {% else %}
+              <span class="text-gray-300 text-lg lg:text-xl">—</span>
+            {% endif %}
           </div>
 
-          {% comment %} Plan 3 Card {% endcomment %}
-          <div class="border-2 border-gray-900 rounded-[2rem] p-4 lg:p-6">
-            {% comment %} Plan Badge {% endcomment %}
-            <div class="text-center mb-6">
-              <div class="inline-block px-4 py-2 rounded-full font-semibold font-sans text-xs lg:text-sm bg-purple-100 text-purple-700">
-                {{ section.settings.plan3_name }}
-              </div>
-            </div>
-
-            {% comment %} Plan Values {% endcomment %}
-            {% for row in rows %}
-              <div class="value-row justify-center text-center">
-                {% if row.settings.plan3_value == 'check' %}
-                  <svg class="w-5 h-5 lg:w-6 lg:h-6 text-purple-500 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                {% elsif row.settings.plan3_value == 'none' %}
-                  <span class="text-gray-300 text-lg lg:text-xl">—</span>
-                {% else %}
-                  <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans leading-tight">{{ row.settings.plan3_value }}</span>
-                {% endif %}
-              </div>
-            {% endfor %}
+          {% comment %} Plan 2 value - Col 4 {% endcomment %}
+          <div class="{% if is_last %}plan-cell-last{% else %}plan-cell{% endif %} flex items-center justify-center text-center" style="grid-row: {{ row_number }}; grid-column: 4;">
+            {% if block.settings.p2_check %}
+              <svg class="w-5 h-5 lg:w-6 lg:h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            {% elsif block.settings.c4 != blank %}
+              <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ block.settings.c4 }}</span>
+            {% else %}
+              <span class="text-gray-300 text-lg lg:text-xl">—</span>
+            {% endif %}
           </div>
 
-        </div>
+          {% comment %} Plan 3 value - Col 5 {% endcomment %}
+          <div class="{% if is_last %}plan-cell-last{% else %}plan-cell{% endif %} flex items-center justify-center text-center" style="grid-row: {{ row_number }}; grid-column: 5;">
+            {% if block.settings.p3_check %}
+              <svg class="w-5 h-5 lg:w-6 lg:h-6 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            {% elsif block.settings.c5 != blank %}
+              <span class="text-xs lg:text-sm text-gray-900 font-bold font-sans">{{ block.settings.c5 }}</span>
+            {% else %}
+              <span class="text-gray-300 text-lg lg:text-xl">—</span>
+            {% endif %}
+          </div>
+
+        {% endfor %}
 
       </div>
 
@@ -208,13 +196,13 @@
     },
     {
       "type": "text",
-      "id": "heading",
+      "id": "title",
       "label": "Heading",
       "default": "Subscription Plan"
     },
     {
       "type": "textarea",
-      "id": "subheading",
+      "id": "subtitle",
       "label": "Subheading",
       "default": "Unlock Xnote Intelligence's full AI capabilities with pro or unlimited plan"
     },
@@ -224,7 +212,7 @@
     },
     {
       "type": "image_picker",
-      "id": "product_image",
+      "id": "left_image",
       "label": "Product image",
       "info": "Recommended: Square image, min 800x800px"
     },
@@ -234,21 +222,24 @@
     },
     {
       "type": "text",
-      "id": "plan1_name",
-      "label": "Plan 1 name",
-      "default": "Start Plan"
+      "id": "plan_titles",
+      "label": "Plan titles (3 plans, separate with |)",
+      "default": "Start Plan|Pro Plan|Unlimited Plan"
     },
     {
       "type": "text",
-      "id": "plan2_name",
-      "label": "Plan 2 name",
-      "default": "Pro Plan"
+      "id": "price_1",
+      "label": "Plan 1 price/label (optional)"
     },
     {
       "type": "text",
-      "id": "plan3_name",
-      "label": "Plan 3 name",
-      "default": "Unlimited Plan"
+      "id": "price_2",
+      "label": "Plan 2 price/label (optional)"
+    },
+    {
+      "type": "text",
+      "id": "price_3",
+      "label": "Plan 3 price/label (optional)"
     },
     {
       "type": "header",
@@ -302,34 +293,47 @@
       "settings": [
         {
           "type": "text",
-          "id": "feature_name",
+          "id": "c2",
           "label": "Feature name",
-          "default": "Speaker Labels"
+          "default": "Multimodal Input"
+        },
+        {
+          "type": "checkbox",
+          "id": "p1_check",
+          "label": "Plan 1: Show checkmark",
+          "default": true
         },
         {
           "type": "text",
-          "id": "plan1_value",
-          "label": "Plan 1 value",
-          "default": "check",
-          "info": "Enter 'check' for checkmark, 'none' for dash, or custom text"
+          "id": "c3",
+          "label": "Plan 1: Custom text (instead of checkmark)"
+        },
+        {
+          "type": "checkbox",
+          "id": "p2_check",
+          "label": "Plan 2: Show checkmark",
+          "default": true
         },
         {
           "type": "text",
-          "id": "plan2_value",
-          "label": "Plan 2 value",
-          "default": "check",
-          "info": "Enter 'check' for checkmark, 'none' for dash, or custom text"
+          "id": "c4",
+          "label": "Plan 2: Custom text (instead of checkmark)"
+        },
+        {
+          "type": "checkbox",
+          "id": "p3_check",
+          "label": "Plan 3: Show checkmark",
+          "default": true
         },
         {
           "type": "text",
-          "id": "plan3_value",
-          "label": "Plan 3 value",
-          "default": "check",
-          "info": "Enter 'check' for checkmark, 'none' for dash, or custom text"
+          "id": "c5",
+          "label": "Plan 3: Custom text (instead of checkmark)"
         }
       ]
     }
   ],
+  "max_blocks": 30,
   "presets": [
     {
       "name": "Pricing Comparison",
@@ -337,28 +341,31 @@
         {
           "type": "row",
           "settings": {
-            "feature_name": "Pricing",
-            "plan1_value": "Free",
-            "plan2_value": "$ 99.99/yr",
-            "plan3_value": "$ 299.99/yr"
+            "c2": "Pricing",
+            "p1_check": false,
+            "c3": "Free",
+            "p2_check": false,
+            "c4": "$ 99.99/yr",
+            "p3_check": false,
+            "c5": "$ 299.99/yr"
           }
         },
         {
           "type": "row",
           "settings": {
-            "feature_name": "Speaker Labels",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
+            "c2": "Speaker Labels",
+            "p1_check": true,
+            "p2_check": true,
+            "p3_check": true
           }
         },
         {
           "type": "row",
           "settings": {
-            "feature_name": "Multimodal Input",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
+            "c2": "Multimodal Input",
+            "p1_check": true,
+            "p2_check": true,
+            "p3_check": true
           }
         }
       ]
