@@ -1,0 +1,259 @@
+{% comment %}
+  Image Cards Showcase Section
+  Overlapping image cards with text
+{% endcomment %}
+
+<style>
+  /* Section padding */
+  #shopify-section-{{ section.id }} .image-cards-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .image-cards-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Card animations */
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .image-card {
+    animation: fadeInScale 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .image-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  #shopify-section-{{ section.id }} .image-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  #shopify-section-{{ section.id }} .image-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* Card hover effect */
+  #shopify-section-{{ section.id }} .image-card {
+    transition: transform 0.4s ease, z-index 0s 0.4s;
+  }
+
+  #shopify-section-{{ section.id }} .image-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    z-index: 10 !important;
+    transition: transform 0.4s ease, z-index 0s;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .image-card {
+      animation: none !important;
+      opacity: 1 !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<div class="image-cards-section full-width bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Cards and Heading Container {% endcomment %}
+    <div class="relative" style="min-height: 540px; margin-bottom: 2rem;">
+
+      {% comment %} Cards Container {% endcomment %}
+      {% if section.blocks.size > 0 %}
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
+          {% for block in section.blocks %}
+            {% assign index = forloop.index0 %}
+            <div
+              class="image-card flex-1"
+              style="
+                {% if index == 0 %}
+                  margin-top: 0;
+                {% elsif index == 1 %}
+                  margin-top: 70px;
+                {% elsif index == 2 %}
+                  margin-top: 140px;
+                {% endif %}
+              "
+              {{ block.shopify_attributes }}
+            >
+              {% comment %} Image with Text Overlay {% endcomment %}
+              <div class="relative w-full rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-xl" style="height: 400px;">
+                {% if block.settings.image != blank %}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    alt="{{ block.settings.text | escape }}"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    width="800"
+                    height="1000"
+                  >
+                {% else %}
+                  <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'w-24 h-24 text-gray-400' }}
+                  </div>
+                {% endif %}
+
+                {% comment %} Text Overlay at Bottom {% endcomment %}
+                {% if block.settings.text != blank %}
+                  <div class="absolute inset-0 flex items-end p-5 lg:p-6 bg-gradient-to-t from-black/60 to-transparent">
+                    <p class="text-white font-medium text-sm lg:text-base font-sans leading-snug">
+                      {{ block.settings.text }}
+                    </p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% comment %} Heading - Positioned above 3rd card {% endcomment %}
+      {% if section.settings.heading != blank %}
+        <div class="mt-8 lg:mt-0 lg:absolute lg:right-4 xl:right-8 lg:top-0 lg:max-w-xs xl:max-w-sm text-center lg:text-right z-10">
+          <h2 class="text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-medium font-sans text-gray-900 leading-tight">
+            {{ section.settings.heading | newline_to_br }}
+          </h2>
+        </div>
+      {% endif %}
+
+    </div>
+
+    {% comment %} Description Text - Below all cards {% endcomment %}
+    {% if section.settings.description != blank %}
+      <div class="max-w-4xl">
+        <p class="text-sm lg:text-base text-gray-600 font-sans leading-relaxed">
+          {{ section.settings.description }}
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image Cards Showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "See conversation from\ndifferent perspective"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Generate multiple summaries from one conversation. Multidimensional summaries deliver role-specific outputs such as action items for sales, feedback for teams, and strategic overviews for leadership, keeping your team aligned."
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Image Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text overlay",
+          "default": "Engage fully in every conversation"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Image Cards Showcase",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "text": "Engage fully in every conversation"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "Spend less time taking notes"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "text": "Never let a great idea slip away"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -19,7 +19,7 @@
 
   /* Gradient background */
   #shopify-section-{{ section.id }} .gradient-background {
-    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
+    background: linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start }} 0%, {{ section.settings.gradient_middle }} 50%, {{ section.settings.gradient_end }} 100%);
   }
 
   /* Feature card animations */
@@ -96,10 +96,9 @@
               <img
                 src="{{ block.settings.icon | asset_url }}"
                 alt="{{ block.settings.title | escape }}"
-                class="w-16 h-16 lg:w-20 lg:h-20 object-contain opacity-70"
+                class="w-12 h-12 lg:w-14 lg:h-14 object-contain"
+                style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
                 loading="lazy"
-                width="80"
-                height="80"
               >
             </div>
           {% endif %}
@@ -130,6 +129,38 @@
 {
   "name": "Icon Features",
   "settings": [
+    {
+      "type": "header",
+      "content": "Background Gradient"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "label": "Gradient angle",
+      "default": 135
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "Gradient start color",
+      "default": "#e0f2fe"
+    },
+    {
+      "type": "color",
+      "id": "gradient_middle",
+      "label": "Gradient middle color",
+      "default": "#f0f9ff"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "Gradient end color",
+      "default": "#ffffff"
+    },
     {
       "type": "header",
       "content": "Section Spacing"
