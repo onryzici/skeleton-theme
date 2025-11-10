@@ -38,6 +38,7 @@
           "settings": {
             "heading": "Core Features",
             "use_description": true,
+            "content": "<p></p>",
             "open_by_default": true
           }
         },
@@ -89,6 +90,7 @@
           "type": "buy_together",
           "settings": {
             "heading": "Buy together, save more",
+            "collection": "",
             "product_limit": 3,
             "open_by_default": false
           }
@@ -123,10 +125,695 @@
         "buy_together",
         "trust_badges"
       ],
-      "settings": {}
+      "settings": {
+        "show_thumbnails": true,
+        "image_radius": 48,
+        "image_bg_color": "#f3f4f6",
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 64
+      }
+    },
+    "features_grid_LPaqFQ": {
+      "type": "features-grid",
+      "blocks": {
+        "feature_card_QwrkG9": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_iqTdT3": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_MhVAnT": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_xEWrB6": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_wE6jgr": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_AJjCTy": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_8t9rMj": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_GtXbxH": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_7zUhVc": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_k8rMY8": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_yHqGff": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_GrFEfd": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_zBNpQ4": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_CA4cRt": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_CgaTjx": {
+          "type": "feature_card",
+          "settings": {
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_card_QwrkG9",
+        "feature_card_iqTdT3",
+        "feature_card_MhVAnT",
+        "feature_card_xEWrB6",
+        "feature_card_wE6jgr",
+        "feature_card_AJjCTy",
+        "feature_card_8t9rMj",
+        "feature_card_GtXbxH",
+        "feature_card_7zUhVc",
+        "feature_card_k8rMY8",
+        "feature_card_yHqGff",
+        "feature_card_GrFEfd",
+        "feature_card_zBNpQ4",
+        "feature_card_CA4cRt",
+        "feature_card_CgaTjx"
+      ],
+      "name": "Features Grid",
+      "settings": {
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "grid_gap": 16,
+        "card_radius": 20,
+        "card_padding": 12,
+        "section_title": "Features",
+        "section_description": "",
+        "bg_color": "#ffffff",
+        "title_color": "#0b0b0c",
+        "desc_color": "#0b0b0cb3"
+      }
+    },
+    "video_showcase_xLdect": {
+      "type": "video-showcase",
+      "blocks": {
+        "tab_V6qm7q": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "One-Press Record",
+            "video_external": "",
+            "video_file": "",
+            "video_url": ""
+          }
+        },
+        "tab_zi7hcz": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Voice-to-Text Transcription",
+            "video_external": "",
+            "video_file": "",
+            "video_url": ""
+          }
+        },
+        "tab_iayfrM": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "AI Summarization",
+            "video_external": "",
+            "video_file": "",
+            "video_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_V6qm7q",
+        "tab_zi7hcz",
+        "tab_iayfrM"
+      ],
+      "name": "Video Showcase",
+      "settings": {
+        "heading": "Work smarter, not harder",
+        "subheading": "Personalized AI note-taking enhances your productivity",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "use_cases_MpLWEy": {
+      "type": "use-cases",
+      "blocks": {
+        "use_case_C86Yi7": {
+          "type": "use_case",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_12925.png",
+            "title": "Professional",
+            "badge_text": ""
+          }
+        },
+        "use_case_6kiheV": {
+          "type": "use_case",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-10-31_at_10.44.27.png",
+            "title": "Student/Educator",
+            "badge_text": ""
+          }
+        },
+        "use_case_9jJjGb": {
+          "type": "use_case",
+          "settings": {
+            "image": "shopify://shop_images/Sequence_01.00_00_00_00.Still001.png",
+            "title": "Creator/Researcher",
+            "badge_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "use_case_C86Yi7",
+        "use_case_6kiheV",
+        "use_case_9jJjGb"
+      ],
+      "name": "Use Cases",
+      "settings": {
+        "heading": "Built for how you actually work",
+        "subheading": "Personalized AI note-taking enhances your productivity",
+        "background_color": "gray",
+        "button_text": "",
+        "button_link": "",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "category_cards_id3BMX": {
+      "type": "category-cards",
+      "blocks": {
+        "category_TMnLQD": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_13079.png",
+            "title": "Meetings"
+          }
+        },
+        "category_gJGFdc": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_13079.png",
+            "title": "Lectures"
+          }
+        },
+        "category_KLNq3E": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_13079.png",
+            "title": "Therapy Sessions"
+          }
+        },
+        "category_AXX8Yn": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_13079.png",
+            "title": "Interviews"
+          }
+        },
+        "category_nqdrqi": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_13079.png",
+            "title": "Research"
+          }
+        }
+      },
+      "block_order": [
+        "category_TMnLQD",
+        "category_gJGFdc",
+        "category_KLNq3E",
+        "category_AXX8Yn",
+        "category_nqdrqi"
+      ],
+      "name": "Category Cards",
+      "settings": {
+        "heading": "Meetings",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "stat_highlight_AnLYdN": {
+      "type": "stat-highlight",
+      "name": "Stat Highlight",
+      "settings": {
+        "image": "shopify://shop_images/Screenshot_2025-10-31_at_10.44.27.png",
+        "image_position": "left",
+        "heading": "Reduce wasted meeting<br> time by up to",
+        "stat_number": "30%",
+        "description": "stay focused, not repetitive.",
+        "button_text": "",
+        "button_link": "",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "media_tabs_z7geHH": {
+      "type": "media-tabs",
+      "blocks": {
+        "tab_MeQV98": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Capture voice notes even without internet.",
+            "tab_description": "Never miss an idea. Record your thoughts instantly, even when you're offline.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_HbFXtc": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Record and transcribe your meetings automatically.",
+            "tab_description": "XNote's MeetBot captures every word from Google Meet, Zoom, and Teams, linking conversations directly to your handwritten pages.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_9D97QN": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Identify who said what in every conversation.",
+            "tab_description": "Advanced speaker detection ensures you always know who contributed what in your meetings.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_kLDrM8": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Transcribe and understand multiple languages.",
+            "tab_description": "Break language barriers with multi-language transcription and translation capabilities.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_MeQV98",
+        "tab_HbFXtc",
+        "tab_9D97QN",
+        "tab_kLDrM8"
+      ],
+      "name": "Media Tabs",
+      "settings": {
+        "heading": "AI Intelligence",
+        "heading_color": "#111827",
+        "media_position": "left",
+        "media_ratio": "video",
+        "media_fit": "contain",
+        "media_radius": 48,
+        "tab_title_color": "#111827",
+        "tab_description_color": "#4b5563",
+        "tab_active_color": "#111827",
+        "section_bg_color": "#ffffff",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "media_tabs_zKNLpN": {
+      "type": "media-tabs",
+      "blocks": {
+        "tab_FT7aCw": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Capture voice notes even without internet.",
+            "tab_description": "Never miss an idea. Record your thoughts instantly, even when you're offline.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_XFqbzM": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Record and transcribe your meetings automatically.",
+            "tab_description": "XNote's MeetBot captures every word from Google Meet, Zoom, and Teams, linking conversations directly to your handwritten pages.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_yyEJLp": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Identify who said what in every conversation.",
+            "tab_description": "Advanced speaker detection ensures you always know who contributed what in your meetings.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        },
+        "tab_9QzLmP": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Transcribe and understand multiple languages.",
+            "tab_description": "Break language barriers with multi-language transcription and translation capabilities.",
+            "media_type": "image",
+            "video_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_FT7aCw",
+        "tab_XFqbzM",
+        "tab_yyEJLp",
+        "tab_9QzLmP"
+      ],
+      "name": "Media Tabs",
+      "settings": {
+        "heading": "AI Intelligence",
+        "heading_color": "#111827",
+        "media_position": "right",
+        "media_ratio": "video",
+        "media_fit": "contain",
+        "media_radius": 48,
+        "tab_title_color": "#111827",
+        "tab_description_color": "#4b5563",
+        "tab_active_color": "#111827",
+        "section_bg_color": "#ffffff",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "pricing_comparison_jnbLiG": {
+      "type": "pricing-comparison",
+      "blocks": {
+        "plan_xt9BdY": {
+          "type": "plan",
+          "settings": {
+            "plan_name": "Start Plan",
+            "badge_style": "green"
+          }
+        },
+        "plan_Wkzfpw": {
+          "type": "plan",
+          "settings": {
+            "plan_name": "Pro Plan",
+            "badge_style": "gray"
+          }
+        },
+        "plan_j86Jqn": {
+          "type": "plan",
+          "settings": {
+            "plan_name": "Unlimited Plan",
+            "badge_style": "purple"
+          }
+        },
+        "feature_pcKQ9d": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Pricing",
+            "plan1_value": "Free",
+            "plan2_value": "$ 99.99/yr",
+            "plan3_value": "$ 299.99/yr"
+          }
+        },
+        "feature_Pj4Gdg": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Speaker Labels",
+            "plan1_value": "check",
+            "plan2_value": "check",
+            "plan3_value": "check"
+          }
+        },
+        "feature_iDXC7a": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Multimodal Input",
+            "plan1_value": "check",
+            "plan2_value": "check",
+            "plan3_value": "check"
+          }
+        },
+        "feature_NzNtnA": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Multidimensional Summaries",
+            "plan1_value": "check",
+            "plan2_value": "check",
+            "plan3_value": "check"
+          }
+        },
+        "feature_jt49yV": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "LLM Models",
+            "plan1_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence..",
+            "plan2_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence..",
+            "plan3_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence.."
+          }
+        },
+        "feature_iLwcUi": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Custom Summary Templates",
+            "plan1_value": "check",
+            "plan2_value": "check",
+            "plan3_value": "check"
+          }
+        },
+        "feature_CpHBjA": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Professional Summary Templates",
+            "plan1_value": "15",
+            "plan2_value": "3,000+",
+            "plan3_value": "3,000+"
+          }
+        }
+      },
+      "block_order": [
+        "plan_xt9BdY",
+        "plan_Wkzfpw",
+        "plan_j86Jqn",
+        "feature_pcKQ9d",
+        "feature_Pj4Gdg",
+        "feature_iDXC7a",
+        "feature_NzNtnA",
+        "feature_jt49yV",
+        "feature_iLwcUi",
+        "feature_CpHBjA"
+      ],
+      "name": "Pricing Comparison",
+      "settings": {
+        "heading": "Subscription Plan",
+        "subheading": "Unlock Xnote Intelligence's full AI capabilities with pro or unlimited plan",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "faq_PQrjpP": {
+      "type": "faq",
+      "blocks": {
+        "faq_item_WnNNLp": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How to cancel the subscription?",
+            "answer": "<p>XNote seamlessly bridges the gap between traditional writing and digital innovation. Enjoy the familiar feel of pen on paper while instantly transforming your ideas into searchable, editable digital content. XNote seamlessly bridges the gap between traditional writing and digital innovation. Enjoy the familiar feel of pen on...</p>",
+            "open_by_default": true
+          }
+        },
+        "faq_item_iWi3EK": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I transfer my AI premium membership to another account?",
+            "answer": "<p>Yes, you can transfer your membership. Please contact our support team for assistance with the transfer process.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_item_4Lhdfm": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does XNote AI save my notes? How is my personal data and information protected?",
+            "answer": "<p>Your data security is our top priority. All notes are encrypted and stored securely. We follow industry-standard security practices to protect your information.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_item_ndReqV": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Under what circumstances does XNote AI or its affiliates access a user's personal data?",
+            "answer": "<p>We only access user data when necessary for service improvement, technical support, or as required by law. Your privacy is always maintained.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_WnNNLp",
+        "faq_item_iWi3EK",
+        "faq_item_4Lhdfm",
+        "faq_item_ndReqV"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "button_text": "Ask another question",
+        "button_link": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "features_grid_LPaqFQ",
+    "video_showcase_xLdect",
+    "use_cases_MpLWEy",
+    "category_cards_id3BMX",
+    "stat_highlight_AnLYdN",
+    "media_tabs_z7geHH",
+    "media_tabs_zKNLpN",
+    "pricing_comparison_jnbLiG",
+    "faq_PQrjpP"
   ]
 }

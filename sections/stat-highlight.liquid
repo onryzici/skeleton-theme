@@ -1,6 +1,6 @@
 {% comment %}
   Stat Highlight Section
-  Large image on left, stat/metric text on right
+  Large image on one side, stat/metric text on the other
 {% endcomment %}
 
 <style>
@@ -37,11 +37,11 @@
   }
 
   /* Image hover effect */
-  #shopify-section-{{ section.id }} .stat-image img {
+  #shopify-section-{{ section.id }} .stat-image-inner {
     transition: transform 0.6s ease;
   }
 
-  #shopify-section-{{ section.id }} .stat-image:hover img {
+  #shopify-section-{{ section.id }} .stat-image:hover .stat-image-inner {
     transform: scale(1.02);
   }
 
@@ -65,70 +65,88 @@
       animation: none !important;
       opacity: 1 !important;
     }
+
+    #shopify-section-{{ section.id }} .stat-image-inner {
+      transition: none !important;
+    }
+  }
+
+  /* Image radius based on position */
+  #shopify-section-{{ section.id }} .stat-image-inner {
+    border-radius: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .stat-image-left .stat-image-inner {
+      border-radius: 3rem 0 0 3rem;
+    }
+
+    #shopify-section-{{ section.id }} .stat-image-right .stat-image-inner {
+      border-radius: 0 3rem 3rem 0;
+    }
   }
 </style>
 
 <div class="stat-highlight-section full-width bg-white">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    {% comment %} Gri container - tüm içerik burada {% endcomment %}
     <div class="bg-gray-50 rounded-[2rem] lg:rounded-[3rem] overflow-hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-2 items-stretch h-full">
+      <div class="grid grid-cols-1 lg:grid-cols-2 items-stretch min-h-[400px] lg:min-h-[500px]">
 
         {% comment %} Image Side {% endcomment %}
-        <div class="stat-image {% if section.settings.image_position == 'right' %}lg:order-2{% endif %}">
-          <div class="bg-gray-100 h-full min-h-[400px] lg:min-h-[500px]">
-            {% if section.settings.image != blank %}
-              <img
-                src="{{ section.settings.image | image_url: width: 1200 }}"
-                alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
-                class="w-full h-full object-cover"
-                loading="lazy"
-                width="1200"
-                height="800"
-              >
-            {% else %}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300' }}
-            {% endif %}
-          </div>
+        <div class="stat-image stat-image-{{ section.settings.image_position }} {% if section.settings.image_position == 'right' %}lg:order-2{% endif %} relative">
+          {% if section.settings.image != blank %}
+            <img
+              src="{{ section.settings.image | image_url: width: 1200 }}"
+              alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+              class="stat-image-inner absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+              width="1200"
+              height="800"
+            >
+          {% else %}
+            <div class="stat-image-inner absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'w-32 h-32 text-gray-400' }}
+            </div>
+          {% endif %}
         </div>
 
         {% comment %} Content Side {% endcomment %}
         <div class="stat-content {% if section.settings.image_position == 'right' %}lg:order-1{% endif %} p-8 lg:p-12 flex flex-col justify-center">
 
-        {% if section.settings.heading != blank %}
-          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
-            {{ section.settings.heading }}
-          </h2>
-        {% endif %}
+          {% if section.settings.heading != blank %}
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
+              {{ section.settings.heading | newline_to_br }}
+            </h2>
+          {% endif %}
 
-        {% if section.settings.stat_number != blank %}
-          <div class="text-6xl sm:text-7xl lg:text-8xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
-            {{ section.settings.stat_number }}
-          </div>
-        {% endif %}
+          {% if section.settings.stat_number != blank %}
+            <div class="text-6xl sm:text-7xl lg:text-8xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
+              {{ section.settings.stat_number }}
+            </div>
+          {% endif %}
 
-        {% if section.settings.description != blank %}
-          <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans">
-            {{ section.settings.description }}
-          </p>
-        {% endif %}
+          {% if section.settings.description != blank %}
+            <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans">
+              {{ section.settings.description }}
+            </p>
+          {% endif %}
 
-        {% if section.settings.button_text != blank %}
-          <div class="mt-8">
-            <a
-              href="{{ section.settings.button_link | default: '#' }}"
-              class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-base lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              {{ section.settings.button_text }}
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-              </svg>
-            </a>
-          </div>
-        {% endif %}
+          {% if section.settings.button_text != blank %}
+            <div class="mt-8">
+              <a
+                href="{{ section.settings.button_link | default: '#' }}"
+                class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-base lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {{ section.settings.button_text }}
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </a>
+            </div>
+          {% endif %}
 
-      </div>
+        </div>
 
       </div>
     </div>
@@ -171,7 +189,7 @@
       "content": "Content"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "heading",
       "label": "Heading",
       "default": "Reduce wasted meeting time by up to"

@@ -1,0 +1,341 @@
+{% comment %}
+  Logo Marquee Section
+  Heading text with infinitely scrolling logos
+{% endcomment %}
+
+<style>
+  /* Section padding */
+  #shopify-section-{{ section.id }} .logo-marquee-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .logo-marquee-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Marquee animation */
+  @keyframes marquee-{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .marquee-content {
+    animation: marquee-{{ section.id }} {{ section.settings.animation_speed }}s linear infinite;
+  }
+
+  #shopify-section-{{ section.id }} .marquee-wrapper:hover .marquee-content {
+    animation-play-state: paused;
+  }
+
+  /* Fade edges */
+  #shopify-section-{{ section.id }} .marquee-container {
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .marquee-container::before,
+  #shopify-section-{{ section.id }} .marquee-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .marquee-container::before {
+    left: 0;
+    background: linear-gradient(to right, {{ section.settings.background_color }}, transparent);
+  }
+
+  #shopify-section-{{ section.id }} .marquee-container::after {
+    right: 0;
+    background: linear-gradient(to left, {{ section.settings.background_color }}, transparent);
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .marquee-content {
+      animation: none !important;
+    }
+  }
+
+  /* Logo sizing */
+  #shopify-section-{{ section.id }} .logo-item img {
+    filter: grayscale({{ section.settings.logo_grayscale }}%);
+    opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
+    transition: all 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .logo-item:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+</style>
+
+<div class="logo-marquee-section full-width" style="background-color: {{ section.settings.background_color }};">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Header Text {% endcomment %}
+    <div class="text-center mb-12 lg:mb-16">
+      {% if section.settings.heading != blank %}
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-2 lg:mb-3">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="text-lg sm:text-xl lg:text-2xl text-gray-600 font-sans">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+
+    {% comment %} Logo Marquee {% endcomment %}
+    {% if section.blocks.size > 0 %}
+      <div class="marquee-container overflow-hidden">
+        <div class="marquee-wrapper">
+          <div class="marquee-content flex items-center gap-12 lg:gap-16" style="width: fit-content;">
+
+            {% comment %} First set of logos {% endcomment %}
+            {% for block in section.blocks %}
+              <div class="logo-item flex-shrink-0" {{ block.shopify_attributes }}>
+                {% if block.settings.logo != blank %}
+                  {% if block.settings.link != blank %}
+                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="block">
+                      <img
+                        src="{{ block.settings.logo | image_url: width: 400 }}"
+                        alt="{{ block.settings.alt_text | default: 'Logo' | escape }}"
+                        class="h-8 lg:h-12 w-auto object-contain"
+                        loading="lazy"
+                        width="200"
+                        height="48"
+                      >
+                    </a>
+                  {% else %}
+                    <img
+                      src="{{ block.settings.logo | image_url: width: 400 }}"
+                      alt="{{ block.settings.alt_text | default: 'Logo' | escape }}"
+                      class="h-8 lg:h-12 w-auto object-contain"
+                      loading="lazy"
+                      width="200"
+                      height="48"
+                    >
+                  {% endif %}
+                {% else %}
+                  <div class="h-8 lg:h-12 w-32 bg-gray-200 rounded flex items-center justify-center">
+                    <span class="text-xs text-gray-400">Logo</span>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            {% comment %} Duplicate set for seamless loop {% endcomment %}
+            {% for block in section.blocks %}
+              <div class="logo-item flex-shrink-0" aria-hidden="true">
+                {% if block.settings.logo != blank %}
+                  {% if block.settings.link != blank %}
+                    <a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="block">
+                      <img
+                        src="{{ block.settings.logo | image_url: width: 400 }}"
+                        alt="{{ block.settings.alt_text | default: 'Logo' | escape }}"
+                        class="h-8 lg:h-12 w-auto object-contain"
+                        loading="lazy"
+                        width="200"
+                        height="48"
+                      >
+                    </a>
+                  {% else %}
+                    <img
+                      src="{{ block.settings.logo | image_url: width: 400 }}"
+                      alt="{{ block.settings.alt_text | default: 'Logo' | escape }}"
+                      class="h-8 lg:h-12 w-auto object-contain"
+                      loading="lazy"
+                      width="200"
+                      height="48"
+                    >
+                  {% endif %}
+                {% else %}
+                  <div class="h-8 lg:h-12 w-32 bg-gray-200 rounded flex items-center justify-center">
+                    <span class="text-xs text-gray-400">Logo</span>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Logo Marquee",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "leading global media."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Featured by"
+    },
+    {
+      "type": "header",
+      "content": "Marquee Settings"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Animation speed",
+      "default": 30,
+      "info": "Lower is faster"
+    },
+    {
+      "type": "range",
+      "id": "logo_grayscale",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Logo grayscale",
+      "default": 100,
+      "info": "0% = full color, 100% = black & white"
+    },
+    {
+      "type": "range",
+      "id": "logo_opacity",
+      "min": 10,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Logo opacity",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt text",
+          "info": "Describe the logo for accessibility"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Logo Marquee",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
