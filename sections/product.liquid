@@ -830,9 +830,17 @@
   <script>
     // Ultra smooth grid-based collapsible animation
     (function() {
-      const collapsibleTabs = document.querySelectorAll('#shopify-section-{{ section.id }} details[data-collapsible-tab]');
+      'use strict';
+
+      // Unique namespace for this section
+      const sectionId = 'shopify-section-{{ section.id }}';
+      const collapsibleTabs = document.querySelectorAll('#' + sectionId + ' details[data-collapsible-tab]');
 
       collapsibleTabs.forEach(details => {
+        // Skip if already initialized
+        if (details.hasAttribute('data-product-tab-init')) return;
+        details.setAttribute('data-product-tab-init', 'true');
+
         const summary = details.querySelector('summary');
         if (!summary) return;
 
@@ -845,21 +853,31 @@
           details.classList.add('is-active');
         }
 
-        // Simple class toggle - CSS grid handles the smooth animation
-        summary.addEventListener('click', function(e) {
+        // Click handler with stopImmediatePropagation
+        function handleClick(e) {
           e.preventDefault();
-          e.stopPropagation();
+          e.stopImmediatePropagation();
           details.classList.toggle('is-active');
-        }, true); // Capture phase
+          return false;
+        }
 
-        // Keyboard accessibility
-        summary.addEventListener('keydown', (e) => {
+        // Keyboard handler
+        function handleKeydown(e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             details.classList.toggle('is-active');
+            return false;
           }
-        });
+        }
+
+        // Remove any existing listeners (in case of duplicate)
+        summary.removeEventListener('click', handleClick, true);
+        summary.removeEventListener('keydown', handleKeydown);
+
+        // Add new listeners
+        summary.addEventListener('click', handleClick, true);
+        summary.addEventListener('keydown', handleKeydown);
       });
     })();
   </script>
