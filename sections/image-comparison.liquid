@@ -1,0 +1,438 @@
+{% comment %}
+  Image Comparison Section
+  Before/After slider with draggable handle
+{% endcomment %}
+
+<style>
+  /* Section padding */
+  #shopify-section-{{ section.id }} .image-comparison-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .image-comparison-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Comparison slider container */
+  #shopify-section-{{ section.id }} .comparison-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 2rem;
+    cursor: ew-resize;
+    user-select: none;
+  }
+
+  /* After image (bottom layer - full width) */
+  #shopify-section-{{ section.id }} .after-image {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    user-select: none;
+  }
+
+  /* Before wrapper (top layer - clips the before image) */
+  #shopify-section-{{ section.id }} .before-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Before image (inside wrapper - width set by JS to match container) */
+  #shopify-section-{{ section.id }} .before-image {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    user-select: none;
+  }
+
+  /* Slider handle */
+  #shopify-section-{{ section.id }} .slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  #shopify-section-{{ section.id }} .slider-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: ew-resize;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  #shopify-section-{{ section.id }} .slider-button span {
+    width: 2px;
+    height: 16px;
+    background: white;
+    border-radius: 1px;
+  }
+
+  /* Animations */
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .comparison-wrapper {
+    animation: fadeInLeft 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .content-area {
+    animation: fadeInRight 0.6s ease forwards 0.2s;
+    opacity: 0;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .comparison-wrapper,
+    #shopify-section-{{ section.id }} .content-area {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>
+
+<div class="image-comparison-section full-width bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+
+      {% comment %} Image Comparison Slider {% endcomment %}
+      <div class="comparison-wrapper">
+        <div class="comparison-container" id="comparison-{{ section.id }}">
+
+        {% comment %} After Image (bottom layer - full width) {% endcomment %}
+        {% if section.settings.after_image != blank %}
+          <img
+            src="{{ section.settings.after_image | image_url: width: 1200 }}"
+            alt="{{ section.settings.after_label | default: 'After' }}"
+            class="after-image"
+            id="after-image-{{ section.id }}"
+            width="1200"
+            height="800"
+            loading="lazy"
+          >
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'after-image' }}
+        {% endif %}
+
+        {% comment %} Before Image (top layer - in wrapper for clipping) {% endcomment %}
+        <div class="before-wrapper" id="before-wrapper-{{ section.id }}">
+          {% if section.settings.before_image != blank %}
+            <img
+              src="{{ section.settings.before_image | image_url: width: 1200 }}"
+              alt="{{ section.settings.before_label | default: 'Before' }}"
+              class="before-image"
+              id="before-image-{{ section.id }}"
+              width="1200"
+              height="800"
+              loading="lazy"
+            >
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'before-image' }}
+          {% endif %}
+        </div>
+
+        {% comment %} Slider Handle {% endcomment %}
+        <div class="slider-handle" id="slider-handle-{{ section.id }}">
+          <div class="slider-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      {% comment %} Content Area {% endcomment %}
+      <div class="content-area">
+        {% if section.settings.heading != blank %}
+          <h2 class="text-2xl lg:text-4xl font-medium font-sans text-gray-900 mb-6" style="white-space: pre-line;">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.stat_number != blank %}
+          <div class="mb-6 flex items-center gap-2">
+            <div class="text-5xl lg:text-6xl font-bold font-sans text-gray-900">
+              {{ section.settings.stat_number }}
+            </div>
+            {% if section.settings.stat_label != blank %}
+              <div class="text-base lg:text-lg font-sans text-gray-600">
+                {{ section.settings.stat_label }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="text-base lg:text-lg font-sans text-gray-700 mb-4">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.subdescription != blank %}
+          <p class="text-sm lg:text-base font-sans text-gray-600">
+            {{ section.settings.subdescription }}
+          </p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const container = document.getElementById('comparison-{{ section.id }}');
+  const beforeWrapper = document.getElementById('before-wrapper-{{ section.id }}');
+  const beforeImage = document.getElementById('before-image-{{ section.id }}');
+  const sliderHandle = document.getElementById('slider-handle-{{ section.id }}');
+
+  if (!container || !beforeWrapper || !beforeImage || !sliderHandle) return;
+
+  let isDragging = false;
+
+  // Set container height based on image aspect ratio
+  function setContainerHeight() {
+    const afterImage = document.getElementById('after-image-{{ section.id }}');
+    if (!afterImage) return;
+
+    const updateHeight = () => {
+      const containerWidth = container.offsetWidth;
+      const imageAspectRatio = afterImage.naturalHeight / afterImage.naturalWidth;
+      const containerHeight = containerWidth * imageAspectRatio;
+      container.style.height = containerHeight + 'px';
+
+      // Set before image width to match container
+      beforeImage.style.width = containerWidth + 'px';
+    };
+
+    if (afterImage.complete) {
+      updateHeight();
+    } else {
+      afterImage.addEventListener('load', updateHeight);
+    }
+  }
+
+  setContainerHeight();
+  window.addEventListener('resize', setContainerHeight);
+
+  function updateSlider(clientX) {
+    const rect = container.getBoundingClientRect();
+    let x = clientX - rect.left;
+
+    // Clamp between 0 and container width
+    x = Math.max(0, Math.min(x, rect.width));
+
+    const percentage = (x / rect.width) * 100;
+
+    // Update wrapper width (clips the before image)
+    beforeWrapper.style.width = percentage + '%';
+    sliderHandle.style.left = percentage + '%';
+  }
+
+  // Mouse events
+  container.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    updateSlider(e.clientX);
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    updateSlider(e.clientX);
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  // Touch events
+  container.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    updateSlider(e.touches[0].clientX);
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Image Comparison",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before Image",
+      "info": "Left/bottom image"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before label",
+      "default": "Before"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After Image",
+      "info": "Right/top image"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After label",
+      "default": "After"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Escape the Chaos. Write. Sync. Save Time.",
+      "info": "Press Enter to add line breaks"
+    },
+    {
+      "type": "text",
+      "id": "stat_number",
+      "label": "Stat number",
+      "default": "260+"
+    },
+    {
+      "type": "text",
+      "id": "stat_label",
+      "label": "Stat label",
+      "default": "hrs saved per year*"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Keep the clarity of real handwriting without the mess. XNote digitizes, organizes, and syncs your notes instantly so you can focus on ideas, not admin."
+    },
+    {
+      "type": "textarea",
+      "id": "subdescription",
+      "label": "Sub-description",
+      "default": "Estimate based on average time saved from post-handwriting cleanup, note organization, and meeting documentation."
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Comparison"
+    }
+  ]
+}
+{% endschema %}

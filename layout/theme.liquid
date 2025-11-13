@@ -10,6 +10,9 @@
     {% # Tailwind CSS %}
     {{ 'tailwind.css' | asset_url | stylesheet_tag }}
 
+    {% # Judge CSS %}
+    {{ 'judge.css' | asset_url | stylesheet_tag }}
+
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 

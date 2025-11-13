@@ -1,0 +1,305 @@
+<style>
+/* Reset ve override için genel kurallar */
+.jdgm-widget.jdgm-carousel,
+.jdgm-carousel--compact-theme,
+.jdgm-carousel {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+/* Ana container - inline style'ları override et */
+div[style*="margin:0 auto;max-width:1080px"] {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 40px 20px !important;
+}
+
+/* Ana wrapper */
+.jdgm-carousel-wrapper {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 60px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    position: relative !important;
+}
+
+/* Sol taraf - Başlık bölümü FIXED */
+.jdgm-carousel-title-and-link {
+    display: block !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    flex: 0 0 280px !important;
+    height: auto !important;
+    float: none !important;
+    margin: 0 !important;
+    padding-right: 0 !important;
+    position: relative !important;
+}
+
+/* Başlık */
+.jdgm-carousel-title {
+    font-size: 46px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 25px !important;
+    font-weight: 400 !important;
+    color: #000 !important;
+    text-align: left !important;
+}
+
+/* Rating wrapper */
+.jdgm-all-reviews-rating-wrapper {
+    display: block !important;
+    text-align: left !important;
+    margin-bottom: 40px !important;
+}
+
+/* Yıldızlar ve text */
+.jdgm-all-reviews-rating {
+    display: block !important;
+    margin-bottom: 8px !important;
+}
+
+.jdgm-carousel-number-of-reviews {
+    display: block !important;
+    font-size: 14px !important;
+    color: #666 !important;
+}
+
+/* Sol taraftaki oklar - DÜZELTİLDİ */
+.jdgm-carousel__arrows {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    display: flex !important;
+    gap: 10px !important;
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    top: auto !important;
+}
+
+.jdgm-carousel__left-arrow,
+.jdgm-carousel__right-arrow {
+    position: relative !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    background: white !important;
+    border: 2px solid #ddd !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    float: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.jdgm-carousel__left-arrow:hover,
+.jdgm-carousel__right-arrow:hover {
+    background: #f5f5f5 !important;
+    border-color: #999 !important;
+}
+
+/* OK İŞARETLERİ DÜZELTİLDİ */
+.jdgm-carousel__left-arrow::before {
+    content: '‹' !important;
+    font-size: 24px !important;
+    color: #333 !important;
+    line-height: 1 !important;
+}
+
+.jdgm-carousel__left-arrow::after {
+    content: '' !important;
+}
+
+.jdgm-carousel__right-arrow::before {
+    content: '›' !important;
+    font-size: 24px !important;
+    color: #333 !important;
+    line-height: 1 !important;
+}
+
+.jdgm-carousel__right-arrow::after {
+    content: '' !important;
+}
+
+/* Sağ taraf carousel alanı */
+.jdgm-carousel--compact-theme.jdgm-carousel,
+.jdgm-carousel {
+    display: block !important;
+    flex: 1 !important;
+    width: calc(100% - 340px) !important;
+    overflow: hidden !important;
+    float: none !important;
+    margin: 0 !important;
+}
+
+/* Item container */
+.jdgm-carousel__item-container {
+    width: 100% !important;
+    overflow: visible !important;
+}
+
+/* Item wrapper - transform ile kaydırma için */
+.jdgm-carousel__item-wrapper {
+    display: flex !important;
+    gap: 20px !important;
+    width: auto !important;
+    font-size: inherit !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* Her bir kart */
+.jdgm-carousel-item {
+    flex: 0 0 calc(33.333% - 14px) !important;
+    width: auto !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+}
+
+/* Review box - OVERFLOW KALDIRILDI */
+.jdgm-carousel-item__review {
+    background: #f8f8f8 !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+    height: auto !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Review içerik */
+.jdgm-carousel-item__review-content {
+    width: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Yıldızlar */
+.jdgm-carousel-item__review-rating {
+    margin-bottom: 16px !important;
+    font-size: 16px !important;
+}
+
+/* Başlık */
+.jdgm-carousel-item__review-title {
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
+    color: #000 !important;
+    line-height: 1.3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+/* Body text - OVERFLOW DÜZELTİLDİ */
+.jdgm-carousel-item__review-body {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #555 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 8 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    max-height: none !important;
+    margin-bottom: 20px !important;
+}
+
+.jdgm-carousel-item__review-body p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Alt bilgiler - OVERFLOW KALDIRILDI */
+.jdgm-carousel-item__reviewer-name-wrapper {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+    margin-top: auto !important;
+}
+
+/* Kullanıcı adı */
+.jdgm-carousel-item__reviewer-name {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: #000 !important;
+    opacity: 1 !important;
+}
+
+/* Ürün linki ve görselleri */
+.jdgm-carousel-item__product {
+    text-align: left !important;
+    width: auto !important;
+    height: auto !important;
+    float: none !important;
+    margin: 0 !important;
+}
+
+/* Gizlenecekler */
+.jdgm-carousel-item__timestamp,
+.jdgm-carousel-item__product-title {
+    display: none !important;
+}
+
+/* Yıldız stilleri */
+.jdgm-star::before {
+    content: '★' !important;
+}
+
+.jdgm-star.jdgm--on {
+    color: #FFD700 !important;
+}
+
+.jdgm-star.jdgm--off {
+    color: #e0e0e0 !important;
+}
+
+.jdgm-star.jdgm--half {
+    background: linear-gradient(90deg, #FFD700 50%, #e0e0e0 50%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+    .jdgm-carousel-wrapper {
+        flex-direction: column !important;
+    }
+    
+    .jdgm-carousel-title-and-link {
+        width: 100% !important;
+        min-width: 100% !important;
+        flex: none !important;
+        margin-bottom: 30px !important;
+        padding-bottom: 60px !important;
+    }
+    
+    .jdgm-carousel--compact-theme.jdgm-carousel,
+    .jdgm-carousel {
+        width: 100% !important;
+    }
+    
+    .jdgm-carousel-item {
+        flex: 0 0 calc(50% - 10px) !important;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .jdgm-carousel-item {
+        flex: 0 0 100% !important;
+    }
+}
+</style>

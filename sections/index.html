@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Scroll Hide/Show Header</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 2000px; /* demo için uzun sayfa */
+    font-family: sans-serif;
+  }
+
+  /* HEADER */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #0f172a;
+    color: white;
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.25s ease;
+    transform: translateY(0);
+  }
+
+  .header.hidden {
+    transform: translateY(-100%);
+  }
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div>LOGO</div>
+  <div>MENU</div>
+  <div>CTA</div>
+</header>
+
+<script>
+  let lastScroll = 0;
+  const header = document.getElementById("header");
+
+  window.addEventListener("scroll", () => {
+    const current = window.scrollY;
+
+    if (current > lastScroll) {
+      // aşağı kaydırıyor → gizle
+      header.classList.add("hidden");
+    } else {
+      // yukarı kaydırıyor → göster
+      header.classList.remove("hidden");
+    }
+
+    lastScroll = current;
+  });
+</script>
+
+</body>
+</html>

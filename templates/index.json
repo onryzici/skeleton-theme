@@ -9,12 +9,61 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero_diUB3g": {
+      "type": "hero",
+      "name": "Hero",
+      "settings": {
+        "bg_color": "#1a1a1a",
+        "heading": "Write like always. Act like never before.",
+        "subheading": "XNote captures your handwriting in real time, turns notes into structured knowledge, and makes them searchable, shareable, and smart without changing how you write.",
+        "button_text": "Buy Now",
+        "button_link": "",
+        "padding_top_mobile": 80,
+        "padding_bottom_mobile": 80,
+        "padding_top_desktop": 128,
+        "padding_bottom_desktop": 128
+      }
+    },
+    "image_cards_showcase_ay9Cpi": {
+      "type": "image-cards-showcase",
+      "blocks": {
+        "card_c67GeT": {
+          "type": "card",
+          "settings": {
+            "text": "Engage fully in every conversation"
+          }
+        },
+        "card_rpbLBY": {
+          "type": "card",
+          "settings": {
+            "text": "Spend less time taking notes"
+          }
+        },
+        "card_BTdyn3": {
+          "type": "card",
+          "settings": {
+            "text": "Never let a great idea slip away"
+          }
+        }
+      },
+      "block_order": [
+        "card_c67GeT",
+        "card_rpbLBY",
+        "card_BTdyn3"
+      ],
+      "name": "Image Cards Showcase",
+      "settings": {
+        "heading": "See conversation from\ndifferent perspective",
+        "description": "Generate multiple summaries from one conversation. Multidimensional summaries deliver role-specific outputs such as action items for sales, feedback for teams, and strategic overviews for leadership, keeping your team aligned.",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
     }
   },
   "order": [
-    "main"
+    "hero_diUB3g",
+    "image_cards_showcase_ay9Cpi"
   ]
 }

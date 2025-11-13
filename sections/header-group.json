@@ -15,14 +15,22 @@
       "type": "announcement-bar",
       "settings": {
         "show_announcement": true,
-        "announcement_text": "Welcome to our store!",
-        "bg_color_start": "#a855f7",
-        "bg_color_end": "#ec4899"
+        "announcement_text": "Your AI-Powered Starter Kit Ships Free in US. Get yours While it lasts",
+        "announcement_link": "",
+        "announcement_icon": "",
+        "bg_color_start": "#7effee",
+        "bg_color_end": "#9cc9ed"
       }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo": "shopify://shop_images/Group_1171281200.svg",
+        "logo_width": 100,
+        "menu": "main-menu",
+        "enable_search": true,
+        "enable_sticky_header": true
+      }
     }
   },
   "order": [

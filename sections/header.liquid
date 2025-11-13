@@ -3,7 +3,7 @@
   Main navigation with logo, menu, and utility icons
 {% endcomment %}
 
-<div class="full-width header-wrapper sticky top-0 z-50 transition-all duration-300">
+<div class="full-width header-wrapper fixed top-0 left-0 right-0 z-50">
   <header class="header container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center h-16 lg:h-[72px]">
 
@@ -136,31 +136,67 @@
     });
   });
 
-  // Sticky header with hide on scroll down, show on scroll up
-  let lastScroll = 0;
+  // Add padding to body to account for fixed header
   const headerWrapper = document.querySelector('.header-wrapper');
+  const announcementBar = document.querySelector('.announcement-bar');
 
-  window.addEventListener('scroll', function() {
-    const currentScroll = window.pageYOffset;
+  function setBodyPadding() {
+    if (headerWrapper) {
+      const announcementHeight = announcementBar ? announcementBar.offsetHeight : 0;
+      const headerHeight = headerWrapper.offsetHeight;
+      const totalHeight = announcementHeight + headerHeight;
+      document.body.style.paddingTop = totalHeight + 'px';
+    }
+  }
 
-    // Add scrolled class for blur effect
-    if (currentScroll > 10) {
-      headerWrapper.classList.add('scrolled');
-    } else {
-      headerWrapper.classList.remove('scrolled');
+  // Reset scroll position on page load
+  if (window.history.scrollRestoration) {
+    window.history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
+  setBodyPadding();
+  window.addEventListener('resize', setBodyPadding);
+
+  // Fixed header with hide on scroll down, show on scroll up
+  let lastScroll = 0;
+  let ticking = false;
+
+  if (headerWrapper) {
+    // Position header below announcement bar if it exists
+    if (announcementBar) {
+      const announcementHeight = announcementBar.offsetHeight;
+      headerWrapper.style.top = announcementHeight + 'px';
     }
 
-    // Hide on scroll down, show on scroll up
-    if (currentScroll > lastScroll && currentScroll > 100) {
-      // Scrolling down & past 100px
-      headerWrapper.classList.add('header-hidden');
-    } else if (currentScroll < lastScroll) {
-      // Scrolling up
-      headerWrapper.classList.remove('header-hidden');
-    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScroll = window.scrollY;
 
-    lastScroll = currentScroll;
-  });
+          // Add scrolled class for blur effect
+          if (currentScroll > 10) {
+            headerWrapper.classList.add('scrolled');
+          } else {
+            headerWrapper.classList.remove('scrolled');
+          }
+
+          // Hide on scroll down, show on scroll up
+          if (currentScroll > lastScroll && currentScroll > 80) {
+            // Scrolling down & past 80px → hide
+            headerWrapper.classList.add('header-hidden');
+          } else if (currentScroll < lastScroll) {
+            // Scrolling up → show
+            headerWrapper.classList.remove('header-hidden');
+          }
+
+          lastScroll = currentScroll;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
 </script>
 
 {% schema %}
@@ -221,7 +257,7 @@
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease;
     border-bottom: 1px solid transparent;
     transform: translateY(0);
   }
@@ -266,7 +302,15 @@
     }
   {% endif %}
 
-  /* Disable sticky if setting is off */
+  /* Keep header fixed at top */
+  .header-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* Disable fixed if setting is off */
   {% unless section.settings.enable_sticky_header %}
     .header-wrapper {
       position: relative !important;

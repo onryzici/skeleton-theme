@@ -9,75 +9,75 @@
  */
 {
   "sections": {
-    "main": {
+    "product_CCFgYF": {
       "type": "product",
       "blocks": {
-        "title": {
+        "title_NVcYKj": {
           "type": "title",
           "settings": {}
         },
-        "subtitle": {
+        "subtitle_QphyP4": {
           "type": "subtitle",
           "settings": {
             "text": "AI Powered Smart Writing Set"
           }
         },
-        "rating": {
+        "rating_R4rAdY": {
           "type": "rating",
           "settings": {
             "show_rating": true,
             "review_count": 728
           }
         },
-        "price": {
+        "price_KNYNrD": {
           "type": "price",
           "settings": {}
         },
-        "core_features": {
+        "collapsible_tab_rADRiJ": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "Core Features",
             "use_description": true,
-            "content": "<p></p>",
+            "content": "",
             "open_by_default": true
           }
         },
-        "variant_picker": {
+        "variant_picker_Xxctgb": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "dropdown"
           }
         },
-        "quantity_selector": {
+        "quantity_selector_JQaGH8": {
           "type": "quantity_selector",
           "settings": {}
         },
-        "buy_buttons": {
+        "buy_buttons_JcRJ36": {
           "type": "buy_buttons",
           "settings": {
             "button_text": "Add to Cart",
             "show_dynamic_checkout": true
           }
         },
-        "delivery_info": {
+        "delivery_info_yUdEJp": {
           "type": "delivery_info",
           "settings": {
             "text": "Worry-Free Delivery available with ease!"
           }
         },
-        "payment_icons": {
+        "payment_icons_mwKLEW": {
           "type": "payment_icons",
           "settings": {
             "show_payment_icons": true
           }
         },
-        "shipping_info": {
+        "shipping_info_7A4yrx": {
           "type": "shipping_info",
           "settings": {
             "text": "Orders are typically shipped out within 1-2 business days."
           }
         },
-        "in_the_box": {
+        "collapsible_tab_Jh6y9C": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "In the box",
@@ -86,16 +86,16 @@
             "open_by_default": false
           }
         },
-        "buy_together": {
+        "buy_together_yGLhj9": {
           "type": "buy_together",
           "settings": {
             "heading": "Buy together, save more",
-            "collection": "",
+            "collection": "notebooks",
             "product_limit": 3,
             "open_by_default": false
           }
         },
-        "trust_badges": {
+        "trust_badges_DtaHAh": {
           "type": "trust_badges",
           "settings": {
             "badge_1_text": "Fast, Free Shipping",
@@ -110,21 +110,22 @@
         }
       },
       "block_order": [
-        "title",
-        "subtitle",
-        "rating",
-        "price",
-        "core_features",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "delivery_info",
-        "payment_icons",
-        "shipping_info",
-        "in_the_box",
-        "buy_together",
-        "trust_badges"
+        "title_NVcYKj",
+        "subtitle_QphyP4",
+        "rating_R4rAdY",
+        "price_KNYNrD",
+        "collapsible_tab_rADRiJ",
+        "variant_picker_Xxctgb",
+        "quantity_selector_JQaGH8",
+        "buy_buttons_JcRJ36",
+        "delivery_info_yUdEJp",
+        "payment_icons_mwKLEW",
+        "shipping_info_7A4yrx",
+        "collapsible_tab_Jh6y9C",
+        "buy_together_yGLhj9",
+        "trust_badges_DtaHAh"
       ],
+      "name": "Product Information",
       "settings": {
         "show_thumbnails": true,
         "image_radius": 48,
@@ -135,258 +136,453 @@
         "padding_bottom_desktop": 64
       }
     },
-    "features_grid_LPaqFQ": {
-      "type": "features-grid",
+    "bento_grid_DwBJxH": {
+      "type": "bento-grid",
       "blocks": {
-        "feature_card_QwrkG9": {
-          "type": "feature_card",
+        "feature_aHUhxe": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "name": "",
+            "image": "shopify://shop_images/Group_1171281546.svg",
+            "bg_type": "gradient",
+            "bg_color_1": "#e5e7eb",
+            "bg_color_2": "#ffffff",
+            "gradient_direction": "to bottom"
           }
         },
-        "feature_card_iqTdT3": {
-          "type": "feature_card",
+        "feature_Gwjr7M": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "name": "",
+            "image": "shopify://shop_images/Group_1171281869.svg",
+            "bg_type": "gradient",
+            "bg_color_1": "#e5e7eb",
+            "bg_color_2": "#f9fafb",
+            "gradient_direction": "to bottom"
           }
         },
-        "feature_card_MhVAnT": {
-          "type": "feature_card",
+        "feature_CmzwQd": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
+            "image": "shopify://shop_images/Group_1171281865.svg",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_xEWrB6": {
-          "type": "feature_card",
+        "feature_tWq6bK": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
+            "image": "shopify://shop_images/Group_1171281872.svg",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_wE6jgr": {
-          "type": "feature_card",
+        "feature_pUDkrK": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_AJjCTy": {
-          "type": "feature_card",
+        "feature_UqaUw6": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_8t9rMj": {
-          "type": "feature_card",
+        "feature_MNcfAh": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_GtXbxH": {
-          "type": "feature_card",
+        "feature_rNHxa8": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_7zUhVc": {
-          "type": "feature_card",
+        "feature_U73UYM": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_k8rMY8": {
-          "type": "feature_card",
+        "feature_CV8ATk": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_yHqGff": {
-          "type": "feature_card",
+        "feature_V4RtnN": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_GrFEfd": {
-          "type": "feature_card",
+        "feature_3V9mik": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
+            "image": "shopify://shop_images/Group_1171281537.svg",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_zBNpQ4": {
-          "type": "feature_card",
+        "feature_hLyFr7": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         },
-        "feature_card_CA4cRt": {
-          "type": "feature_card",
+        "feature_6zQnYA": {
+          "type": "feature",
           "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
+            "name": "",
             "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_CgaTjx": {
-          "type": "feature_card",
-          "settings": {
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
+            "bg_color_1": "#f9fafb",
+            "bg_color_2": "#e5e7eb",
+            "gradient_direction": "135deg"
           }
         }
       },
       "block_order": [
-        "feature_card_QwrkG9",
-        "feature_card_iqTdT3",
-        "feature_card_MhVAnT",
-        "feature_card_xEWrB6",
-        "feature_card_wE6jgr",
-        "feature_card_AJjCTy",
-        "feature_card_8t9rMj",
-        "feature_card_GtXbxH",
-        "feature_card_7zUhVc",
-        "feature_card_k8rMY8",
-        "feature_card_yHqGff",
-        "feature_card_GrFEfd",
-        "feature_card_zBNpQ4",
-        "feature_card_CA4cRt",
-        "feature_card_CgaTjx"
+        "feature_aHUhxe",
+        "feature_Gwjr7M",
+        "feature_CmzwQd",
+        "feature_tWq6bK",
+        "feature_pUDkrK",
+        "feature_UqaUw6",
+        "feature_MNcfAh",
+        "feature_rNHxa8",
+        "feature_U73UYM",
+        "feature_CV8ATk",
+        "feature_V4RtnN",
+        "feature_3V9mik",
+        "feature_hLyFr7",
+        "feature_6zQnYA"
       ],
-      "name": "Features Grid",
+      "name": "Bento Grid",
       "settings": {
+        "heading": "All the details that make XNote unique",
+        "mobile_image": "shopify://shop_images/Group_1171281537.svg",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80,
         "grid_gap": 16,
         "card_radius": 20,
-        "card_padding": 12,
-        "section_title": "Features",
+        "card_padding": 0,
+        "bg_color": "#ffffff"
+      }
+    },
+    "features_grid_myY3Kx": {
+      "type": "features-grid",
+      "blocks": {
+        "feature_card_Xf8q9g": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281546.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_U9jhRi": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281562.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_3CUiCQ": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/weight.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_wbVfQR": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281555.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_NfAzjC": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281560.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_CWyyjX": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/audi-new_b83dd50b-520f-4e21-a7d9-50c28aafc261.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_BdRp9P": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281559.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_KKPT8R": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281558.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_W3pGk7": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281557.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_L3hQVY": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281568.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_VQyJ8B": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281567.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_38VBf9": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281566.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_n9tU4X": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281565.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_HDkfCA": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281564.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        },
+        "feature_card_zJFt3G": {
+          "type": "feature_card",
+          "settings": {
+            "image": "shopify://shop_images/Group_1171281563.png",
+            "image_alt": "",
+            "show_on_mobile": true,
+            "bg_type": "default",
+            "bg_color_1": "#f5f7fa",
+            "bg_color_2": "#e8ecf1",
+            "gradient_direction": "135deg",
+            "custom_bg": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_card_Xf8q9g",
+        "feature_card_U9jhRi",
+        "feature_card_3CUiCQ",
+        "feature_card_wbVfQR",
+        "feature_card_NfAzjC",
+        "feature_card_CWyyjX",
+        "feature_card_BdRp9P",
+        "feature_card_KKPT8R",
+        "feature_card_W3pGk7",
+        "feature_card_L3hQVY",
+        "feature_card_VQyJ8B",
+        "feature_card_38VBf9",
+        "feature_card_n9tU4X",
+        "feature_card_HDkfCA",
+        "feature_card_zJFt3G"
+      ],
+      "disabled": true,
+      "name": "Features Grid",
+      "settings": {
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96,
+        "grid_gap": 16,
+        "card_radius": 20,
+        "card_padding": 0,
+        "section_title": "All the details that make XNote unique",
         "section_description": "",
         "bg_color": "#ffffff",
         "title_color": "#0b0b0c",
         "desc_color": "#0b0b0cb3"
       }
     },
-    "video_showcase_xLdect": {
+    "video_showcase_mRzkYr": {
       "type": "video-showcase",
       "blocks": {
-        "tab_V6qm7q": {
+        "tab_dYqBAx": {
           "type": "tab",
           "settings": {
-            "tab_title": "One-Press Record",
+            "tab_title": "Capture",
             "video_external": "",
-            "video_file": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/e2c4002ffc3944149c97553ecf7fe4f7.mp4",
             "video_url": ""
           }
         },
-        "tab_zi7hcz": {
+        "tab_mcWhwD": {
           "type": "tab",
           "settings": {
-            "tab_title": "Voice-to-Text Transcription",
+            "tab_title": "Understand",
             "video_external": "",
             "video_file": "",
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/8f693e8594d345f8ad3085032dc9d7e2.mp4"
           }
         },
-        "tab_iayfrM": {
+        "tab_x9t6ad": {
           "type": "tab",
           "settings": {
-            "tab_title": "AI Summarization",
+            "tab_title": "Utilize",
             "video_external": "",
             "video_file": "",
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/99a120ab59e048ffa5131f6d247cbace.mp4"
           }
         }
       },
       "block_order": [
-        "tab_V6qm7q",
-        "tab_zi7hcz",
-        "tab_iayfrM"
+        "tab_dYqBAx",
+        "tab_mcWhwD",
+        "tab_x9t6ad"
       ],
       "name": "Video Showcase",
       "settings": {
@@ -398,10 +594,10 @@
         "padding_bottom_desktop": 96
       }
     },
-    "use_cases_MpLWEy": {
+    "use_cases_mfRtxd": {
       "type": "use-cases",
       "blocks": {
-        "use_case_C86Yi7": {
+        "use_case_UhitK8": {
           "type": "use_case",
           "settings": {
             "image": "shopify://shop_images/Rectangle_12925.png",
@@ -409,27 +605,27 @@
             "badge_text": ""
           }
         },
-        "use_case_6kiheV": {
+        "use_case_jGCtz7": {
           "type": "use_case",
           "settings": {
-            "image": "shopify://shop_images/Screenshot_2025-10-31_at_10.44.27.png",
+            "image": "shopify://shop_images/Rectangle_12926.png",
             "title": "Student/Educator",
             "badge_text": ""
           }
         },
-        "use_case_9jJjGb": {
+        "use_case_izbmTH": {
           "type": "use_case",
           "settings": {
-            "image": "shopify://shop_images/Sequence_01.00_00_00_00.Still001.png",
+            "image": "shopify://shop_images/Rectangle_12927.png",
             "title": "Creator/Researcher",
             "badge_text": ""
           }
         }
       },
       "block_order": [
-        "use_case_C86Yi7",
-        "use_case_6kiheV",
-        "use_case_9jJjGb"
+        "use_case_UhitK8",
+        "use_case_jGCtz7",
+        "use_case_izbmTH"
       ],
       "name": "Use Cases",
       "settings": {
@@ -440,324 +636,313 @@
         "button_link": "",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
-        "padding_top_desktop": 80,
-        "padding_bottom_desktop": 80
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
       }
     },
-    "category_cards_id3BMX": {
+    "category_cards_xRkWKG": {
       "type": "category-cards",
       "blocks": {
-        "category_TMnLQD": {
+        "category_NXfmgU": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_13079.png",
-            "title": "Meetings"
+            "image": "shopify://shop_images/Rectangle_13078.png",
+            "title": "Meetings",
+            "description": "Capture key moments, get instant AI summaries."
           }
         },
-        "category_gJGFdc": {
+        "category_rXF8tL": {
           "type": "category",
           "settings": {
             "image": "shopify://shop_images/Rectangle_13079.png",
-            "title": "Lectures"
+            "title": "Lectures",
+            "description": "Capture key moments, get instant AI summaries."
           }
         },
-        "category_KLNq3E": {
+        "category_aGNdEL": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_13079.png",
-            "title": "Therapy Sessions"
+            "image": "shopify://shop_images/Rectangle_13079_1.png",
+            "title": "Therapy Sessions",
+            "description": "Capture key moments, get instant AI summaries."
           }
         },
-        "category_AXX8Yn": {
+        "category_CyHJQG": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_13079.png",
-            "title": "Interviews"
+            "image": "shopify://shop_images/Rectangle_13079_2.png",
+            "title": "Interviews",
+            "description": "Capture key moments, get instant AI summaries."
           }
         },
-        "category_nqdrqi": {
+        "category_74BA9K": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_13079.png",
-            "title": "Research"
+            "image": "shopify://shop_images/Rectangle_13079_3.png",
+            "title": "Research",
+            "description": "Capture key moments, get instant AI summaries."
           }
         }
       },
       "block_order": [
-        "category_TMnLQD",
-        "category_gJGFdc",
-        "category_KLNq3E",
-        "category_AXX8Yn",
-        "category_nqdrqi"
+        "category_NXfmgU",
+        "category_rXF8tL",
+        "category_aGNdEL",
+        "category_CyHJQG",
+        "category_74BA9K"
       ],
       "name": "Category Cards",
       "settings": {
-        "heading": "Meetings",
+        "heading": "From Meetings to Research One Tool for Every Workflow",
+        "subheading": "XNote adapts to every setting, seamlessly turning handwritten notes into organized knowledge.",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
-        "padding_top_desktop": 80,
-        "padding_bottom_desktop": 80
+        "padding_top_desktop": 120,
+        "padding_bottom_desktop": 120
       }
     },
-    "stat_highlight_AnLYdN": {
-      "type": "stat-highlight",
-      "name": "Stat Highlight",
+    "image_comparison_PCWW77": {
+      "type": "image-comparison",
+      "name": "Image Comparison",
       "settings": {
-        "image": "shopify://shop_images/Screenshot_2025-10-31_at_10.44.27.png",
-        "image_position": "left",
-        "heading": "Reduce wasted meeting<br> time by up to",
-        "stat_number": "30%",
-        "description": "stay focused, not repetitive.",
-        "button_text": "",
-        "button_link": "",
+        "before_image": "shopify://shop_images/Frame_25.png",
+        "before_label": "Before",
+        "after_image": "shopify://shop_images/Frame_26.png",
+        "after_label": "After",
+        "heading": "Escape the Chaos. Write.\n Sync. Save Time.",
+        "stat_number": "260+",
+        "stat_label": "hrs saved per year*",
+        "description": "Keep the clarity of real handwriting without the mess. XNote digitizes, organizes, and syncs your notes instantly so you can focus on ideas, not admin.",
+        "subdescription": "Estimate based on average time saved from post-handwriting cleanup, note organization, and meeting documentation.",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80
       }
     },
-    "media_tabs_z7geHH": {
-      "type": "media-tabs",
+    "specifications_grid_WGLdaC": {
+      "type": "specifications-grid",
       "blocks": {
-        "tab_MeQV98": {
-          "type": "tab",
+        "specification_item_MCpqDp": {
+          "type": "specification_item",
           "settings": {
-            "tab_title": "Capture voice notes even without internet.",
-            "tab_description": "Never miss an idea. Record your thoughts instantly, even when you're offline.",
-            "media_type": "image",
-            "video_url": ""
+            "title": "Category",
+            "description": "Product category information",
+            "icon_type": "category",
+            "icon_svg": "",
+            "custom_icon_color": ""
           }
         },
-        "tab_HbFXtc": {
-          "type": "tab",
+        "specification_item_gVVQiH": {
+          "type": "specification_item",
           "settings": {
-            "tab_title": "Record and transcribe your meetings automatically.",
-            "tab_description": "XNote's MeetBot captures every word from Google Meet, Zoom, and Teams, linking conversations directly to your handwritten pages.",
-            "media_type": "image",
-            "video_url": ""
+            "title": "Connection",
+            "description": "Bluetooth for reliable connectivity",
+            "icon_type": "connection",
+            "icon_svg": "",
+            "custom_icon_color": ""
           }
         },
-        "tab_9D97QN": {
-          "type": "tab",
+        "specification_item_77Adgt": {
+          "type": "specification_item",
           "settings": {
-            "tab_title": "Identify who said what in every conversation.",
-            "tab_description": "Advanced speaker detection ensures you always know who contributed what in your meetings.",
-            "media_type": "image",
-            "video_url": ""
+            "title": "Feature Name",
+            "description": "Feature description goes here",
+            "icon_type": "check",
+            "icon_svg": "",
+            "custom_icon_color": ""
           }
         },
-        "tab_kLDrM8": {
-          "type": "tab",
+        "specification_item_eQFNKa": {
+          "type": "specification_item",
           "settings": {
-            "tab_title": "Transcribe and understand multiple languages.",
-            "tab_description": "Break language barriers with multi-language transcription and translation capabilities.",
-            "media_type": "image",
-            "video_url": ""
+            "title": "Feature Name",
+            "description": "Feature description goes here",
+            "icon_type": "check",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_BzJphX": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Feature Name",
+            "description": "Feature description goes here",
+            "icon_type": "check",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_8kFr9h": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Feature Name",
+            "description": "Feature description goes here",
+            "icon_type": "check",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_KLCQh4": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Battery Capacity",
+            "description": "280 mAh rechargeable Li-ion",
+            "icon_type": "battery",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_wBUqDf": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Battery Life (Writing)",
+            "description": "Up to 14 hours of continuous use",
+            "icon_type": "time",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_UUP3iE": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Charging Time",
+            "description": "~90 minutes (full charge)",
+            "icon_type": "charging",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_apbfz8": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Charging Method",
+            "description": "USB Type-C cable (included)",
+            "icon_type": "charging",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_NLpEkg": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Dimensions",
+            "description": "149.6 mm x 10.4 - 10.9 mm",
+            "icon_type": "dimensions",
+            "icon_svg": "",
+            "custom_icon_color": ""
+          }
+        },
+        "specification_item_UJBXjk": {
+          "type": "specification_item",
+          "settings": {
+            "title": "Weight",
+            "description": "17.6 g",
+            "icon_type": "weight",
+            "icon_svg": "",
+            "custom_icon_color": ""
           }
         }
       },
       "block_order": [
-        "tab_MeQV98",
-        "tab_HbFXtc",
-        "tab_9D97QN",
-        "tab_kLDrM8"
+        "specification_item_MCpqDp",
+        "specification_item_gVVQiH",
+        "specification_item_77Adgt",
+        "specification_item_eQFNKa",
+        "specification_item_BzJphX",
+        "specification_item_8kFr9h",
+        "specification_item_KLCQh4",
+        "specification_item_wBUqDf",
+        "specification_item_UUP3iE",
+        "specification_item_apbfz8",
+        "specification_item_NLpEkg",
+        "specification_item_UJBXjk"
       ],
-      "name": "Media Tabs",
+      "name": "Specifications Grid",
       "settings": {
-        "heading": "AI Intelligence",
-        "heading_color": "#111827",
-        "media_position": "left",
-        "media_ratio": "video",
-        "media_fit": "contain",
-        "media_radius": 48,
-        "tab_title_color": "#111827",
-        "tab_description_color": "#4b5563",
-        "tab_active_color": "#111827",
-        "section_bg_color": "#ffffff",
+        "section_title": "Specifications",
+        "section_description": "",
+        "columns_desktop": 4,
+        "grid_gap": 16,
+        "card_radius": 16,
+        "card_padding": 24,
+        "icon_size": 24,
+        "icon_color": "#0b0b0c",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
-        "padding_bottom_desktop": 80
+        "padding_bottom_desktop": 80,
+        "bg_color": "#ffffff",
+        "card_bg_color": "#f5f7fa",
+        "title_color": "#0b0b0c",
+        "heading_color": "#0b0b0c",
+        "desc_color": "#0b0b0cb3"
       }
     },
-    "media_tabs_zKNLpN": {
-      "type": "media-tabs",
+    "logo_marquee_F6a3J9": {
+      "type": "logo-marquee",
       "blocks": {
-        "tab_FT7aCw": {
-          "type": "tab",
+        "logo_ndCXBm": {
+          "type": "logo",
           "settings": {
-            "tab_title": "Capture voice notes even without internet.",
-            "tab_description": "Never miss an idea. Record your thoughts instantly, even when you're offline.",
-            "media_type": "image",
-            "video_url": ""
+            "alt_text": "",
+            "link": ""
           }
         },
-        "tab_XFqbzM": {
-          "type": "tab",
+        "logo_gGpzdk": {
+          "type": "logo",
           "settings": {
-            "tab_title": "Record and transcribe your meetings automatically.",
-            "tab_description": "XNote's MeetBot captures every word from Google Meet, Zoom, and Teams, linking conversations directly to your handwritten pages.",
-            "media_type": "image",
-            "video_url": ""
+            "alt_text": "",
+            "link": ""
           }
         },
-        "tab_yyEJLp": {
-          "type": "tab",
+        "logo_DXMqmJ": {
+          "type": "logo",
           "settings": {
-            "tab_title": "Identify who said what in every conversation.",
-            "tab_description": "Advanced speaker detection ensures you always know who contributed what in your meetings.",
-            "media_type": "image",
-            "video_url": ""
+            "alt_text": "",
+            "link": ""
           }
         },
-        "tab_9QzLmP": {
-          "type": "tab",
+        "logo_N9MFfM": {
+          "type": "logo",
           "settings": {
-            "tab_title": "Transcribe and understand multiple languages.",
-            "tab_description": "Break language barriers with multi-language transcription and translation capabilities.",
-            "media_type": "image",
-            "video_url": ""
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_8xQYiN": {
+          "type": "logo",
+          "settings": {
+            "alt_text": "",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "tab_FT7aCw",
-        "tab_XFqbzM",
-        "tab_yyEJLp",
-        "tab_9QzLmP"
+        "logo_ndCXBm",
+        "logo_gGpzdk",
+        "logo_DXMqmJ",
+        "logo_N9MFfM",
+        "logo_8xQYiN"
       ],
-      "name": "Media Tabs",
+      "name": "Logo Marquee",
       "settings": {
-        "heading": "AI Intelligence",
-        "heading_color": "#111827",
-        "media_position": "right",
-        "media_ratio": "video",
-        "media_fit": "contain",
-        "media_radius": 48,
-        "tab_title_color": "#111827",
-        "tab_description_color": "#4b5563",
-        "tab_active_color": "#111827",
-        "section_bg_color": "#ffffff",
+        "heading": "leading global media.",
+        "subheading": "Featured by",
+        "animation_speed": 30,
+        "logo_grayscale": 100,
+        "logo_opacity": 50,
+        "background_color": "#ffffff",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80
       }
     },
-    "pricing_comparison_jnbLiG": {
-      "type": "pricing-comparison",
-      "blocks": {
-        "plan_xt9BdY": {
-          "type": "plan",
-          "settings": {
-            "plan_name": "Start Plan",
-            "badge_style": "green"
-          }
-        },
-        "plan_Wkzfpw": {
-          "type": "plan",
-          "settings": {
-            "plan_name": "Pro Plan",
-            "badge_style": "gray"
-          }
-        },
-        "plan_j86Jqn": {
-          "type": "plan",
-          "settings": {
-            "plan_name": "Unlimited Plan",
-            "badge_style": "purple"
-          }
-        },
-        "feature_pcKQ9d": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Pricing",
-            "plan1_value": "Free",
-            "plan2_value": "$ 99.99/yr",
-            "plan3_value": "$ 299.99/yr"
-          }
-        },
-        "feature_Pj4Gdg": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Speaker Labels",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
-          }
-        },
-        "feature_iDXC7a": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Multimodal Input",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
-          }
-        },
-        "feature_NzNtnA": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Multidimensional Summaries",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
-          }
-        },
-        "feature_jt49yV": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "LLM Models",
-            "plan1_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence..",
-            "plan2_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence..",
-            "plan3_value": "GPT-5, Gemini, 2.5 Pro, Xnote Intelligence.."
-          }
-        },
-        "feature_iLwcUi": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Custom Summary Templates",
-            "plan1_value": "check",
-            "plan2_value": "check",
-            "plan3_value": "check"
-          }
-        },
-        "feature_CpHBjA": {
-          "type": "feature",
-          "settings": {
-            "feature_name": "Professional Summary Templates",
-            "plan1_value": "15",
-            "plan2_value": "3,000+",
-            "plan3_value": "3,000+"
-          }
-        }
-      },
-      "block_order": [
-        "plan_xt9BdY",
-        "plan_Wkzfpw",
-        "plan_j86Jqn",
-        "feature_pcKQ9d",
-        "feature_Pj4Gdg",
-        "feature_iDXC7a",
-        "feature_NzNtnA",
-        "feature_jt49yV",
-        "feature_iLwcUi",
-        "feature_CpHBjA"
-      ],
-      "name": "Pricing Comparison",
-      "settings": {
-        "heading": "Subscription Plan",
-        "subheading": "Unlock Xnote Intelligence's full AI capabilities with pro or unlimited plan",
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 80,
-        "padding_bottom_desktop": 80
-      }
-    },
-    "faq_PQrjpP": {
+    "faq_cLfi3W": {
       "type": "faq",
       "blocks": {
-        "faq_item_WnNNLp": {
+        "faq_item_YVmqaT": {
           "type": "faq_item",
           "settings": {
             "question": "How to cancel the subscription?",
@@ -765,7 +950,7 @@
             "open_by_default": true
           }
         },
-        "faq_item_iWi3EK": {
+        "faq_item_niFGAy": {
           "type": "faq_item",
           "settings": {
             "question": "Can I transfer my AI premium membership to another account?",
@@ -773,7 +958,7 @@
             "open_by_default": false
           }
         },
-        "faq_item_4Lhdfm": {
+        "faq_item_PWe4fP": {
           "type": "faq_item",
           "settings": {
             "question": "Does XNote AI save my notes? How is my personal data and information protected?",
@@ -781,7 +966,7 @@
             "open_by_default": false
           }
         },
-        "faq_item_ndReqV": {
+        "faq_item_Cmhr4W": {
           "type": "faq_item",
           "settings": {
             "question": "Under what circumstances does XNote AI or its affiliates access a user's personal data?",
@@ -791,10 +976,10 @@
         }
       },
       "block_order": [
-        "faq_item_WnNNLp",
-        "faq_item_iWi3EK",
-        "faq_item_4Lhdfm",
-        "faq_item_ndReqV"
+        "faq_item_YVmqaT",
+        "faq_item_niFGAy",
+        "faq_item_PWe4fP",
+        "faq_item_Cmhr4W"
       ],
       "name": "FAQ",
       "settings": {
@@ -802,18 +987,90 @@
         "button_text": "Ask another question",
         "button_link": ""
       }
+    },
+    "176284573357af21a7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_4mMHjV": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 2600
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_4mMHjV"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "icon_features_y4fCAw": {
+      "type": "icon-features",
+      "blocks": {
+        "feature_xiLUkD": {
+          "type": "feature",
+          "settings": {
+            "icon": "fast.png",
+            "title": "Fast, Free Shipping",
+            "description": "Ship out within 1-2 business days"
+          }
+        },
+        "feature_cjXVtV": {
+          "type": "feature",
+          "settings": {
+            "icon": "return.png",
+            "title": "Free 30-Day Return",
+            "description": "No reason needed. Free return shipping & full refund."
+          }
+        },
+        "feature_8yyqjH": {
+          "type": "feature",
+          "settings": {
+            "icon": "support.png",
+            "title": "Lifetime Customer Support",
+            "description": "Quick support within 24 hours on working days"
+          }
+        },
+        "feature_qkcpGG": {
+          "type": "feature",
+          "settings": {
+            "icon": "security.png",
+            "title": "One-Year Warranty",
+            "description": "Warranty Period subject to local laws"
+          }
+        }
+      },
+      "block_order": [
+        "feature_xiLUkD",
+        "feature_cjXVtV",
+        "feature_8yyqjH",
+        "feature_qkcpGG"
+      ],
+      "name": "Icon Features",
+      "settings": {
+        "gradient_angle": 135,
+        "gradient_start": "#f5f7fa",
+        "gradient_middle": "#f5f7fa",
+        "gradient_end": "#ffffff",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
     }
   },
   "order": [
-    "main",
-    "features_grid_LPaqFQ",
-    "video_showcase_xLdect",
-    "use_cases_MpLWEy",
-    "category_cards_id3BMX",
-    "stat_highlight_AnLYdN",
-    "media_tabs_z7geHH",
-    "media_tabs_zKNLpN",
-    "pricing_comparison_jnbLiG",
-    "faq_PQrjpP"
+    "product_CCFgYF",
+    "bento_grid_DwBJxH",
+    "features_grid_myY3Kx",
+    "video_showcase_mRzkYr",
+    "use_cases_mfRtxd",
+    "category_cards_xRkWKG",
+    "image_comparison_PCWW77",
+    "specifications_grid_WGLdaC",
+    "logo_marquee_F6a3J9",
+    "faq_cLfi3W",
+    "176284573357af21a7",
+    "icon_features_y4fCAw"
   ]
 }

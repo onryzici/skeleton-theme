@@ -84,9 +84,14 @@
   {% comment %} Section Heading - Centered {% endcomment %}
   {% if section.settings.heading != blank %}
     <div class="category-heading text-center mb-8 lg:mb-12">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
         {{ section.settings.heading }}
       </h2>
+      {% if section.settings.subheading != blank %}
+        <p class="text-base lg:text-lg font-sans text-gray-600 max-w-3xl mx-auto px-4">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
     </div>
   {% endif %}
 
@@ -102,7 +107,7 @@
               <div class="category-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto snap-center" {{ block.shopify_attributes }}>
 
                 {% comment %} Card with Image Background {% endcomment %}
-                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100">
+                <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-gray-100">
                   {% if block.settings.image != blank %}
                     <img
                       src="{{ block.settings.image | image_url: width: 600 }}"
@@ -110,19 +115,24 @@
                       class="category-image w-full h-full object-cover"
                       loading="lazy"
                       width="600"
-                      height="600"
+                      height="750"
                     >
                   {% else %}
                     {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover text-gray-300' }}
                   {% endif %}
 
-                  {% comment %} Overlay with Title - Bottom Left {% endcomment %}
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+                  {% comment %} Overlay with Title and Description - Bottom Left {% endcomment %}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                   <div class="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
                     {% if block.settings.title != blank %}
-                      <h3 class="text-xl lg:text-2xl font-semibold font-sans text-white">
+                      <h3 class="text-xl lg:text-2xl font-semibold font-sans text-white mb-2">
                         {{ block.settings.title }}
                       </h3>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                      <p class="text-sm lg:text-base font-sans text-white/90">
+                        {{ block.settings.description }}
+                      </p>
                     {% endif %}
                   </div>
                 </div>
@@ -150,7 +160,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Meetings"
+      "default": "From Meetings to Research One Tool for Every Workflow"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "XNote adapts to every setting, seamlessly turning handwritten notes into organized knowledge."
     },
     {
       "type": "header",
@@ -206,13 +222,19 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Recommended: Square image, min 800x800px"
+          "info": "Recommended: Vertical image, min 800x1000px"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Title",
           "default": "Meetings"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Capture key moments, get instant AI summaries."
         }
       ]
     }
@@ -224,31 +246,36 @@
         {
           "type": "category",
           "settings": {
-            "title": "Meetings"
+            "title": "Meetings",
+            "description": "Capture key moments, get instant AI summaries."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Lectures"
+            "title": "Lectures",
+            "description": "Never miss a concept, your notes automatically organized."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Therapy Sessions"
+            "title": "Therapy Sessions",
+            "description": "Focus on people, not paperwork."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Interviews"
+            "title": "Interviews",
+            "description": "Record insights about people through touch."
           }
         },
         {
           "type": "category",
           "settings": {
-            "title": "Research"
+            "title": "Research",
+            "description": "Connect handwritten observations to digital references."
           }
         }
       ]
