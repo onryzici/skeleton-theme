@@ -73,6 +73,22 @@
     border-right: none;
   }
 
+  #shopify-section-{{ section.id }} .header-cell.feature-cell {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .header-cell.feature-cell span {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .header-cell.feature-cell span {
+      font-size: 1.5rem;
+    }
+  }
+
   /* Column backgrounds */
   {% for i in (1..3) %}
     {% assign column_bg = 'column_' | append: i | append: '_bg_color' %}
