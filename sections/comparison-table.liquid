@@ -221,12 +221,12 @@
 
       {% comment %} Table Header Row 2 - Column titles {% endcomment %}
       <div class="table-header">
-        <div class="header-cell feature-cell bg-white">
+        <div class="table-cell feature-cell bg-white">
         </div>
 
         {% for i in (1..3) %}
           {% assign column_title = 'column_' | append: i | append: '_title' %}
-          <div class="header-cell column-{{ i }}">
+          <div class="table-cell column-{{ i }}">
             <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
               {{ section.settings[column_title] }}
             </span>
