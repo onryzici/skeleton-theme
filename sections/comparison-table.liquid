@@ -92,6 +92,17 @@
     }
   }
 
+  /* Ensure images in non-feature header cells are centered */
+  #shopify-section-{{ section.id }} .header-cell:not(.feature-cell) {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .header-cell img {
+    display: block;
+  }
+
   /* Column backgrounds */
   {% for i in (1..3) %}
     {% assign column_bg = 'column_' | append: i | append: '_bg_color' %}
