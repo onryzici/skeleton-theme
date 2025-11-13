@@ -148,16 +148,16 @@
     display: none !important;
   }
 
-  /* Buy Together styles - Grid-based animation */
+  /* Buy Together styles - Use same collapsible animation as other tabs */
   #shopify-section-{{ section.id }} .buy-together-wrapper details {
-    display: block;
+    display: block !important;
   }
 
   #shopify-section-{{ section.id }} .buy-together-wrapper summary {
-    display: flex;
+    display: flex !important;
   }
 
-  #shopify-section-{{ section.id }} .buy-together-wrapper .bundle-content {
+  #shopify-section-{{ section.id }} .buy-together-wrapper .collapsible-content {
     display: grid !important;
     grid-template-rows: 0fr !important;
     transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
@@ -165,12 +165,12 @@
     opacity: 0 !important;
   }
 
-  #shopify-section-{{ section.id }} .buy-together-wrapper details.is-active .bundle-content {
+  #shopify-section-{{ section.id }} .buy-together-wrapper details.is-active .collapsible-content {
     grid-template-rows: 1fr !important;
     opacity: 1 !important;
   }
 
-  #shopify-section-{{ section.id }} .buy-together-wrapper .bundle-content > * {
+  #shopify-section-{{ section.id }} .buy-together-wrapper .collapsible-content > div {
     overflow: hidden;
   }
 
@@ -508,7 +508,7 @@
 
                 {% if bundle_collection.products.size > 0 %}
                   <div class="buy-together-wrapper border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
-                    <details class="group" {% if block.settings.open_by_default %}open{% endif %} data-collapsible-tab>
+                    <details class="group block" {% if block.settings.open_by_default %}open{% endif %} data-collapsible-tab>
                       <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
                         <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
                           {{ block.settings.heading | default: 'Buy together, save more' }}
@@ -518,7 +518,8 @@
                         </svg>
                       </summary>
 
-                      <div class="bundle-content">
+                      <div class="collapsible-content">
+                        <div>
                         <div class="pb-4 space-y-3" id="bundle-wrapper-{{ section.id }}">
                       {% comment %} Bundle Products from Collection {% endcomment %}
                       {% for bundle_product in bundle_collection.products limit: block.settings.product_limit %}
@@ -581,6 +582,7 @@
                           Add selected to Cart
                         </button>
                       </div>
+                        </div>
                         </div>
                       </div>
                     </details>
