@@ -1,17 +1,318 @@
 {% comment %}
-  This section is used in the page template to render store pages like About us
-  or Contact us.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/page
+  Page Section
+  Modern page template with customizable hero and content sections
 {% endcomment %}
 
-<h1>{{ page.title }}</h1>
+<style>
+  /* Section padding */
+  #shopify-section-{{ section.id }} .page-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
 
-{{ page.content }}
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .page-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Hero section background */
+  #shopify-section-{{ section.id }} .page-hero {
+    {% if section.settings.hero_bg_type == 'gradient' %}
+      {% assign color1 = section.settings.hero_bg_color_1 | default: '#f9fafb' %}
+      {% assign color2 = section.settings.hero_bg_color_2 | default: '#e5e7eb' %}
+      background: linear-gradient(135deg, {{ color1 }} 0%, {{ color2 }} 100%);
+    {% elsif section.settings.hero_bg_type == 'solid' %}
+      {% assign color1 = section.settings.hero_bg_color_1 | default: '#f9fafb' %}
+      background: {{ color1 }};
+    {% else %}
+      background: #ffffff;
+    {% endif %}
+  }
+
+  /* Content max width */
+  #shopify-section-{{ section.id }} .page-content {
+    max-width: {{ section.settings.content_width }}px;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .page-hero-content {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .page-content-wrapper {
+    animation: fadeInUp 0.6s ease forwards 0.2s;
+    opacity: 0;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .page-hero-content,
+    #shopify-section-{{ section.id }} .page-content-wrapper {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Rich text content styling */
+  #shopify-section-{{ section.id }} .page-content h1,
+  #shopify-section-{{ section.id }} .page-content h2,
+  #shopify-section-{{ section.id }} .page-content h3 {
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+
+  #shopify-section-{{ section.id }} .page-content h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  #shopify-section-{{ section.id }} .page-content h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  #shopify-section-{{ section.id }} .page-content h3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  #shopify-section-{{ section.id }} .page-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.75;
+  }
+
+  #shopify-section-{{ section.id }} .page-content ul,
+  #shopify-section-{{ section.id }} .page-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #shopify-section-{{ section.id }} .page-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  #shopify-section-{{ section.id }} .page-content a {
+    color: #6366f1;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .page-content a:hover {
+    color: #4f46e5;
+  }
+
+  #shopify-section-{{ section.id }} .page-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    margin: 2rem 0;
+  }
+
+  #shopify-section-{{ section.id }} .page-content blockquote {
+    border-left: 4px solid #e5e7eb;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #6b7280;
+  }
+</style>
+
+<div class="page-section full-width bg-white">
+
+  {% comment %} Hero Section {% endcomment %}
+  {% if section.settings.show_hero %}
+    <div class="page-hero full-width py-12 lg:py-20">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="page-hero-content text-center max-w-4xl mx-auto">
+          {% if section.settings.show_breadcrumbs %}
+            <nav class="flex justify-center mb-6" aria-label="Breadcrumb">
+              <ol class="flex items-center space-x-2 text-sm text-gray-600 font-sans">
+                <li>
+                  <a href="/" class="hover:text-gray-900 transition-colors">Home</a>
+                </li>
+                <li>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </li>
+                <li class="text-gray-900 font-medium">{{ page.title }}</li>
+              </ol>
+            </nav>
+          {% endif %}
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-sans text-gray-900 mb-6">
+            {{ page.title }}
+          </h1>
+
+          {% if section.settings.show_description and page.metafields.custom.description != blank %}
+            <p class="text-lg lg:text-xl text-gray-600 font-sans max-w-3xl mx-auto">
+              {{ page.metafields.custom.description }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% comment %} Content Section {% endcomment %}
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div class="page-content-wrapper">
+      <div class="page-content mx-auto">
+        {% if section.settings.show_title_in_content and section.settings.show_hero == false %}
+          <h1 class="text-4xl lg:text-5xl font-bold font-sans text-gray-900 mb-8">
+            {{ page.title }}
+          </h1>
+        {% endif %}
+
+        <div class="text-base lg:text-lg text-gray-700 font-sans leading-relaxed">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 {% schema %}
 {
-  "name": "t:general.page",
-  "settings": []
+  "name": "Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show hero section",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show page description",
+      "default": false,
+      "info": "Add a custom.description metafield to your page"
+    },
+    {
+      "type": "select",
+      "id": "hero_bg_type",
+      "label": "Hero background type",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "solid",
+          "label": "Solid color"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "gradient"
+    },
+    {
+      "type": "color",
+      "id": "hero_bg_color_1",
+      "label": "Hero background color (start)",
+      "default": "#f9fafb"
+    },
+    {
+      "type": "color",
+      "id": "hero_bg_color_2",
+      "label": "Hero background color (end)",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title_in_content",
+      "label": "Show title in content area",
+      "default": false,
+      "info": "Only applies when hero is hidden"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 0
+    }
+  ]
 }
 {% endschema %}
