@@ -1,0 +1,452 @@
+{% comment %}
+  Comparison Table Section
+  Feature comparison table with customizable columns and icons
+{% endcomment %}
+
+<style>
+  /* Section padding */
+  #shopify-section-{{ section.id }} .comparison-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .comparison-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Table styling */
+  #shopify-section-{{ section.id }} .comparison-table {
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .table-header {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  #shopify-section-{{ section.id }} .table-row {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  #shopify-section-{{ section.id }} .table-row:last-child {
+    border-bottom: none;
+  }
+
+  #shopify-section-{{ section.id }} .table-cell {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cell {
+    justify-content: flex-start;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  #shopify-section-{{ section.id }} .header-cell {
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Column backgrounds */
+  {% for i in (1..3) %}
+    {% assign column_bg = 'column_' | append: i | append: '_bg_color' %}
+    #shopify-section-{{ section.id }} .column-{{ i }} {
+      background: {{ section.settings[column_bg] | default: '#ffffff' }};
+    }
+  {% endfor %}
+
+  /* Icon styling */
+  #shopify-section-{{ section.id }} .icon-check {
+    color: #10b981;
+  }
+
+  #shopify-section-{{ section.id }} .icon-cross {
+    color: #ef4444;
+  }
+
+  #shopify-section-{{ section.id }} .icon-minus {
+    color: #f59e0b;
+  }
+
+  /* Responsive */
+  @media (max-width: 1023px) {
+    #shopify-section-{{ section.id }} .table-header,
+    #shopify-section-{{ section.id }} .table-row {
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .table-cell {
+      padding: 1rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    #shopify-section-{{ section.id }} .header-cell {
+      padding: 1.5rem 0.75rem;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .comparison-heading {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table {
+    animation: fadeInUp 0.6s ease forwards 0.2s;
+    opacity: 0;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .comparison-heading,
+    #shopify-section-{{ section.id }} .comparison-table {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>
+
+<div class="comparison-section full-width bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Section Heading {% endcomment %}
+    {% if section.settings.heading != blank %}
+      <div class="comparison-heading text-center mb-8 lg:mb-12">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
+          {{ section.settings.heading }}
+        </h2>
+        {% if section.settings.subheading != blank %}
+          <p class="text-base lg:text-lg font-sans text-gray-600 max-w-3xl mx-auto">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} Comparison Table {% endcomment %}
+    <div class="comparison-table bg-white">
+      {% comment %} Table Header {% endcomment %}
+      <div class="table-header">
+        <div class="table-cell feature-cell bg-white">
+          <span class="text-lg font-bold font-sans text-gray-900">Feature</span>
+        </div>
+
+        {% for i in (1..3) %}
+          {% assign column_title = 'column_' | append: i | append: '_title' %}
+          {% assign column_icon = 'column_' | append: i | append: '_icon' %}
+          <div class="header-cell column-{{ i }}">
+            {% if section.settings[column_icon] != blank %}
+              <div class="w-12 h-12 lg:w-16 lg:h-16">
+                {{ section.settings[column_icon] }}
+              </div>
+            {% endif %}
+            <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
+              {{ section.settings[column_title] }}
+            </span>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} Feature Rows {% endcomment %}
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div class="table-row" {{ block.shopify_attributes }}>
+            <div class="table-cell feature-cell bg-white">
+              {{ block.settings.feature_name }}
+            </div>
+
+            {% for i in (1..3) %}
+              {% assign column_icon = 'column_' | append: i | append: '_icon' %}
+              <div class="table-cell column-{{ i }}">
+                {% if block.settings[column_icon] == 'check' %}
+                  <svg class="w-6 h-6 icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                  </svg>
+                {% elsif block.settings[column_icon] == 'cross' %}
+                  <svg class="w-6 h-6 icon-cross" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9l-6 6m0-6l6 6"/>
+                  </svg>
+                {% elsif block.settings[column_icon] == 'minus' %}
+                  <svg class="w-6 h-6 icon-minus" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h8"/>
+                  </svg>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Comparison Table",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Comparison"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Unlock Xnote Intelligence's full AI capabilities with pro or unlimited plan"
+    },
+    {
+      "type": "header",
+      "content": "Column 1"
+    },
+    {
+      "type": "text",
+      "id": "column_1_title",
+      "label": "Column 1 title",
+      "default": "XNote Smart Writing Set"
+    },
+    {
+      "type": "html",
+      "id": "column_1_icon",
+      "label": "Column 1 icon (SVG)",
+      "info": "Add SVG code for the icon"
+    },
+    {
+      "type": "color",
+      "id": "column_1_bg_color",
+      "label": "Column 1 background color",
+      "default": "#d1fae5"
+    },
+    {
+      "type": "header",
+      "content": "Column 2"
+    },
+    {
+      "type": "text",
+      "id": "column_2_title",
+      "label": "Column 2 title",
+      "default": "Tablet + Stylus"
+    },
+    {
+      "type": "html",
+      "id": "column_2_icon",
+      "label": "Column 2 icon (SVG)",
+      "info": "Add SVG code for the icon"
+    },
+    {
+      "type": "color",
+      "id": "column_2_bg_color",
+      "label": "Column 2 background color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "header",
+      "content": "Column 3"
+    },
+    {
+      "type": "text",
+      "id": "column_3_title",
+      "label": "Column 3 title",
+      "default": "Traditional Smartpen"
+    },
+    {
+      "type": "html",
+      "id": "column_3_icon",
+      "label": "Column 3 icon (SVG)",
+      "info": "Add SVG code for the icon"
+    },
+    {
+      "type": "color",
+      "id": "column_3_bg_color",
+      "label": "Column 3 background color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_name",
+          "label": "Feature name",
+          "default": "Feature name"
+        },
+        {
+          "type": "select",
+          "id": "column_1_icon",
+          "label": "Column 1 icon",
+          "options": [
+            {
+              "value": "check",
+              "label": "Check (green)"
+            },
+            {
+              "value": "cross",
+              "label": "Cross (red)"
+            },
+            {
+              "value": "minus",
+              "label": "Minus (orange)"
+            }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "select",
+          "id": "column_2_icon",
+          "label": "Column 2 icon",
+          "options": [
+            {
+              "value": "check",
+              "label": "Check (green)"
+            },
+            {
+              "value": "cross",
+              "label": "Cross (red)"
+            },
+            {
+              "value": "minus",
+              "label": "Minus (orange)"
+            }
+          ],
+          "default": "cross"
+        },
+        {
+          "type": "select",
+          "id": "column_3_icon",
+          "label": "Column 3 icon",
+          "options": [
+            {
+              "value": "check",
+              "label": "Check (green)"
+            },
+            {
+              "value": "cross",
+              "label": "Cross (red)"
+            },
+            {
+              "value": "minus",
+              "label": "Minus (orange)"
+            }
+          ],
+          "default": "cross"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Table",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Paper-first experience",
+            "column_1_icon": "check",
+            "column_2_icon": "check",
+            "column_3_icon": "minus"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Real-time digitization",
+            "column_1_icon": "check",
+            "column_2_icon": "check",
+            "column_3_icon": "cross"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "AI summaries & Q&A",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
