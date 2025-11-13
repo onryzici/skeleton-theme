@@ -162,34 +162,37 @@
 
     {% comment %} Comparison Table {% endcomment %}
     <div class="comparison-table bg-white">
-      {% comment %} Table Header {% endcomment %}
+      {% comment %} Table Header Row 1 - Feature text and icons {% endcomment %}
       <div class="table-header">
         <div class="header-cell feature-cell bg-white">
-          {% if section.settings.feature_column_icon != blank %}
-            <img
-              src="{{ section.settings.feature_column_icon | image_url: width: 120 }}"
-              alt="{{ section.settings.feature_column_title }}"
-              class="w-12 h-12 lg:w-16 lg:h-16 object-contain"
-              loading="lazy"
-            >
-          {% endif %}
           <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
             {{ section.settings.feature_column_title | default: 'Feature' }}
           </span>
         </div>
 
         {% for i in (1..3) %}
-          {% assign column_title = 'column_' | append: i | append: '_title' %}
           {% assign column_icon = 'column_' | append: i | append: '_icon' %}
           <div class="header-cell column-{{ i }}">
             {% if section.settings[column_icon] != blank %}
               <img
                 src="{{ section.settings[column_icon] | image_url: width: 120 }}"
-                alt="{{ section.settings[column_title] }}"
+                alt="Column {{ i }}"
                 class="w-12 h-12 lg:w-16 lg:h-16 object-contain"
                 loading="lazy"
               >
             {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} Table Header Row 2 - Column titles {% endcomment %}
+      <div class="table-header">
+        <div class="header-cell feature-cell bg-white">
+        </div>
+
+        {% for i in (1..3) %}
+          {% assign column_title = 'column_' | append: i | append: '_title' %}
+          <div class="header-cell column-{{ i }}">
             <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
               {{ section.settings[column_title] }}
             </span>
@@ -263,11 +266,6 @@
       "id": "feature_column_title",
       "label": "Feature column title",
       "default": "Feature"
-    },
-    {
-      "type": "image_picker",
-      "id": "feature_column_icon",
-      "label": "Feature column icon"
     },
     {
       "type": "header",
