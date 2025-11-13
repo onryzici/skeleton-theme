@@ -117,6 +117,9 @@ class CartDrawer {
               if (this.itemsContainer) {
                 this.itemsContainer.scrollTop = scrollTop;
               }
+
+              // Re-initialize quantity controls
+              this.initQuantityControls();
             }
 
             // Update header cart count
@@ -190,11 +193,17 @@ class CartDrawer {
   }
 
   initQuantityControls() {
-    // Use event delegation for better performance
-    if (!this.itemsContainer.dataset.listenersAttached) {
-      this.itemsContainer.addEventListener('click', async (e) => {
+    // Remove any existing listeners by cloning and replacing the element
+    if (!this.itemsContainer) return;
+
+    // Store handlers as instance methods if not already stored
+    if (!this.clickHandler) {
+      this.clickHandler = async (e) => {
         const target = e.target.closest('.quantity-decrease, .quantity-increase, .remove-btn');
         if (!target) return;
+
+        // Prevent rapid clicks
+        if (this.isUpdating) return;
 
         const line = target.dataset.line;
 
@@ -213,10 +222,12 @@ class CartDrawer {
         } else if (target.classList.contains('remove-btn')) {
           await this.removeItem(line);
         }
-      });
+      };
 
-      this.itemsContainer.addEventListener('change', async (e) => {
+      this.changeHandler = async (e) => {
         if (e.target.classList.contains('quantity-input')) {
+          if (this.isUpdating) return;
+
           const line = e.target.dataset.line;
           const newQty = parseInt(e.target.value);
 
@@ -226,10 +237,19 @@ class CartDrawer {
             await this.updateQuantity(line, newQty);
           }
         }
-      });
-
-      this.itemsContainer.dataset.listenersAttached = 'true';
+      };
     }
+
+    // Remove old listeners if they exist
+    if (this.itemsContainer.dataset.listenersAttached) {
+      this.itemsContainer.removeEventListener('click', this.clickHandler);
+      this.itemsContainer.removeEventListener('change', this.changeHandler);
+    }
+
+    // Add listeners
+    this.itemsContainer.addEventListener('click', this.clickHandler);
+    this.itemsContainer.addEventListener('change', this.changeHandler);
+    this.itemsContainer.dataset.listenersAttached = 'true';
   }
 
   initRemoveButtons() {
@@ -237,32 +257,33 @@ class CartDrawer {
   }
 
   async updateQuantity(line, quantity) {
-    // Debounce rapid clicks
-    clearTimeout(this.debounceTimer);
+    // Prevent multiple simultaneous updates
+    if (this.isUpdating) return;
 
-    this.debounceTimer = setTimeout(async () => {
-      try {
-        const response = await fetch('/cart/change.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            line: parseInt(line),
-            quantity: quantity
-          })
-        });
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          line: parseInt(line),
+          quantity: quantity
+        })
+      });
 
-        if (response.ok) {
-          await this.refreshCart();
-        }
-      } catch (error) {
-        console.error('Error updating quantity:', error);
+      if (response.ok) {
+        await this.refreshCart();
       }
-    }, 150); // 150ms debounce for smoother experience
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
   }
 
   async removeItem(line) {
+    // Prevent multiple simultaneous updates
+    if (this.isUpdating) return;
+
     try {
       const response = await fetch('/cart/change.js', {
         method: 'POST',
