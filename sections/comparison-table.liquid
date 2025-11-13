@@ -21,6 +21,7 @@
   #shopify-section-{{ section.id }} .comparison-table {
     border-radius: 2rem;
     overflow: hidden;
+    border: 1px solid #e5e7eb;
   }
 
   #shopify-section-{{ section.id }} .table-header {
@@ -40,11 +41,16 @@
   }
 
   #shopify-section-{{ section.id }} .table-cell {
-    padding: 1.25rem 1.5rem;
+    padding: 2rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    border-right: 1px solid #e5e7eb;
+  }
+
+  #shopify-section-{{ section.id }} .table-cell:last-child {
+    border-right: none;
   }
 
   #shopify-section-{{ section.id }} .feature-cell {
@@ -55,9 +61,14 @@
   }
 
   #shopify-section-{{ section.id }} .header-cell {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     flex-direction: column;
     gap: 1rem;
+    border-right: 1px solid #e5e7eb;
+  }
+
+  #shopify-section-{{ section.id }} .header-cell:last-child {
+    border-right: none;
   }
 
   /* Column backgrounds */
@@ -89,12 +100,12 @@
     }
 
     #shopify-section-{{ section.id }} .table-cell {
-      padding: 1rem 0.75rem;
+      padding: 1.5rem 0.75rem;
       font-size: 0.875rem;
     }
 
     #shopify-section-{{ section.id }} .header-cell {
-      padding: 1.5rem 0.75rem;
+      padding: 2rem 0.75rem;
     }
   }
 
@@ -153,9 +164,12 @@
       <div class="table-header">
         <div class="header-cell feature-cell bg-white">
           {% if section.settings.feature_column_icon != blank %}
-            <div class="w-12 h-12 lg:w-16 lg:h-16">
-              {{ section.settings.feature_column_icon }}
-            </div>
+            <img
+              src="{{ section.settings.feature_column_icon | image_url: width: 120 }}"
+              alt="{{ section.settings.feature_column_title }}"
+              class="w-12 h-12 lg:w-16 lg:h-16 object-contain"
+              loading="lazy"
+            >
           {% endif %}
           <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
             {{ section.settings.feature_column_title | default: 'Feature' }}
@@ -167,9 +181,12 @@
           {% assign column_icon = 'column_' | append: i | append: '_icon' %}
           <div class="header-cell column-{{ i }}">
             {% if section.settings[column_icon] != blank %}
-              <div class="w-12 h-12 lg:w-16 lg:h-16">
-                {{ section.settings[column_icon] }}
-              </div>
+              <img
+                src="{{ section.settings[column_icon] | image_url: width: 120 }}"
+                alt="{{ section.settings[column_title] }}"
+                class="w-12 h-12 lg:w-16 lg:h-16 object-contain"
+                loading="lazy"
+              >
             {% endif %}
             <span class="font-bold font-sans text-gray-900 text-sm lg:text-base">
               {{ section.settings[column_title] }}
@@ -246,10 +263,9 @@
       "default": "Feature"
     },
     {
-      "type": "html",
+      "type": "image_picker",
       "id": "feature_column_icon",
-      "label": "Feature column icon (SVG)",
-      "info": "Add SVG code for the icon"
+      "label": "Feature column icon"
     },
     {
       "type": "header",
@@ -262,10 +278,9 @@
       "default": "XNote Smart Writing Set"
     },
     {
-      "type": "html",
+      "type": "image_picker",
       "id": "column_1_icon",
-      "label": "Column 1 icon (SVG)",
-      "info": "Add SVG code for the icon"
+      "label": "Column 1 icon"
     },
     {
       "type": "color",
@@ -284,10 +299,9 @@
       "default": "Tablet + Stylus"
     },
     {
-      "type": "html",
+      "type": "image_picker",
       "id": "column_2_icon",
-      "label": "Column 2 icon (SVG)",
-      "info": "Add SVG code for the icon"
+      "label": "Column 2 icon"
     },
     {
       "type": "color",
@@ -306,10 +320,9 @@
       "default": "Traditional Smartpen"
     },
     {
-      "type": "html",
+      "type": "image_picker",
       "id": "column_3_icon",
-      "label": "Column 3 icon (SVG)",
-      "info": "Add SVG code for the icon"
+      "label": "Column 3 icon"
     },
     {
       "type": "color",
