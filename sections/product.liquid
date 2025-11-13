@@ -734,36 +734,8 @@
                       // Initial total calculation
                       updateTotal();
 
-                      // Ultra smooth grid-based animation - CSS handles it automatically!
-                      const details = wrapper.closest('details');
-                      const summary = details?.querySelector('summary');
-
-                      if (summary) {
-                        // Force details to always be "open" in DOM, but control visibility with CSS
-                        const wasOpenByDefault = details.hasAttribute('open');
-                        details.setAttribute('open', '');
-
-                        // Initialize state - add is-active class if open by default
-                        if (wasOpenByDefault) {
-                          details.classList.add('is-active');
-                        }
-
-                        // Simple class toggle - CSS grid handles the smooth animation
-                        summary.addEventListener('click', function(e) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          details.classList.toggle('is-active');
-                        }, true); // Capture phase
-
-                        // Keyboard accessibility
-                        summary.addEventListener('keydown', (e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            details.classList.toggle('is-active');
-                          }
-                        });
-                      }
+                      // Note: Collapsible animation is handled by the main collapsible tab script
+                      // No need for duplicate event listeners here
                     })();
                   </script>
                 {% endif %}
