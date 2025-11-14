@@ -12,6 +12,12 @@
   label, li, td, th {
     font-family: 'Mont', ui-sans-serif, system-ui, sans-serif !important;
   }
+
+  /* Font smoothing for better rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* Mont Font Family */
