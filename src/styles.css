@@ -31,10 +31,37 @@
   font-style: normal;
 }
 
+/* Light (300) - Use ExtraLight as fallback */
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Blanc_ExtraLight.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'Mont';
   src: url('./fonnts.com-Mont_Regular.ttf') format('truetype');
   font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Medium (500) - Use Regular as fallback */
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* SemiBold (600) - Use Regular as fallback */
+@font-face {
+  font-family: 'Mont';
+  src: url('./fonnts.com-Mont_Regular.ttf') format('truetype');
+  font-weight: 600;
   font-display: swap;
   font-style: normal;
 }
