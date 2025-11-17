@@ -4,6 +4,170 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
+    {% # Mont Font Family - Load from Shopify CDN %}
+    <style>
+      /* Mont Font Family - Complete weight range */
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Hairline.ttf" | asset_url }}') format('truetype');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-HairlineItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 100;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-ExtraLight.ttf" | asset_url }}') format('truetype');
+        font-weight: 200;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-ExtraLightItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 200;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Light.ttf" | asset_url }}') format('truetype');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-LightItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 300;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Regular.ttf" | asset_url }}') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-RegularItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 400;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Book.ttf" | asset_url }}') format('truetype');
+        font-weight: 450;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-BookItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 450;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-SemiBold.ttf" | asset_url }}') format('truetype');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-SemiBoldItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 600;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Bold.ttf" | asset_url }}') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-BoldItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 700;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Heavy.ttf" | asset_url }}') format('truetype');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-HeavyItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 800;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-Black.ttf" | asset_url }}') format('truetype');
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Mont';
+        src: url('{{ "Mont-BlackItalic.ttf" | asset_url }}') format('truetype');
+        font-weight: 900;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      /* Global font application */
+      body,
+      h1, h2, h3, h4, h5, h6,
+      p, span, a, button,
+      input, select, textarea,
+      label, li, td, th {
+        font-family: 'Mont', ui-sans-serif, system-ui, sans-serif !important;
+      }
+
+      /* Font smoothing for better rendering */
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+    </style>
+
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
@@ -31,5 +195,184 @@
 
     {% # Search Drawer %}
     {% section 'search-drawer' %}
+
+    {% # Scroll to Top Button %}
+    <style>
+      #scroll-to-top {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease, transform 0.2s ease;
+        z-index: 40;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      #scroll-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      #scroll-to-top:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Progress fill - smooth liquid effect */
+      #scroll-to-top .progress-fill {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, #000 100%);
+        transition: height 0.15s ease-out;
+      }
+
+      /* Subtle wave effect on top */
+      #scroll-to-top .progress-fill::before,
+      #scroll-to-top .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: #000;
+      }
+
+      #scroll-to-top .progress-fill::before {
+        border-radius: 50% 50% 0 0;
+        animation: wave1 3s ease-in-out infinite;
+      }
+
+      #scroll-to-top .progress-fill::after {
+        opacity: 0.5;
+        border-radius: 40% 60% 0 0;
+        animation: wave2 4s ease-in-out infinite;
+      }
+
+      @keyframes wave1 {
+        0%, 100% {
+          transform: scaleX(1) translateY(0);
+        }
+        50% {
+          transform: scaleX(1.02) translateY(-1px);
+        }
+      }
+
+      @keyframes wave2 {
+        0%, 100% {
+          transform: scaleX(1) translateY(0);
+        }
+        50% {
+          transform: scaleX(0.98) translateY(-0.5px);
+        }
+      }
+
+      /* Arrow icon */
+      #scroll-to-top .arrow-icon {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+      }
+
+      #scroll-to-top .arrow-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: #000;
+        transition: stroke 0.2s ease;
+      }
+
+      /* When filled, change icon color to white */
+      #scroll-to-top.filled .arrow-icon svg {
+        stroke: #fff;
+      }
+
+      /* Adjust position when sticky bar is visible */
+      body.has-sticky-bar #scroll-to-top {
+        bottom: 88px;
+      }
+
+      @media (min-width: 1024px) {
+        body.has-sticky-bar #scroll-to-top {
+          bottom: 96px;
+        }
+      }
+    </style>
+
+    <button id="scroll-to-top" aria-label="Scroll to top">
+      <div class="progress-fill"></div>
+      <div class="arrow-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+        </svg>
+      </div>
+    </button>
+
+    <script>
+      (function() {
+        const scrollButton = document.getElementById('scroll-to-top');
+        const progressFill = scrollButton.querySelector('.progress-fill');
+        let isScrolling = false;
+
+        function updateScrollButton() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = (scrollTop / docHeight) * 100;
+
+          // Show button after scrolling 200px
+          if (scrollTop > 200) {
+            scrollButton.classList.add('visible');
+          } else {
+            scrollButton.classList.remove('visible');
+          }
+
+          // Update progress fill height
+          progressFill.style.height = scrollPercent + '%';
+
+          // Add 'filled' class when more than 50% filled
+          if (scrollPercent > 50) {
+            scrollButton.classList.add('filled');
+          } else {
+            scrollButton.classList.remove('filled');
+          }
+
+          // Check if sticky bar exists and is visible
+          const stickyBar = document.querySelector('[id^="sticky-bottom-bar"]');
+          if (stickyBar && window.getComputedStyle(stickyBar).transform === 'matrix(1, 0, 0, 1, 0, 0)') {
+            document.body.classList.add('has-sticky-bar');
+          } else {
+            document.body.classList.remove('has-sticky-bar');
+          }
+        }
+
+        // Smooth scroll to top
+        scrollButton.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        // Update on scroll
+        window.addEventListener('scroll', updateScrollButton, { passive: true });
+
+        // Initial check
+        updateScrollButton();
+      })();
+    </script>
   </body>
 </html>
