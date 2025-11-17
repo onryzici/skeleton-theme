@@ -94,13 +94,13 @@
     {% comment %} Section Header {% endcomment %}
     <div class="text-center mb-12 lg:mb-16">
       {% if section.settings.heading != blank %}
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4 lg:mb-6">
+        <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
           {{ section.settings.heading }}
         </h2>
       {% endif %}
 
       {% if section.settings.subheading != blank %}
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 font-sans max-w-3xl mx-auto">
+        <p class="text-sm sm:text-base lg:text-xl text-gray-600 font-extralight font-sans max-w-3xl mx-auto">
           {{ section.settings.subheading }}
         </p>
       {% endif %}
@@ -130,7 +130,7 @@
               {% comment %} Optional Badge {% endcomment %}
               {% if block.settings.badge_text != blank %}
                 <div class="absolute top-4 right-4 z-10">
-                  <span class="inline-block px-4 py-2 bg-gradient-to-br from-pink-500 to-purple-600 text-white text-xs lg:text-sm font-semibold font-sans rounded-full">
+                  <span class="inline-block px-4 py-2 bg-gradient-to-br from-pink-500 to-purple-600 text-white text-[10px] lg:text-sm font-semibold font-sans rounded-full">
                     {{ block.settings.badge_text }}
                   </span>
                 </div>
@@ -139,7 +139,7 @@
               {% comment %} Overlay Content - Bottom Left with Gradient Fade {% endcomment %}
               <div class="use-case-content absolute bottom-0 left-0 right-0 px-5 py-4 lg:px-6 lg:py-5 rounded-tl-3xl rounded-bl-3xl">
                 {% if block.settings.title != blank %}
-                  <h3 class="text-lg lg:text-xl font-semibold font-sans text-gray-900">
+                  <h3 class="text-base lg:text-xl font-bold font-sans text-gray-900">
                     {{ block.settings.title }}
                   </h3>
                 {% endif %}
@@ -156,7 +156,7 @@
       <div class="text-center mt-12 lg:mt-16">
         <a
           href="{{ section.settings.button_link | default: '#' }}"
-          class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-base lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+          class="inline-flex items-center px-8 py-4 bg-black text-white font-semibold text-sm lg:text-lg font-sans rounded-full hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
         >
           {{ section.settings.button_text }}
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -105,14 +105,14 @@
 
           {% comment %} Title {% endcomment %}
           {% if block.settings.title != blank %}
-            <h3 class="text-base lg:text-lg font-semibold font-sans text-gray-900 mb-3">
+            <h3 class="text-sm lg:text-lg font-bold font-sans text-gray-900 mb-3">
               {{ block.settings.title }}
             </h3>
           {% endif %}
 
           {% comment %} Description {% endcomment %}
           {% if block.settings.description != blank %}
-            <p class="text-sm lg:text-base text-gray-600 font-sans leading-relaxed">
+            <p class="text-xs lg:text-base text-gray-600 font-extralight font-sans leading-relaxed">
               {{ block.settings.description }}
             </p>
           {% endif %}

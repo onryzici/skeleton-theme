@@ -227,13 +227,13 @@
     {% if section.settings.section_title != blank or section.settings.section_description != blank %}
       <div class="fg-header text-center mb-8 lg:mb-12">
         {% if section.settings.section_title != blank %}
-          <h2 class="fg-title text-3xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
+          <h2 class="fg-title text-2xl lg:text-5xl font-bold font-sans text-gray-900 mb-4">
             {{ section.settings.section_title }}
           </h2>
         {% endif %}
 
         {% if section.settings.section_description != blank %}
-          <div class="fg-desc text-base lg:text-lg font-sans text-gray-600 max-w-2xl mx-auto">
+          <div class="fg-desc text-sm lg:text-lg font-extralight font-sans text-gray-600 max-w-2xl mx-auto">
             {{ section.settings.section_description }}
           </div>
         {% endif %}

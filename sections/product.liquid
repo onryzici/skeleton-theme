@@ -119,6 +119,12 @@
     border-color: #1f2937;
   }
 
+  /* Compare price with red strikethrough */
+  #shopify-section-{{ section.id }} .compare-price-strikethrough {
+    text-decoration-color: #ef4444;
+    text-decoration-thickness: 2px;
+  }
+
   /* Section padding */
   #shopify-section-{{ section.id }} .product-section {
     padding-top: {{ section.settings.padding_top_mobile }}px;
@@ -136,6 +142,16 @@
   #shopify-section-{{ section.id }} .main-image-container {
     border-radius: {{ section.settings.image_radius }}px;
     background: {{ section.settings.image_bg_color | default: '#f3f4f6' }};
+  }
+
+  /* Main image transition animation */
+  #shopify-section-{{ section.id }} #main-product-image {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} #main-product-image.transitioning {
+    opacity: 0;
+    transform: translateY(20px);
   }
 
   /* Payment button styling */
@@ -245,33 +261,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16">
 
       {% comment %} Left Side - Product Media {% endcomment %}
-      <div class="product-media flex gap-4 sticky top-24 self-start">
+      <div class="product-media flex flex-col lg:flex-row gap-4 lg:sticky lg:top-24 lg:self-start">
 
-        {% comment %} Variant Thumbnails {% endcomment %}
-        {% if section.settings.show_thumbnails and product.media.size > 1 %}
-          <div class="thumbnails flex flex-col gap-3 w-16 lg:w-20">
-            {% for media in product.media limit: 5 %}
-              <button
-                type="button"
-                class="thumbnail-btn border-2 border-gray-200 rounded-full overflow-hidden hover:border-gray-400 transition-colors {% if forloop.first %}active{% endif %}"
-                data-media-index="{{ forloop.index0 }}"
-                aria-label="View image {{ forloop.index }}"
-              >
-                <img
-                  src="{{ media | image_url: width: 160 }}"
-                  alt="{{ media.alt | escape }}"
-                  width="80"
-                  height="80"
-                  loading="lazy"
-                  class="w-full h-full object-cover aspect-square"
-                >
-              </button>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        {% comment %} Main Product Image {% endcomment %}
-        <div class="flex-1">
+        {% comment %} Main Product Image - First on Mobile {% endcomment %}
+        <div class="flex-1 order-1 lg:order-2">
           <div class="main-image-container overflow-hidden">
             <div id="main-image-wrapper" class="aspect-square flex items-center justify-center p-8 lg:p-12">
               {% if product.featured_media %}
@@ -290,6 +283,29 @@
             </div>
           </div>
         </div>
+
+        {% comment %} Variant Thumbnails - Below Image on Mobile, Left Side on Desktop {% endcomment %}
+        {% if section.settings.show_thumbnails and product.media.size > 1 %}
+          <div class="thumbnails flex flex-row lg:flex-col gap-3 w-full lg:w-16 lg:w-20 justify-center lg:justify-start order-2 lg:order-1">
+            {% for media in product.media limit: 5 %}
+              <button
+                type="button"
+                class="thumbnail-btn border-2 border-gray-200 rounded-full overflow-hidden hover:border-gray-400 transition-colors {% if forloop.first %}active{% endif %} w-16 h-16 lg:w-20 lg:h-20 flex-shrink-0"
+                data-media-index="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 160 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="80"
+                  height="80"
+                  loading="lazy"
+                  class="w-full h-full object-cover aspect-square"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
 
       {% comment %} Right Side - Product Info {% endcomment %}
@@ -299,13 +315,13 @@
           {% case block.type %}
 
             {% when 'title' %}
-              <h1 class="text-3xl lg:text-4xl xl:text-5xl font-medium font-sans text-gray-900 mb-2" {{ block.shopify_attributes }}>
+              <h1 class="text-2xl lg:text-4xl xl:text-5xl font-bold font-sans text-gray-900 mb-2" {{ block.shopify_attributes }}>
                 {{ product.title }}
               </h1>
 
             {% when 'subtitle' %}
               {% if block.settings.text != blank %}
-                <p class="text-base lg:text-lg font-sans text-gray-600 mb-4" {{ block.shopify_attributes }}>
+                <p class="text-sm lg:text-lg font-extralight font-sans text-gray-600 mb-4" {{ block.shopify_attributes }}>
                   {{ block.settings.text }}
                 </p>
               {% endif %}
@@ -320,19 +336,33 @@
                       </svg>
                     {% endfor %}
                   </div>
-                  <span class="text-sm lg:text-base text-gray-600 font-sans">{{ block.settings.review_count }} Reviews</span>
+                  <span class="text-sm lg:text-base text-gray-600 font-extralight font-sans">{{ block.settings.review_count }} Reviews</span>
                 </div>
               {% endif %}
 
             {% when 'price' %}
               <div class="mb-6 lg:mb-8" {{ block.shopify_attributes }}>
-                <div class="flex items-baseline gap-3">
-                  <span id="product-price-{{ section.id }}" class="text-2xl lg:text-3xl font-bold text-gray-900 font-sans" data-price="{{ current_variant.price }}">
+                {% comment %} Compare at price on top (if exists) {% endcomment %}
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  <div class="mb-2">
+                    <span id="product-compare-price-{{ section.id }}" class="compare-price-strikethrough text-base lg:text-xl text-gray-400 line-through font-sans">
+                      {{ current_variant.compare_at_price | money }}
+                    </span>
+                  </div>
+                {% endif %}
+
+                {% comment %} Current price and savings badge {% endcomment %}
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span id="product-price-{{ section.id }}" class="text-2xl lg:text-4xl font-bold text-gray-900 font-sans" data-price="{{ current_variant.price }}">
                     {{ current_variant.price | money }}
                   </span>
-                  <span id="product-compare-price-{{ section.id }}" class="text-lg lg:text-xl text-gray-400 line-through font-sans {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}">
-                    {{ current_variant.compare_at_price | money }}
-                  </span>
+
+                  {% if current_variant.compare_at_price > current_variant.price %}
+                    {% assign savings = current_variant.compare_at_price | minus: current_variant.price %}
+                    <span class="savings-badge-{{ section.id }} inline-block px-3 py-1 border-2 border-green-500 text-green-600 text-xs lg:text-sm font-medium font-sans rounded-full">
+                      SAVE {{ savings | money }}
+                    </span>
+                  {% endif %}
                 </div>
               </div>
 
@@ -340,7 +370,7 @@
               <div class="border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
                 <details class="group block" data-collapsible-tab>
                   <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
-                    <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
+                    <span class="text-sm lg:text-lg font-bold font-sans text-gray-900">
                       {{ block.settings.heading }}
                     </span>
                     <svg class="w-5 h-5 text-gray-600 chevron flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,12 +379,41 @@
                   </summary>
                   <div class="collapsible-content">
                     <div>
-                      <div class="pb-4 w-full block text-left text-sm lg:text-base text-gray-700 font-sans leading-relaxed clear-both">
-                        {% if block.settings.use_description and product.description != blank %}
-                          {{ product.description }}
-                        {% elsif block.settings.content != blank %}
-                          {{ block.settings.content }}
+                      <div class="pb-4 space-y-4">
+
+                        {% comment %} Top Image with Radius {% endcomment %}
+                        {% if block.settings.top_image != blank %}
+                          <div class="w-full">
+                            <img
+                              src="{{ block.settings.top_image | image_url: width: 800 }}"
+                              alt="{{ block.settings.heading | escape }}"
+                              class="w-full h-auto object-cover rounded-2xl"
+                              loading="lazy"
+                            >
+                          </div>
                         {% endif %}
+
+                        {% comment %} Text Content {% endcomment %}
+                        <div class="w-full block text-left text-sm lg:text-base text-gray-700 font-extralight font-sans leading-relaxed clear-both">
+                          {% if block.settings.use_description and product.description != blank %}
+                            {{ product.description }}
+                          {% elsif block.settings.content != blank %}
+                            {{ block.settings.content }}
+                          {% endif %}
+                        </div>
+
+                        {% comment %} Bottom Image {% endcomment %}
+                        {% if block.settings.bottom_image != blank %}
+                          <div class="w-full">
+                            <img
+                              src="{{ block.settings.bottom_image | image_url: width: 800 }}"
+                              alt="{{ block.settings.heading | escape }}"
+                              class="w-full h-auto object-cover rounded-2xl"
+                              loading="lazy"
+                            >
+                          </div>
+                        {% endif %}
+
                       </div>
                     </div>
                   </div>
@@ -482,7 +541,7 @@
                   <svg class="w-5 h-5 text-gray-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
-                  <span class="text-sm lg:text-base text-gray-700 font-sans">{{ block.settings.text }}</span>
+                  <span class="text-sm lg:text-base text-gray-700 font-extralight font-sans">{{ block.settings.text }}</span>
                 </div>
               {% endif %}
 
@@ -497,7 +556,7 @@
 
             {% when 'shipping_info' %}
               {% if block.settings.text != blank %}
-                <p class="text-sm lg:text-base text-gray-600 font-sans mb-8" {{ block.shopify_attributes }}>
+                <p class="text-sm lg:text-base text-gray-600 font-extralight font-sans mb-8" {{ block.shopify_attributes }}>
                   {{ block.settings.text }}
                 </p>
               {% endif %}
@@ -510,7 +569,7 @@
                   <div class="buy-together-wrapper border-t border-gray-200 mb-6" {{ block.shopify_attributes }}>
                     <details class="group block" {% if block.settings.open_by_default %}open{% endif %} data-collapsible-tab>
                       <summary class="flex justify-between items-center cursor-pointer list-none py-4 lg:py-5 w-full">
-                        <span class="text-base lg:text-lg font-semibold font-sans text-gray-900">
+                        <span class="text-sm lg:text-lg font-bold font-sans text-gray-900">
                           {{ block.settings.heading | default: 'Buy together, save more' }}
                         </span>
                         <svg class="w-5 h-5 text-gray-600 chevron flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -540,7 +599,7 @@
                             </div>
 
                             <div class="flex-1 min-w-0">
-                              <h4 class="font-semibold font-sans text-sm text-gray-900 truncate">{{ bundle_product.title }}</h4>
+                              <h4 class="font-bold font-sans text-sm text-gray-900 truncate">{{ bundle_product.title }}</h4>
                               {% if bundle_product.has_only_default_variant == false %}
                                 <select class="mt-2 text-xs border border-gray-300 rounded-lg px-2 py-1 font-sans bundle-variant-select w-full max-w-[200px]">
                                   {% for variant in bundle_product.variants %}
@@ -568,16 +627,19 @@
                       {% comment %} Total Price Display {% endcomment %}
                       <div class="border-t border-gray-200 pt-5 mt-1">
                         <div class="flex items-center justify-between mb-4">
-                          <span class="text-base font-medium font-sans text-gray-900">Total:</span>
-                          <span id="bundle-total-{{ section.id }}" class="text-2xl font-bold font-sans text-gray-900">$0.00</span>
+                          <span class="text-sm font-extralight font-sans text-gray-900">Total:</span>
+                          <span id="bundle-total-{{ section.id }}" class="text-xl font-bold font-sans text-gray-900">$0.00</span>
                         </div>
 
                         {% comment %} Add Bundle to Cart Button {% endcomment %}
                         <button
                           type="button"
-                          class="bundle-add-to-cart w-full px-6 py-4 bg-black text-white font-semibold text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                          class="bundle-add-to-cart w-full px-6 py-4 text-white font-semibold text-base font-sans rounded-full transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                          style="background-color: #FF4949;"
                           data-section-id="{{ section.id }}"
                           data-current-variant-id="{{ current_variant.id }}"
+                          onmouseover="this.style.backgroundColor='#e63939'"
+                          onmouseout="this.style.backgroundColor='#FF4949'"
                         >
                           Add selected to Cart
                         </button>
@@ -745,48 +807,80 @@
               <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-gray-200" {{ block.shopify_attributes }}>
                 {% if block.settings.badge_1_text != blank %}
                   <div class="text-center">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
-                    </svg>
-                    <p class="text-xs font-semibold font-sans text-gray-900 mb-1">{{ block.settings.badge_1_text }}</p>
+                    {% if block.settings.badge_1_icon != blank %}
+                      <div class="mb-3 flex items-center justify-center">
+                        <img
+                          src="{{ block.settings.badge_1_icon | asset_url }}"
+                          alt="{{ block.settings.badge_1_text | escape }}"
+                          class="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                          style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+                          loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                    <p class="text-xs font-bold font-sans text-gray-900 mb-1">{{ block.settings.badge_1_text }}</p>
                     {% if block.settings.badge_1_subtext != blank %}
-                      <p class="text-xs text-gray-600 font-sans">{{ block.settings.badge_1_subtext }}</p>
+                      <p class="text-xs text-gray-600 font-extralight font-sans">{{ block.settings.badge_1_subtext }}</p>
                     {% endif %}
                   </div>
                 {% endif %}
 
                 {% if block.settings.badge_2_text != blank %}
                   <div class="text-center">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"/>
-                    </svg>
-                    <p class="text-xs font-semibold font-sans text-gray-900 mb-1">{{ block.settings.badge_2_text }}</p>
+                    {% if block.settings.badge_2_icon != blank %}
+                      <div class="mb-3 flex items-center justify-center">
+                        <img
+                          src="{{ block.settings.badge_2_icon | asset_url }}"
+                          alt="{{ block.settings.badge_2_text | escape }}"
+                          class="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                          style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+                          loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                    <p class="text-xs font-bold font-sans text-gray-900 mb-1">{{ block.settings.badge_2_text }}</p>
                     {% if block.settings.badge_2_subtext != blank %}
-                      <p class="text-xs text-gray-600 font-sans">{{ block.settings.badge_2_subtext }}</p>
+                      <p class="text-xs text-gray-600 font-extralight font-sans">{{ block.settings.badge_2_subtext }}</p>
                     {% endif %}
                   </div>
                 {% endif %}
 
                 {% if block.settings.badge_3_text != blank %}
                   <div class="text-center">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
-                    <p class="text-xs font-semibold font-sans text-gray-900 mb-1">{{ block.settings.badge_3_text }}</p>
+                    {% if block.settings.badge_3_icon != blank %}
+                      <div class="mb-3 flex items-center justify-center">
+                        <img
+                          src="{{ block.settings.badge_3_icon | asset_url }}"
+                          alt="{{ block.settings.badge_3_text | escape }}"
+                          class="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                          style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+                          loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                    <p class="text-xs font-bold font-sans text-gray-900 mb-1">{{ block.settings.badge_3_text }}</p>
                     {% if block.settings.badge_3_subtext != blank %}
-                      <p class="text-xs text-gray-600 font-sans">{{ block.settings.badge_3_subtext }}</p>
+                      <p class="text-xs text-gray-600 font-extralight font-sans">{{ block.settings.badge_3_subtext }}</p>
                     {% endif %}
                   </div>
                 {% endif %}
 
                 {% if block.settings.badge_4_text != blank %}
                   <div class="text-center">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                    <p class="text-xs font-semibold font-sans text-gray-900 mb-1">{{ block.settings.badge_4_text }}</p>
+                    {% if block.settings.badge_4_icon != blank %}
+                      <div class="mb-3 flex items-center justify-center">
+                        <img
+                          src="{{ block.settings.badge_4_icon | asset_url }}"
+                          alt="{{ block.settings.badge_4_text | escape }}"
+                          class="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                          style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+                          loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                    <p class="text-xs font-bold font-sans text-gray-900 mb-1">{{ block.settings.badge_4_text }}</p>
                     {% if block.settings.badge_4_subtext != blank %}
-                      <p class="text-xs text-gray-600 font-sans">{{ block.settings.badge_4_subtext }}</p>
+                      <p class="text-xs text-gray-600 font-extralight font-sans">{{ block.settings.badge_4_subtext }}</p>
                     {% endif %}
                   </div>
                 {% endif %}
@@ -799,6 +893,73 @@
 
     </div>
 
+  </div>
+
+  {% comment %} Sticky Bottom Bar - Mobile & Desktop {% endcomment %}
+  <div id="sticky-bottom-bar-{{ section.id }}" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 transition-transform duration-300 transform translate-y-full" style="box-shadow: 0 -1px 4px rgba(0,0,0,0.05);">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
+      <div class="flex items-center justify-between gap-4 lg:gap-6">
+
+        {% comment %} Left: Product Info {% endcomment %}
+        <div class="flex-1 min-w-0">
+          <h3 class="text-sm lg:text-base font-bold font-sans text-gray-900 truncate mb-1">
+            {{ product.title }}
+          </h3>
+          <div class="flex items-baseline gap-2">
+            <span class="text-lg lg:text-xl font-bold font-sans text-gray-900">
+              {{ current_variant.price | money }}
+            </span>
+            {% if current_variant.compare_at_price > current_variant.price %}
+              <span class="text-sm lg:text-base text-gray-400 line-through font-sans">
+                {{ current_variant.compare_at_price | money }}
+              </span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% comment %} Right: Quantity + Add to Cart {% endcomment %}
+        <div class="flex items-center gap-3">
+
+          {% comment %} Quantity Selector {% endcomment %}
+          <div class="flex items-center border border-gray-300 rounded-full overflow-hidden">
+            <button type="button" class="sticky-qty-btn px-3 py-2 lg:px-4 lg:py-2.5 hover:bg-gray-100 transition-colors" data-action="decrease">
+              <svg class="w-4 h-4 lg:w-5 lg:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+              </svg>
+            </button>
+            <input
+              type="number"
+              id="sticky-quantity-{{ section.id }}"
+              class="sticky-qty-input w-12 lg:w-14 text-center border-0 text-sm lg:text-base font-medium font-sans text-gray-900 focus:outline-none"
+              value="1"
+              min="1"
+              readonly
+            >
+            <button type="button" class="sticky-qty-btn px-3 py-2 lg:px-4 lg:py-2.5 hover:bg-gray-100 transition-colors" data-action="increase">
+              <svg class="w-4 h-4 lg:w-5 lg:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+          </div>
+
+          {% comment %} Add to Cart Button {% endcomment %}
+          <button
+            type="button"
+            id="sticky-add-to-cart-{{ section.id }}"
+            class="px-6 py-2.5 lg:px-8 lg:py-3 bg-black text-white text-sm lg:text-base font-medium font-sans rounded-full hover:bg-gray-800 transition-all duration-300 whitespace-nowrap disabled:bg-gray-400 disabled:cursor-not-allowed"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            {% if current_variant.available %}
+              Add to Cart
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+
+        </div>
+
+      </div>
+    </div>
   </div>
 
   <script>
@@ -870,7 +1031,15 @@
         this.classList.add('active');
 
         const imgSrc = this.querySelector('img').src.replace('width=160', 'width=1200');
-        mainImage.src = imgSrc;
+
+        // Add transitioning class for slide down effect
+        mainImage.classList.add('transitioning');
+
+        // Wait for fade out, then change image and slide up
+        setTimeout(() => {
+          mainImage.src = imgSrc;
+          mainImage.classList.remove('transitioning');
+        }, 300);
       });
     });
 
@@ -947,8 +1116,11 @@
           priceElement.textContent = formatter.format(matchingVariant.price / 100);
         }
 
-        // Update compare at price
+        // Update compare at price and savings badge
         if (comparePriceElement) {
+          const comparePriceContainer = comparePriceElement.closest('div');
+          const savingsBadge = document.querySelector('.savings-badge-{{ section.id }}');
+
           if (matchingVariant.compare_at_price && matchingVariant.compare_at_price > matchingVariant.price) {
             const formatter = new Intl.NumberFormat('{{ localization.language.iso_code }}', {
               style: 'currency',
@@ -956,9 +1128,27 @@
               minimumFractionDigits: 2
             });
             comparePriceElement.textContent = formatter.format(matchingVariant.compare_at_price / 100);
-            comparePriceElement.classList.remove('hidden');
+            comparePriceElement.className = 'compare-price-strikethrough text-base lg:text-xl text-gray-400 line-through font-sans';
+
+            // Show compare price container
+            if (comparePriceContainer) {
+              comparePriceContainer.classList.remove('hidden');
+            }
+
+            // Update savings badge
+            if (savingsBadge) {
+              const savings = matchingVariant.compare_at_price - matchingVariant.price;
+              savingsBadge.textContent = 'SAVE ' + formatter.format(savings / 100);
+              savingsBadge.classList.remove('hidden');
+            }
           } else {
-            comparePriceElement.classList.add('hidden');
+            // Hide compare price and savings badge
+            if (comparePriceContainer) {
+              comparePriceContainer.classList.add('hidden');
+            }
+            if (savingsBadge) {
+              savingsBadge.classList.add('hidden');
+            }
           }
         }
 
@@ -1049,6 +1239,82 @@
         }
       });
     });
+  })();
+</script>
+
+<script>
+  // Sticky Bottom Bar - Quantity and Add to Cart
+  (function() {
+    const stickyBar = document.getElementById('sticky-bottom-bar-{{ section.id }}');
+    const stickyQtyInput = document.getElementById('sticky-quantity-{{ section.id }}');
+    const stickyQtyBtns = document.querySelectorAll('#sticky-bottom-bar-{{ section.id }} .sticky-qty-btn');
+    const stickyAddToCart = document.getElementById('sticky-add-to-cart-{{ section.id }}');
+    const mainQuantityInput = document.getElementById('quantity-{{ section.id }}');
+    const mainAddToCartBtn = document.querySelector('#{{ product_form_id }} button[type="submit"]');
+
+    if (!stickyBar) return;
+
+    // Sync sticky quantity with main quantity
+    function syncQuantities() {
+      if (mainQuantityInput && stickyQtyInput) {
+        mainQuantityInput.value = stickyQtyInput.value;
+
+        // Also update the hidden form input
+        const formQuantityInput = document.getElementById('form-quantity-{{ section.id }}');
+        if (formQuantityInput) {
+          formQuantityInput.value = stickyQtyInput.value;
+        }
+      }
+    }
+
+    // Sticky quantity buttons
+    stickyQtyBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        let value = parseInt(stickyQtyInput.value) || 1;
+
+        if (this.dataset.action === 'increase') {
+          stickyQtyInput.value = value + 1;
+        } else if (this.dataset.action === 'decrease' && value > 1) {
+          stickyQtyInput.value = value - 1;
+        }
+
+        syncQuantities();
+      });
+    });
+
+    // Sticky Add to Cart button
+    if (stickyAddToCart && mainAddToCartBtn) {
+      stickyAddToCart.addEventListener('click', function() {
+        syncQuantities();
+        mainAddToCartBtn.click();
+      });
+    }
+
+    // Show sticky bar on scroll
+    let lastScrollTop = 0;
+    const productSection = document.querySelector('#shopify-section-{{ section.id }}');
+
+    function handleScroll() {
+      if (!productSection || !stickyBar) return;
+
+      const sectionRect = productSection.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Show sticky bar when product section scrolls up past the viewport
+      if (sectionRect.top < -200) {
+        stickyBar.style.transform = 'translateY(0)';
+      } else {
+        stickyBar.style.transform = 'translateY(100%)';
+      }
+
+      lastScrollTop = scrollTop;
+    }
+
+    // Listen to scroll events
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initial check
+    handleScroll();
   })();
 </script>
 
@@ -1183,6 +1449,12 @@
           "default": "Core Features"
         },
         {
+          "type": "image_picker",
+          "id": "top_image",
+          "label": "Top image (with rounded corners)",
+          "info": "Optional image displayed at the top of the content"
+        },
+        {
           "type": "checkbox",
           "id": "use_description",
           "label": "Use product description",
@@ -1195,6 +1467,12 @@
           "label": "Content",
           "default": "<p></p>",
           "info": "This content will be shown if 'Use product description' is not enabled"
+        },
+        {
+          "type": "image_picker",
+          "id": "bottom_image",
+          "label": "Bottom image (with rounded corners)",
+          "info": "Optional image displayed at the bottom of the content"
         },
         {
           "type": "checkbox",
@@ -1331,51 +1609,95 @@
       "limit": 1,
       "settings": [
         {
+          "type": "header",
+          "content": "Badge 1"
+        },
+        {
+          "type": "text",
+          "id": "badge_1_icon",
+          "label": "Icon filename",
+          "info": "Upload icon to assets folder, then enter filename (e.g., shipping-icon.svg)",
+          "default": "fast.png"
+        },
+        {
           "type": "text",
           "id": "badge_1_text",
-          "label": "Badge 1 - Title",
+          "label": "Title",
           "default": "Fast, Free Shipping"
         },
         {
           "type": "text",
           "id": "badge_1_subtext",
-          "label": "Badge 1 - Subtitle",
+          "label": "Subtitle",
           "default": "Ship out within 1-2 business days"
+        },
+        {
+          "type": "header",
+          "content": "Badge 2"
+        },
+        {
+          "type": "text",
+          "id": "badge_2_icon",
+          "label": "Icon filename",
+          "info": "Upload icon to assets folder, then enter filename",
+          "default": "return.png"
         },
         {
           "type": "text",
           "id": "badge_2_text",
-          "label": "Badge 2 - Title",
+          "label": "Title",
           "default": "Free 30-Day Return"
         },
         {
           "type": "text",
           "id": "badge_2_subtext",
-          "label": "Badge 2 - Subtitle",
+          "label": "Subtitle",
           "default": "No hassle returns and exchanges"
+        },
+        {
+          "type": "header",
+          "content": "Badge 3"
+        },
+        {
+          "type": "text",
+          "id": "badge_3_icon",
+          "label": "Icon filename",
+          "info": "Upload icon to assets folder, then enter filename",
+          "default": "support.png"
         },
         {
           "type": "text",
           "id": "badge_3_text",
-          "label": "Badge 3 - Title",
+          "label": "Title",
           "default": "Lifetime Customer Support"
         },
         {
           "type": "text",
           "id": "badge_3_subtext",
-          "label": "Badge 3 - Subtitle",
+          "label": "Subtitle",
           "default": "Quick support via email or phone call"
+        },
+        {
+          "type": "header",
+          "content": "Badge 4"
+        },
+        {
+          "type": "text",
+          "id": "badge_4_icon",
+          "label": "Icon filename",
+          "info": "Upload icon to assets folder, then enter filename",
+          "default": "security.png"
         },
         {
           "type": "text",
           "id": "badge_4_text",
-          "label": "Badge 4 - Title",
+          "label": "Title",
           "default": "One-Year Warranty"
         },
         {
           "type": "text",
           "id": "badge_4_subtext",
-          "label": "Badge 4 - Subtitle",
+          "label": "Subtitle",
           "default": "We protect your purchase up to 1 year"
         }
       ]
@@ -1466,12 +1788,16 @@
         {
           "type": "trust_badges",
           "settings": {
+            "badge_1_icon": "fast.png",
             "badge_1_text": "Fast, Free Shipping",
             "badge_1_subtext": "Ship out within 1-2 business days",
+            "badge_2_icon": "return.png",
             "badge_2_text": "Free 30-Day Return",
             "badge_2_subtext": "No hassle returns and exchanges",
+            "badge_3_icon": "support.png",
             "badge_3_text": "Lifetime Customer Support",
             "badge_3_subtext": "Quick support via email or phone call",
+            "badge_4_icon": "security.png",
             "badge_4_text": "One-Year Warranty",
             "badge_4_subtext": "We protect your purchase up to 1 year"
           }

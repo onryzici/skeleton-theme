@@ -1,0 +1,275 @@
+{% comment %}
+  Split Content Section
+  Two-column layout with product showcase and image
+{% endcomment %}
+
+<style>
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .split-container {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  /* Section padding */
+  #shopify-section-{{ section.id }} .split-content-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    background: #ffffff;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .split-content-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
+    }
+  }
+
+  /* Colored container */
+  #shopify-section-{{ section.id }} .split-container {
+    background: {{ section.settings.container_bg_color | default: '#f3f4f6' }};
+    border-radius: {{ section.settings.container_radius }}px;
+    overflow: hidden;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .split-container {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Right image scaling */
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .right-image {
+      transform: scale(1.15);
+    }
+  }
+</style>
+
+<div class="split-content-section full-width">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Colored Container with Border Radius {% endcomment %}
+    <div class="split-container">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-0 lg:items-stretch">
+
+        {% comment %} Left Column - Product Image, Text, Buttons (Centered) {% endcomment %}
+        <div class="flex flex-col items-center justify-center text-center py-12 px-6 lg:py-16 lg:px-8 order-2 lg:order-1 h-full">
+
+          {% comment %} Product Image {% endcomment %}
+          {% if section.settings.left_image != blank %}
+            <div class="mb-8 lg:mb-10 w-full max-w-sm">
+              <img
+                src="{{ section.settings.left_image | image_url: width: 800 }}"
+                alt="{{ section.settings.left_image.alt | escape }}"
+                width="{{ section.settings.left_image.width }}"
+                height="{{ section.settings.left_image.height }}"
+                loading="lazy"
+                class="w-full h-auto object-contain"
+              >
+            </div>
+          {% endif %}
+
+          {% comment %} Title {% endcomment %}
+          {% if section.settings.title != blank %}
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold font-sans text-gray-900 mb-4 lg:mb-6">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% comment %} Description {% endcomment %}
+          {% if section.settings.description != blank %}
+            <p class="text-sm sm:text-base lg:text-lg font-extralight font-sans text-gray-700 mb-6 lg:mb-8 max-w-md">
+              {{ section.settings.description }}
+            </p>
+          {% endif %}
+
+          {% comment %} Buttons {% endcomment %}
+          <div class="flex flex-col sm:flex-row gap-3 lg:gap-4 w-full sm:w-auto justify-center">
+            {% if section.settings.primary_button_text != blank %}
+              <a
+                href="{{ section.settings.primary_button_link | default: '#' }}"
+                class="px-6 py-3 lg:px-8 lg:py-3.5 bg-black text-white text-sm lg:text-base font-medium font-sans rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
+              >
+                {{ section.settings.primary_button_text }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_text != blank %}
+              <a
+                href="{{ section.settings.secondary_button_link | default: '#' }}"
+                class="px-6 py-3 lg:px-8 lg:py-3.5 bg-white text-black text-sm lg:text-base font-medium font-sans border-2 border-black rounded-full hover:bg-gray-50 transition-all duration-300 text-center"
+              >
+                {{ section.settings.secondary_button_text }}
+              </a>
+            {% endif %}
+          </div>
+
+        </div>
+
+        {% comment %} Right Column - Feature Image Only (Full Height) {% endcomment %}
+        <div class="flex items-center justify-center px-6 lg:px-0 py-8 lg:py-0 order-1 lg:order-2 h-full">
+          {% if section.settings.right_image != blank %}
+            <div class="w-full h-full max-w-md lg:max-w-none">
+              <img
+                src="{{ section.settings.right_image | image_url: width: 1200 }}"
+                alt="{{ section.settings.right_image.alt | escape }}"
+                width="{{ section.settings.right_image.width }}"
+                height="{{ section.settings.right_image.height }}"
+                loading="lazy"
+                class="right-image w-full h-full object-cover lg:object-contain"
+              >
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split Content",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container Settings"
+    },
+    {
+      "type": "color",
+      "id": "container_bg_color",
+      "label": "Container background color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Container corner radius",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Left Column"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Product image",
+      "info": "Image showing product (e.g., notebook + pen)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "XNote Starter Set"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Your notes, perfectly captured and synced the moment you write."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary button text",
+      "default": "Select Options"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary button text",
+      "default": "View Full Details"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Right Column"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Feature image",
+      "info": "Large feature image (e.g., phone in hand)"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split Content"
+    }
+  ]
+}
+{% endschema %}

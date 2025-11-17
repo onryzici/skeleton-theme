@@ -1,133 +1,231 @@
 {% comment %}
   Hero Section
-  Main landing section with product showcase
+  Full-width video background hero with text overlay
 {% endcomment %}
 
 <style>
   /* Hero animations */
-  @keyframes fadeInLeft {
+  @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateX(-30px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeInRight {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
+      transform: translateY(0);
     }
   }
 
   #shopify-section-{{ section.id }} .hero-content {
-    animation: fadeInLeft 0.8s ease forwards;
+    animation: fadeIn 0.8s ease forwards;
   }
 
-  #shopify-section-{{ section.id }} .hero-image {
-    animation: fadeInRight 0.8s ease forwards 0.2s;
-    opacity: 0;
-  }
-
-  #shopify-section-{{ section.id }} .float-image {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  /* Custom dark background */
+  /* Hero section */
   #shopify-section-{{ section.id }} .hero-section {
-    background: {{ section.settings.bg_color | default: '#1a1a1a' }};
+    position: relative;
+    overflow: hidden;
+    min-height: 650px;
   }
 
   @media (min-width: 1024px) {
     #shopify-section-{{ section.id }} .hero-section {
+      min-height: 800px;
       padding-top: {{ section.settings.padding_top_desktop }}px !important;
       padding-bottom: {{ section.settings.padding_bottom_desktop }}px !important;
     }
   }
+
+  /* Video background */
+  #shopify-section-{{ section.id }} .hero-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  /* Video overlay */
+  #shopify-section-{{ section.id }} .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});
+    z-index: 1;
+  }
+
+  /* Content wrapper */
+  #shopify-section-{{ section.id }} .hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+  }
 </style>
 
 <div class="hero-section full-width" style="padding-top: {{ section.settings.padding_top_mobile }}px; padding-bottom: {{ section.settings.padding_bottom_mobile }}px;">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+  {% comment %} Background Video {% endcomment %}
+  {% if section.settings.video_url != blank %}
+    <video
+      id="hero-video-{{ section.id }}"
+      class="hero-video-bg"
+      playsinline
+      muted
+      loop
+      autoplay
+      preload="auto"
+    >
+      <source src="{{ section.settings.video_url }}" type="video/mp4">
+    </video>
+  {% endif %}
 
-      {% comment %} Left Content {% endcomment %}
-      <div class="hero-content text-white max-w-xl">
-        {% if section.settings.heading != blank %}
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium font-sans leading-tight mb-6 lg:mb-8">
-            {{ section.settings.heading }}
-          </h1>
-        {% endif %}
+  {% comment %} Dark Overlay {% endcomment %}
+  <div class="hero-overlay"></div>
 
-        {% if section.settings.subheading != blank %}
-          <p class="text-sm sm:text-base lg:text-lg font-sans text-white/70 mb-8 lg:mb-10 leading-relaxed">
-            {{ section.settings.subheading }}
-          </p>
-        {% endif %}
+  {% comment %} Content {% endcomment %}
+  <div class="hero-content-wrapper container mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center">
+    <div class="hero-content text-white max-w-2xl">
 
-        {% if section.settings.button_text != blank %}
-          <a
-            href="{{ section.settings.button_link | default: '#' }}"
-            class="inline-block px-8 py-3 text-base font-medium font-sans text-white border-2 border-white rounded-full transition-all duration-300 hover:bg-white hover:text-black"
-          >
-            {{ section.settings.button_text }}
-          </a>
-        {% endif %}
-      </div>
+      {% if section.settings.badge_text != blank %}
+        <p class="text-xs sm:text-sm font-extralight font-sans uppercase tracking-wider mb-4 lg:mb-6" style="color: #d4a574;">
+          {{ section.settings.badge_text }}
+        </p>
+      {% endif %}
 
-      {% comment %} Right Image Area {% endcomment %}
-      <div class="hero-image relative flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+      {% if section.settings.heading != blank %}
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold font-sans leading-tight mb-6 lg:mb-8">
+          {{ section.settings.heading }}
+        </h1>
+      {% endif %}
 
-        {% comment %} Main Product Image - Center {% endcomment %}
-        {% if section.settings.main_image != blank %}
-          <div class="float-image w-full">
-            <img
-              src="{{ section.settings.main_image | image_url: width: 1400 }}"
-              alt="{{ section.settings.main_image.alt | default: 'Product' }}"
-              loading="eager"
-              width="{{ section.settings.main_image.width }}"
-              height="{{ section.settings.main_image.height }}"
-              class="w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-3xl mx-auto object-contain"
-            >
-          </div>
-        {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="text-sm sm:text-lg lg:text-xl font-extralight font-sans text-white/70 mb-8 lg:mb-10 leading-relaxed">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
 
-      </div>
-
+      {% if section.settings.button_text != blank %}
+        <a
+          href="{{ section.settings.button_link | default: '#' }}"
+          class="inline-flex items-center gap-2 px-8 py-3 text-base font-medium font-sans text-black bg-white rounded-full transition-all duration-300 hover:bg-gray-100"
+        >
+          {{ section.settings.button_text }}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {% endif %}
     </div>
-
   </div>
+
+  {% comment %} Video Control Button - Bottom Right {% endcomment %}
+  {% if section.settings.video_url != blank %}
+    <button
+      type="button"
+      id="hero-video-control-{{ section.id }}"
+      class="absolute bottom-4 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all duration-200 z-10 opacity-80 hover:opacity-100"
+      aria-label="Play/Pause video"
+    >
+      <svg id="hero-play-icon-{{ section.id }}" class="w-4 h-4 lg:w-5 lg:h-5 text-gray-900 ml-0.5 hidden" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+      </svg>
+      <svg id="hero-pause-icon-{{ section.id }}" class="w-4 h-4 lg:w-5 lg:h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/>
+      </svg>
+    </button>
+  {% endif %}
+
 </div>
+
+<script>
+(function() {
+  const video = document.getElementById('hero-video-{{ section.id }}');
+  const controlBtn = document.getElementById('hero-video-control-{{ section.id }}');
+  const playIcon = document.getElementById('hero-play-icon-{{ section.id }}');
+  const pauseIcon = document.getElementById('hero-pause-icon-{{ section.id }}');
+
+  if (!video || !controlBtn) return;
+
+  let isPlaying = true;
+
+  // Update button icons based on video state
+  function updateIcons() {
+    if (isPlaying) {
+      playIcon.classList.add('hidden');
+      pauseIcon.classList.remove('hidden');
+    } else {
+      playIcon.classList.remove('hidden');
+      pauseIcon.classList.add('hidden');
+    }
+  }
+
+  // Play/Pause control
+  controlBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      video.pause();
+      isPlaying = false;
+    } else {
+      video.play().then(() => {
+        isPlaying = true;
+      }).catch(() => {
+        // Autoplay prevented
+      });
+    }
+    updateIcons();
+  });
+
+  // Video events
+  video.addEventListener('play', () => {
+    isPlaying = true;
+    updateIcons();
+  });
+
+  video.addEventListener('pause', () => {
+    isPlaying = false;
+    updateIcons();
+  });
+
+  // Initial state
+  updateIcons();
+})();
+</script>
 
 {% schema %}
 {
   "name": "Hero",
   "settings": [
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background color",
-      "default": "#1a1a1a"
+      "type": "header",
+      "content": "Video Background"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Upload video to Settings > Files, then paste URL here. Recommended: MP4 format, landscape orientation"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Video overlay darkness",
+      "default": 50,
+      "info": "How dark the overlay on the video should be"
     },
     {
       "type": "header",
       "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text (optional)",
+      "default": "AI-POWERED SMART PEN & NOTEBOOK"
     },
     {
       "type": "textarea",
@@ -151,15 +249,6 @@
       "type": "url",
       "id": "button_link",
       "label": "Button link"
-    },
-    {
-      "type": "header",
-      "content": "Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "main_image",
-      "label": "Main product image"
     },
     {
       "type": "header",

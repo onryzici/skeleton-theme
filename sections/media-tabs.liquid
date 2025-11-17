@@ -141,7 +141,7 @@
 
     {% if section.settings.heading != blank %}
       <div class="section-heading text-center mb-8 lg:mb-12">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 leading-tight"
+        <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold font-sans text-gray-900 leading-tight"
             style="color: {{ section.settings.heading_color | default: '#111827' }};">
           {{ section.settings.heading }}
         </h2>
@@ -246,7 +246,7 @@
                  {{ block.shopify_attributes }}>
 
               <div class="flex items-start justify-between gap-4">
-                <h3 class="text-base lg:text-lg font-semibold font-sans text-gray-900 flex-1 leading-tight"
+                <h3 class="text-sm lg:text-lg font-bold font-sans text-gray-900 flex-1 leading-tight"
                     style="color: {{ section.settings.tab_title_color | default: '#111827' }};">
                   {{ block.settings.tab_title | default: 'Tab Title' }}
                 </h3>
@@ -259,7 +259,7 @@
               </div>
 
               <div class="tab-content">
-                <p class="text-sm lg:text-base font-sans text-gray-600 leading-relaxed"
+                <p class="text-xs lg:text-base font-extralight font-sans text-gray-600 leading-relaxed"
                    style="color: {{ section.settings.tab_description_color | default: '#4b5563' }};">
                   {{ block.settings.tab_description }}
                 </p>

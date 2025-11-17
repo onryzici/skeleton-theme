@@ -13,7 +13,9 @@
       "type": "hero",
       "name": "Hero",
       "settings": {
-        "bg_color": "#1a1a1a",
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/07dacb42323b4282bc4181347f67c487.mp4",
+        "overlay_opacity": 50,
+        "badge_text": "AI-POWERED SMART PEN & NOTEBOOK",
         "heading": "Write like always. Act like never before.",
         "subheading": "XNote captures your handwriting in real time, turns notes into structured knowledge, and makes them searchable, shareable, and smart without changing how you write.",
         "button_text": "Buy Now",
@@ -24,24 +26,46 @@
         "padding_bottom_desktop": 128
       }
     },
+    "image_comparison_HNNKdC": {
+      "type": "image-comparison",
+      "name": "Image Comparison",
+      "settings": {
+        "before_image": "shopify://shop_images/Frame_25.png",
+        "before_label": "Before",
+        "after_image": "shopify://shop_images/Frame_26.png",
+        "after_label": "After",
+        "heading": "Escape the Chaos. Write. \nSync. Save Time.",
+        "stat_number": "260+",
+        "stat_label": "hrs saved per year*",
+        "description": "Keep the clarity of real handwriting without the mess. XNote digitizes, organizes, and syncs your notes instantly so you can focus on ideas, not admin.",
+        "subdescription": "Estimate based on average time saved from post-handwriting cleanup, note organization, and meeting documentation.",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 100,
+        "padding_bottom_desktop": 100
+      }
+    },
     "image_cards_showcase_ay9Cpi": {
       "type": "image-cards-showcase",
       "blocks": {
         "card_c67GeT": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_43.png",
             "text": "Engage fully in every conversation"
           }
         },
         "card_rpbLBY": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_44.png",
             "text": "Spend less time taking notes"
           }
         },
         "card_BTdyn3": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_45.png",
             "text": "Never let a great idea slip away"
           }
         }
@@ -60,10 +84,235 @@
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80
       }
+    },
+    "logo_marquee_TUJ4wb": {
+      "type": "logo-marquee",
+      "blocks": {
+        "logo_xXCaMw": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1171281127.svg",
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_qt97mg": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1171281122.svg",
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_rfwHzq": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1171281124.svg",
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_MM9jMC": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1171281126.svg",
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_9LyG8f": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1171281123.svg",
+            "alt_text": "",
+            "link": ""
+          }
+        },
+        "logo_QUdbhn": {
+          "type": "logo",
+          "settings": {
+            "alt_text": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_xXCaMw",
+        "logo_qt97mg",
+        "logo_rfwHzq",
+        "logo_MM9jMC",
+        "logo_9LyG8f",
+        "logo_QUdbhn"
+      ],
+      "name": "Logo Marquee",
+      "settings": {
+        "heading": "Over 1 million professionals across",
+        "subheading": "over 170 countries trust Xnote as their AI work companion",
+        "animation_speed": 30,
+        "logo_grayscale": 100,
+        "logo_opacity": 50,
+        "background_color": "#f6f6f6",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "video_showcase_38jDnf": {
+      "type": "video-showcase",
+      "blocks": {
+        "tab_YHKmkf": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "One-Press Record",
+            "video_external": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/e2c4002ffc3944149c97553ecf7fe4f7.mp4",
+            "video_url": ""
+          }
+        },
+        "tab_44mdrP": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Voice-to-Text Transcription",
+            "video_external": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/8f693e8594d345f8ad3085032dc9d7e2.mp4",
+            "video_url": ""
+          }
+        },
+        "tab_j3zT7f": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "AI Summarization",
+            "video_external": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/99a120ab59e048ffa5131f6d247cbace.mp4",
+            "video_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_YHKmkf",
+        "tab_44mdrP",
+        "tab_j3zT7f"
+      ],
+      "name": "Video Showcase",
+      "settings": {
+        "heading": "Work smarter, not harder",
+        "subheading": "Personalized AI note-taking enhances your productivity",
+        "video_radius": 32,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96
+      }
+    },
+    "split_content_NKBVJc": {
+      "type": "split-content",
+      "name": "Split Content",
+      "settings": {
+        "container_bg_color": "#f6f6f6",
+        "container_radius": 32,
+        "left_image": "shopify://shop_images/xnoteshopping211124_0004.png",
+        "title": "XNote Starter Set",
+        "description": "Your notes, perfectly captured and synced the moment you write.",
+        "primary_button_text": "Select Options",
+        "primary_button_link": "",
+        "secondary_button_text": "View Full Details",
+        "secondary_button_link": "",
+        "right_image": "shopify://shop_images/Group_1171280986.png",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "1763325728d86e7965": {
+      "type": "apps",
+      "blocks": {
+        "cevoid_ugc_platform_app_block_KYjeKW": {
+          "type": "shopify://apps/cevoid-ugc-platform/blocks/app-block/44625c47-58aa-469a-87b7-94b54862081d",
+          "settings": {
+            "id": "",
+            "is_product_gallery": false,
+            "show_text": true,
+            "title": "See it styled by our community",
+            "title_color": "#000000",
+            "title_size": 16,
+            "paragraph": "Share your photo here or mention us on Instagram to be featured",
+            "paragraph_color": "#000000",
+            "paragraph_size": 16,
+            "text_alignment": "center",
+            "text_margin": 30
+          }
+        }
+      },
+      "block_order": [
+        "cevoid_ugc_platform_app_block_KYjeKW"
+      ],
+      "settings": {}
+    },
+    "icon_features_TaX67h": {
+      "type": "icon-features",
+      "blocks": {
+        "feature_YQCAhg": {
+          "type": "feature",
+          "settings": {
+            "icon": "fast.png",
+            "title": "Fast, Free Shipping",
+            "description": "Ship out within 1-2 business days"
+          }
+        },
+        "feature_Urdnyn": {
+          "type": "feature",
+          "settings": {
+            "icon": "return.png",
+            "title": "Free 30-Day Return",
+            "description": "No reason needed. Free return shipping & full refund."
+          }
+        },
+        "feature_DD8YUn": {
+          "type": "feature",
+          "settings": {
+            "icon": "support.png",
+            "title": "Lifetime Customer Support",
+            "description": "Quick support within 24 hours on working days"
+          }
+        },
+        "feature_qHcpqk": {
+          "type": "feature",
+          "settings": {
+            "icon": "security.png",
+            "title": "One-Year Warranty",
+            "description": "Warranty Period subject to local laws"
+          }
+        }
+      },
+      "block_order": [
+        "feature_YQCAhg",
+        "feature_Urdnyn",
+        "feature_DD8YUn",
+        "feature_qHcpqk"
+      ],
+      "name": "Icon Features",
+      "settings": {
+        "gradient_angle": 90,
+        "gradient_start": "#f9f9f9",
+        "gradient_middle": "#ffffff",
+        "gradient_end": "#f5f5f5",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
     }
   },
   "order": [
     "hero_diUB3g",
-    "image_cards_showcase_ay9Cpi"
+    "image_comparison_HNNKdC",
+    "image_cards_showcase_ay9Cpi",
+    "logo_marquee_TUJ4wb",
+    "video_showcase_38jDnf",
+    "split_content_NKBVJc",
+    "1763325728d86e7965",
+    "icon_features_TaX67h"
   ]
 }

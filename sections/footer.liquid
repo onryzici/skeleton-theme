@@ -17,11 +17,11 @@
             loading="lazy"
           >
         {% else %}
-          <h3 class="text-2xl font-medium font-sans mb-6">{{ shop.name }}</h3>
+          <h3 class="text-2xl font-bold font-sans mb-6">{{ shop.name }}</h3>
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="text-sm text-gray-600 font-sans leading-relaxed mb-8">
+          <p class="text-sm text-gray-600 font-extralight font-sans leading-relaxed mb-8">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -47,14 +47,14 @@
 
       {% comment %} Quick Links Column {% endcomment %}
       <div class="lg:col-span-2">
-        <h4 class="text-base font-semibold font-sans text-gray-900 mb-6">
+        <h4 class="text-base font-bold font-sans text-gray-900 mb-6">
           {{ section.settings.quick_links_heading | default: 'Quick Links' }}
         </h4>
         {% if section.settings.quick_links_menu != blank %}
           <ul class="space-y-3">
             {% for link in linklists[section.settings.quick_links_menu].links %}
               <li>
-                <a href="{{ link.url }}" class="text-sm text-gray-600 font-sans hover:text-gray-900 transition-colors">
+                <a href="{{ link.url }}" class="text-sm text-gray-600 font-extralight font-sans hover:text-gray-900 transition-colors">
                   {{ link.title }}
                 </a>
               </li>
@@ -65,14 +65,14 @@
 
       {% comment %} Information Column {% endcomment %}
       <div class="lg:col-span-2">
-        <h4 class="text-base font-semibold font-sans text-gray-900 mb-6">
+        <h4 class="text-base font-bold font-sans text-gray-900 mb-6">
           {{ section.settings.information_heading | default: 'Information' }}
         </h4>
         {% if section.settings.information_menu != blank %}
           <ul class="space-y-3">
             {% for link in linklists[section.settings.information_menu].links %}
               <li>
-                <a href="{{ link.url }}" class="text-sm text-gray-600 font-sans hover:text-gray-900 transition-colors">
+                <a href="{{ link.url }}" class="text-sm text-gray-600 font-extralight font-sans hover:text-gray-900 transition-colors">
                   {{ link.title }}
                 </a>
               </li>
@@ -83,7 +83,7 @@
 
       {% comment %} Newsletter Column {% endcomment %}
       <div class="md:col-span-2 lg:col-span-5">
-        <h4 class="text-xl sm:text-2xl lg:text-3xl font-medium font-sans text-gray-900 mb-4 sm:mb-6">
+        <h4 class="text-xl sm:text-2xl lg:text-3xl font-bold font-sans text-gray-900 mb-4 sm:mb-6">
           {{ section.settings.newsletter_heading | default: 'Trexo Innovation' }}
         </h4>
 
@@ -114,7 +114,7 @@
 
         {% comment %} Social Media {% endcomment %}
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p class="text-sm text-gray-600 font-sans">
+          <p class="text-sm text-gray-600 font-extralight font-sans">
             {{ section.settings.social_heading | default: 'Follow us at social media' }}
           </p>
           <div class="flex gap-4 flex-wrap">
@@ -166,7 +166,7 @@
     {% comment %} Copyright {% endcomment %}
     {% if section.settings.show_copyright %}
       <div class="border-t border-gray-200 mt-8 lg:mt-12 pt-6 lg:pt-8 text-center">
-        <p class="text-xs sm:text-sm text-gray-600 font-sans">
+        <p class="text-xs sm:text-sm text-gray-600 font-extralight font-sans">
           © {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.copyright_text | default: 'All rights reserved.' }}
         </p>
       </div>

@@ -183,19 +183,31 @@
     {% comment %} Section Heading {% endcomment %}
     {% if section.settings.heading != blank %}
       <div class="comparison-heading text-center mb-8 lg:mb-12">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold font-sans text-gray-900 mb-4">
           {{ section.settings.heading }}
         </h2>
         {% if section.settings.subheading != blank %}
-          <p class="text-base lg:text-lg font-sans text-gray-600 max-w-3xl mx-auto">
+          <p class="text-sm lg:text-lg font-extralight font-sans text-gray-600 max-w-3xl mx-auto">
             {{ section.settings.subheading }}
           </p>
         {% endif %}
       </div>
     {% endif %}
 
-    {% comment %} Comparison Table {% endcomment %}
-    <div class="comparison-table bg-white">
+    {% comment %} Mobile Image {% endcomment %}
+    {% if section.settings.mobile_image != blank %}
+      <div class="lg:hidden mobile-comparison-image mb-8">
+        <img
+          src="{{ section.settings.mobile_image | image_url: width: 800 }}"
+          alt="{{ section.settings.heading }}"
+          class="w-full h-auto rounded-2xl"
+          loading="lazy"
+        >
+      </div>
+    {% endif %}
+
+    {% comment %} Comparison Table - Desktop Only {% endcomment %}
+    <div class="comparison-table bg-white hidden lg:block">
       {% comment %} Table Header Row 1 - Feature text and icons {% endcomment %}
       <div class="table-header">
         <div class="header-cell feature-cell bg-white">
@@ -363,6 +375,16 @@
       "id": "column_3_bg_color",
       "label": "Column 3 background color",
       "default": "#f3f4f6"
+    },
+    {
+      "type": "header",
+      "content": "Mobile View"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "This image will be shown instead of the table on mobile devices"
     },
     {
       "type": "header",

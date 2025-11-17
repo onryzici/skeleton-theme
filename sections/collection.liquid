@@ -1,47 +1,222 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Collection Template
+  Displays products in a collection with filtering and sorting
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
-
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
-      </div>
-    {% endfor %}
-
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
-</div>
-
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+<style>
+  #shopify-section-{{ section.id }} .collection-section {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
   }
-{% endstylesheet %}
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .collection-section {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* Product card hover effect */
+  #shopify-section-{{ section.id }} .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Badge styles */
+  #shopify-section-{{ section.id }} .product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+  }
+
+  /* Custom select arrow */
+  #shopify-section-{{ section.id }} .sort-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.25rem center;
+    padding-right: 3rem;
+  }
+</style>
+
+<div class="collection-section full-width bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    {% comment %} Header - Sort {% endcomment %}
+    <form method="get" class="flex items-center justify-end mb-8 lg:mb-12">
+
+      {% comment %} Sort Dropdown {% endcomment %}
+      <div class="flex items-center gap-3">
+        <span class="text-sm lg:text-base font-medium font-sans text-gray-700">Sort by:</span>
+        <select
+          name="sort_by"
+          id="collection-sort-{{ section.id }}"
+          class="sort-select px-5 py-2.5 border-2 border-gray-900 rounded-full font-medium font-sans text-sm lg:text-base bg-white hover:bg-gray-50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900"
+          onchange="this.form.submit()"
+        >
+          <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best selling</option>
+          <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+          <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
+          <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price, low to high</option>
+          <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price, high to low</option>
+          <option value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>Date, old to new</option>
+          <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Date, new to old</option>
+        </select>
+      </div>
+    </form>
+
+    {% comment %} Products Grid {% endcomment %}
+    {% paginate collection.products by 12 %}
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12">
+
+        {% for product in collection.products %}
+          <div class="product-card bg-white rounded-2xl overflow-hidden">
+            <a href="{{ product.url }}" class="block">
+
+              {% comment %} Product Image {% endcomment %}
+              <div class="relative aspect-square bg-gray-50 mb-4 rounded-2xl overflow-hidden">
+
+                {% comment %} Badges {% endcomment %}
+                {% if product.compare_at_price > product.price %}
+                  {% assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+                  <div class="product-badge">
+                    <span class="inline-block px-3 py-1 bg-red-500 text-white text-xs font-bold font-sans rounded-full">
+                      Save {{ discount }}%
+                    </span>
+                  </div>
+                {% endif %}
+
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    width="600"
+                    height="600"
+                    loading="lazy"
+                    class="w-full h-full object-cover"
+                  >
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+                {% endif %}
+              </div>
+
+              {% comment %} Product Info {% endcomment %}
+              <div class="bg-gray-50 px-4 py-3 lg:py-4 rounded-2xl">
+                <h3 class="text-sm lg:text-base font-bold font-sans text-gray-900 mb-2 line-clamp-2">
+                  {{ product.title }}
+                </h3>
+
+                <div class="flex items-baseline gap-2">
+                  <span class="text-base lg:text-lg font-bold font-sans text-gray-900">
+                    {{ product.price | money }}
+                  </span>
+                  {% if product.compare_at_price > product.price %}
+                    <span class="text-xs lg:text-sm text-gray-400 line-through font-extralight font-sans">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+
+            </a>
+          </div>
+        {% else %}
+          <div class="col-span-full text-center py-16">
+            <p class="text-lg font-extralight font-sans text-gray-600">No products found in this collection.</p>
+          </div>
+        {% endfor %}
+
+      </div>
+
+      {% comment %} Pagination {% endcomment %}
+      {% if paginate.pages > 1 %}
+        <div class="flex justify-center items-center gap-2">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-gray-300 rounded-full hover:border-gray-900 transition-colors font-medium font-sans text-sm">
+              Previous
+            </a>
+          {% endif %}
+
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}" class="px-4 py-2 border border-gray-300 rounded-full hover:border-gray-900 transition-colors font-medium font-sans text-sm">
+                {{ part.title }}
+              </a>
+            {% else %}
+              <span class="px-4 py-2 bg-gray-900 text-white rounded-full font-medium font-sans text-sm">
+                {{ part.title }}
+              </span>
+            {% endif %}
+          {% endfor %}
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-gray-300 rounded-full hover:border-gray-900 transition-colors font-medium font-sans text-sm">
+              Next
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+
+  </div>
+</div>
 
 {% schema %}
 {
-  "name": "t:general.collection",
-  "settings": []
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (desktop)",
+      "default": 64
+    }
+  ]
 }
 {% endschema %}

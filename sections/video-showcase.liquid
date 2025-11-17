@@ -20,6 +20,11 @@
     animation: fadeInDown 0.6s ease forwards;
   }
 
+  /* Video container radius */
+  #shopify-section-{{ section.id }} .video-container {
+    border-radius: {{ section.settings.video_radius }}px;
+  }
+
   @media (min-width: 1024px) {
     #shopify-section-{{ section.id }} .video-showcase {
       padding-top: {{ section.settings.padding_top_desktop }}px !important;
@@ -34,13 +39,13 @@
     {% comment %} Header {% endcomment %}
     <div class="vs-header text-center mb-8 lg:mb-12">
       {% if section.settings.heading != blank %}
-        <h2 class="text-3xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
+        <h2 class="text-2xl lg:text-5xl font-bold font-sans text-gray-900 mb-4">
           {{ section.settings.heading }}
         </h2>
       {% endif %}
 
       {% if section.settings.subheading != blank %}
-        <p class="text-base lg:text-lg font-sans text-gray-600 max-w-2xl mx-auto mb-12">
+        <p class="text-sm lg:text-lg font-extralight font-sans text-gray-600 max-w-2xl mx-auto mb-12">
           {{ section.settings.subheading }}
         </p>
       {% endif %}
@@ -49,9 +54,9 @@
       <div class="w-full h-px bg-gray-200 mx-auto my-12"></div>
     </div>
 
-    {% comment %} Tabs {% endcomment %}
-    <div class="flex justify-center mb-8 lg:mb-12">
-      <div class="inline-flex flex-wrap justify-center gap-3 lg:gap-6">
+    {% comment %} Tabs - Desktop Only {% endcomment %}
+    <div class="hidden lg:flex justify-center mb-8 lg:mb-12">
+      <div class="inline-flex flex-wrap justify-center gap-10 lg:gap-24">
         {% for block in section.blocks %}
           <button
             type="button"
@@ -68,8 +73,8 @@
       </div>
     </div>
 
-    {% comment %} Video Container {% endcomment %}
-    <div id="video-container" class="relative w-full bg-gray-50 rounded-2xl overflow-hidden" style="min-height: 400px;">
+    {% comment %} Video Container - Desktop Only {% endcomment %}
+    <div id="video-container" class="video-container hidden lg:block relative w-full bg-gray-50 overflow-hidden" style="min-height: 400px;">
 
     {% comment %} Video Element {% endcomment %}
     {% if section.blocks.first.settings.video_external != blank %}
@@ -119,17 +124,17 @@
       {% endif %}
     </div>
 
-    {% comment %} Minimal Play/Pause Button - Bottom Right {% endcomment %}
+    {% comment %} Minimal Play/Pause Button - Bottom Right (Desktop Only) {% endcomment %}
     <button
       type="button"
       id="video-control-btn"
-      class="absolute bottom-4 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all duration-200 z-10 opacity-80 hover:opacity-100"
+      class="absolute bottom-4 right-4 w-12 h-12 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all duration-200 z-10 opacity-80 hover:opacity-100"
       aria-label="Play video"
     >
-      <svg id="play-icon" class="w-4 h-4 lg:w-5 lg:h-5 text-gray-900 ml-0.5 hidden" fill="currentColor" viewBox="0 0 20 20">
+      <svg id="play-icon" class="w-5 h-5 text-gray-900 ml-0.5 hidden" fill="currentColor" viewBox="0 0 20 20">
         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
       </svg>
-      <svg id="pause-icon" class="w-4 h-4 lg:w-5 lg:h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+      <svg id="pause-icon" class="w-5 h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
         <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/>
       </svg>
     </button>
@@ -140,11 +145,75 @@
     </div>
 
     </div>
+
+    {% comment %} Mobile Stacked Layout {% endcomment %}
+    <div class="lg:hidden space-y-12">
+      {% for block in section.blocks %}
+        <div class="mobile-video-section">
+          {% comment %} Title {% endcomment %}
+          {% if block.settings.tab_title != blank %}
+            <h3 class="text-xl font-bold font-sans text-gray-900 mb-6 text-center">
+              {{ block.settings.tab_title }}
+            </h3>
+          {% endif %}
+
+          {% comment %} Video Container {% endcomment %}
+          <div class="mobile-video-container video-container relative w-full bg-gray-50 overflow-hidden">
+
+            {% if block.settings.video_external != blank %}
+              {% comment %} External Video (YouTube/Vimeo) {% endcomment %}
+              <div class="external-video-wrapper w-full h-full">
+                {{ block.settings.video_external | video_tag:
+                  image_size: '1100x',
+                  loop: true,
+                  controls: false,
+                  muted: true,
+                  autoplay: true,
+                  class: 'w-full h-full object-contain'
+                }}
+              </div>
+            {% else %}
+              {% comment %} Self-hosted Video {% endcomment %}
+              <video
+                class="mobile-video w-full h-auto object-contain"
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                data-video-file="{{ block.settings.video_file }}"
+                data-video-url="{{ block.settings.video_url }}"
+              >
+                {% if block.settings.video_file != blank %}
+                  <source src="{{ block.settings.video_file }}" type="video/mp4">
+                {% elsif block.settings.video_url != blank %}
+                  <source src="{{ block.settings.video_url }}" type="video/mp4">
+                {% endif %}
+              </video>
+            {% endif %}
+
+            {% comment %} Play/Pause Button - Smaller on Mobile {% endcomment %}
+            <button
+              type="button"
+              class="mobile-video-control absolute bottom-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all duration-200 z-10 opacity-80 hover:opacity-100"
+              aria-label="Play video"
+            >
+              <svg class="play-icon w-3 h-3 text-gray-900 ml-0.5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+              </svg>
+              <svg class="pause-icon w-3 h-3 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 
 <script>
 (function() {
+  // Desktop video elements
   const video = document.getElementById('showcase-video');
   const videoContainer = document.getElementById('video-container');
   const externalVideoContainer = document.getElementById('external-video-container');
@@ -155,12 +224,16 @@
   const videoLoading = document.getElementById('video-loading');
   const tabs = document.querySelectorAll('.video-tab');
 
+  // Mobile video elements
+  const mobileVideos = document.querySelectorAll('.mobile-video');
+  const mobileControls = document.querySelectorAll('.mobile-video-control');
+
   let isPlaying = false;
   let isExternalVideo = !!externalVideoContainer;
   let currentVideoUrl = video?.querySelector('source')?.src || '';
   let hasLoadedOnce = false;
 
-  // Function to adjust container height based on video aspect ratio
+  // Function to adjust container height based on video aspect ratio (desktop only)
   function adjustContainerHeight() {
     if (!video || !videoContainer) return;
 
@@ -175,6 +248,63 @@
       videoContainer.style.height = calculatedHeight + 'px';
     }
   }
+
+  // Mobile video autoplay on scroll
+  const mobileObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        video.play().catch(() => {
+          // Autoplay prevented
+        });
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  // Setup mobile videos
+  mobileVideos.forEach((mobileVideo, index) => {
+    // Observe for autoplay
+    mobileObserver.observe(mobileVideo);
+
+    // Setup play/pause control
+    const controlBtn = mobileControls[index];
+    const playIconEl = controlBtn.querySelector('.play-icon');
+    const pauseIconEl = controlBtn.querySelector('.pause-icon');
+
+    // Initial state
+    let playing = false;
+
+    // Update icons based on video state
+    mobileVideo.addEventListener('play', () => {
+      playing = true;
+      playIconEl.classList.add('hidden');
+      pauseIconEl.classList.remove('hidden');
+    });
+
+    mobileVideo.addEventListener('pause', () => {
+      playing = false;
+      playIconEl.classList.remove('hidden');
+      pauseIconEl.classList.add('hidden');
+    });
+
+    // Control button click
+    controlBtn.addEventListener('click', () => {
+      if (playing) {
+        mobileVideo.pause();
+      } else {
+        mobileVideo.play().catch(() => {});
+      }
+    });
+
+    // Try to play when loaded
+    mobileVideo.addEventListener('loadedmetadata', () => {
+      if (mobileVideo.getBoundingClientRect().top < window.innerHeight) {
+        mobileVideo.play().catch(() => {});
+      }
+    });
+  });
 
   // Intersection Observer for lazy loading with autoplay
   const observer = new IntersectionObserver((entries) => {
@@ -361,6 +491,20 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Personalized AI note-taking enhances your productivity"
+    },
+    {
+      "type": "header",
+      "content": "Video Container"
+    },
+    {
+      "type": "range",
+      "id": "video_radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Video container corner radius",
+      "default": 32
     },
     {
       "type": "header",

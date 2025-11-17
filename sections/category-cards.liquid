@@ -80,27 +80,27 @@
 </style>
 
 <div class="full-width category-cards-section bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-  {% comment %} Section Heading - Centered {% endcomment %}
-  {% if section.settings.heading != blank %}
-    <div class="category-heading text-center mb-8 lg:mb-12">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium font-sans text-gray-900 mb-4">
-        {{ section.settings.heading }}
-      </h2>
-      {% if section.settings.subheading != blank %}
-        <p class="text-base lg:text-lg font-sans text-gray-600 max-w-3xl mx-auto px-4">
-          {{ section.settings.subheading }}
-        </p>
-      {% endif %}
-    </div>
-  {% endif %}
+    {% comment %} Section Heading - Centered {% endcomment %}
+    {% if section.settings.heading != blank %}
+      <div class="category-heading text-center mb-8 lg:mb-12">
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold font-sans text-gray-900 mb-4">
+          {{ section.settings.heading }}
+        </h2>
+        {% if section.settings.subheading != blank %}
+          <p class="text-sm lg:text-lg font-extralight font-sans text-gray-600 max-w-3xl mx-auto">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
 
   {% comment %} Category Cards {% endcomment %}
   <div class="category-cards-container">
     {% comment %} Mobile: Horizontal scroll, Desktop: Grid {% endcomment %}
-    <div class="lg:container lg:mx-auto lg:px-4 lg:px-6 xl:px-8">
-      <div class="category-scroll-container overflow-x-auto snap-x snap-mandatory lg:overflow-visible px-4 sm:px-6 lg:px-0">
-        <div class="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-6 min-w-max lg:min-w-0">
+    <div class="category-scroll-container overflow-x-auto snap-x snap-mandatory lg:overflow-visible -mx-4 sm:-mx-6 lg:mx-0">
+      <div class="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-6 min-w-max lg:min-w-0 px-4 sm:px-6 lg:px-0">
 
           {% for block in section.blocks %}
             {% if block.type == 'category' %}
@@ -125,12 +125,12 @@
                   <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                   <div class="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
                     {% if block.settings.title != blank %}
-                      <h3 class="text-xl lg:text-2xl font-semibold font-sans text-white mb-2">
+                      <h3 class="text-lg lg:text-2xl font-bold font-sans text-white mb-2">
                         {{ block.settings.title }}
                       </h3>
                     {% endif %}
                     {% if block.settings.description != blank %}
-                      <p class="text-sm lg:text-base font-sans text-white/90">
+                      <p class="text-xs lg:text-base font-extralight font-sans text-white/90">
                         {{ block.settings.description }}
                       </p>
                     {% endif %}
@@ -145,7 +145,7 @@
       </div>
     </div>
   </div>
-
+  </div>
 </div>
 
 {% schema %}

@@ -147,7 +147,7 @@
 <div class="image-comparison-section full-width bg-white">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
 
       {% comment %} Image Comparison Slider {% endcomment %}
       <div class="comparison-wrapper">
@@ -199,7 +199,7 @@
       {% comment %} Content Area {% endcomment %}
       <div class="content-area">
         {% if section.settings.heading != blank %}
-          <h2 class="text-2xl lg:text-4xl font-medium font-sans text-gray-900 mb-6" style="white-space: pre-line;">
+          <h2 class="text-2xl lg:text-4xl font-bold font-sans text-gray-900 mb-6" style="white-space: pre-line;">
             {{ section.settings.heading }}
           </h2>
         {% endif %}
@@ -210,7 +210,7 @@
               {{ section.settings.stat_number }}
             </div>
             {% if section.settings.stat_label != blank %}
-              <div class="text-base lg:text-lg font-sans text-gray-600">
+              <div class="text-base lg:text-lg font-extralight font-sans text-gray-600">
                 {{ section.settings.stat_label }}
               </div>
             {% endif %}
@@ -218,13 +218,13 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="text-base lg:text-lg font-sans text-gray-700 mb-4">
+          <p class="text-base lg:text-lg font-extralight font-sans text-gray-700 mb-4">
             {{ section.settings.description }}
           </p>
         {% endif %}
 
         {% if section.settings.subdescription != blank %}
-          <p class="text-sm lg:text-base font-sans text-gray-600">
+          <p class="text-sm lg:text-base font-extralight font-sans text-gray-600">
             {{ section.settings.subdescription }}
           </p>
         {% endif %}

@@ -50,6 +50,7 @@
         },
         "quantity_selector_JQaGH8": {
           "type": "quantity_selector",
+          "disabled": true,
           "settings": {}
         },
         "buy_buttons_JcRJ36": {
@@ -59,30 +60,14 @@
             "show_dynamic_checkout": true
           }
         },
-        "delivery_info_yUdEJp": {
-          "type": "delivery_info",
-          "settings": {
-            "text": "Worry-Free Delivery available with ease!"
-          }
-        },
-        "payment_icons_mwKLEW": {
-          "type": "payment_icons",
-          "settings": {
-            "show_payment_icons": true
-          }
-        },
-        "shipping_info_7A4yrx": {
-          "type": "shipping_info",
-          "settings": {
-            "text": "Orders are typically shipped out within 1-2 business days."
-          }
-        },
         "collapsible_tab_Jh6y9C": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "In the box",
+            "top_image": "shopify://shop_images/Group_1171281981_2.png",
             "use_description": false,
-            "content": "<p>Add what's included in the box here</p>",
+            "content": "",
+            "bottom_image": "shopify://shop_images/Group_1171281730_2.png",
             "open_by_default": false
           }
         },
@@ -95,15 +80,25 @@
             "open_by_default": false
           }
         },
+        "payment_icons_mwKLEW": {
+          "type": "payment_icons",
+          "settings": {
+            "show_payment_icons": true
+          }
+        },
         "trust_badges_DtaHAh": {
           "type": "trust_badges",
           "settings": {
+            "badge_1_icon": "fast.png",
             "badge_1_text": "Fast, Free Shipping",
             "badge_1_subtext": "Ship out within 1-2 business days",
+            "badge_2_icon": "return.png",
             "badge_2_text": "Free 30-Day Return",
             "badge_2_subtext": "No hassle returns and exchanges",
+            "badge_3_icon": "support.png",
             "badge_3_text": "Lifetime Customer Support",
             "badge_3_subtext": "Quick support via email or phone call",
+            "badge_4_icon": "security.png",
             "badge_4_text": "One-Year Warranty",
             "badge_4_subtext": "We protect your purchase up to 1 year"
           }
@@ -118,18 +113,16 @@
         "variant_picker_Xxctgb",
         "quantity_selector_JQaGH8",
         "buy_buttons_JcRJ36",
-        "delivery_info_yUdEJp",
-        "payment_icons_mwKLEW",
-        "shipping_info_7A4yrx",
         "collapsible_tab_Jh6y9C",
         "buy_together_yGLhj9",
+        "payment_icons_mwKLEW",
         "trust_badges_DtaHAh"
       ],
       "name": "Product Information",
       "settings": {
         "show_thumbnails": true,
         "image_radius": 48,
-        "image_bg_color": "#f3f4f6",
+        "image_bg_color": "#ffffff",
         "padding_top_mobile": 32,
         "padding_bottom_mobile": 32,
         "padding_top_desktop": 64,
@@ -304,7 +297,7 @@
       "name": "Bento Grid",
       "settings": {
         "heading": "All the details that make XNote unique",
-        "mobile_image": "shopify://shop_images/Group_1171281537.svg",
+        "mobile_image": "shopify://shop_images/Group_1171281980.png",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
@@ -313,239 +306,6 @@
         "card_radius": 20,
         "card_padding": 0,
         "bg_color": "#ffffff"
-      }
-    },
-    "features_grid_myY3Kx": {
-      "type": "features-grid",
-      "blocks": {
-        "feature_card_Xf8q9g": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281546.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_U9jhRi": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281562.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_3CUiCQ": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/weight.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_wbVfQR": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281555.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_NfAzjC": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281560.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_CWyyjX": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/audi-new_b83dd50b-520f-4e21-a7d9-50c28aafc261.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_BdRp9P": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281559.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_KKPT8R": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281558.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_W3pGk7": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281557.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_L3hQVY": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281568.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_VQyJ8B": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281567.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_38VBf9": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281566.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_n9tU4X": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281565.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_HDkfCA": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281564.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        },
-        "feature_card_zJFt3G": {
-          "type": "feature_card",
-          "settings": {
-            "image": "shopify://shop_images/Group_1171281563.png",
-            "image_alt": "",
-            "show_on_mobile": true,
-            "bg_type": "default",
-            "bg_color_1": "#f5f7fa",
-            "bg_color_2": "#e8ecf1",
-            "gradient_direction": "135deg",
-            "custom_bg": ""
-          }
-        }
-      },
-      "block_order": [
-        "feature_card_Xf8q9g",
-        "feature_card_U9jhRi",
-        "feature_card_3CUiCQ",
-        "feature_card_wbVfQR",
-        "feature_card_NfAzjC",
-        "feature_card_CWyyjX",
-        "feature_card_BdRp9P",
-        "feature_card_KKPT8R",
-        "feature_card_W3pGk7",
-        "feature_card_L3hQVY",
-        "feature_card_VQyJ8B",
-        "feature_card_38VBf9",
-        "feature_card_n9tU4X",
-        "feature_card_HDkfCA",
-        "feature_card_zJFt3G"
-      ],
-      "disabled": true,
-      "name": "Features Grid",
-      "settings": {
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 96,
-        "padding_bottom_desktop": 96,
-        "grid_gap": 16,
-        "card_radius": 20,
-        "card_padding": 0,
-        "section_title": "All the details that make XNote unique",
-        "section_description": "",
-        "bg_color": "#ffffff",
-        "title_color": "#0b0b0c",
-        "desc_color": "#0b0b0cb3"
       }
     },
     "video_showcase_mRzkYr": {
@@ -586,8 +346,9 @@
       ],
       "name": "Video Showcase",
       "settings": {
-        "heading": "Work smarter, not harder",
+        "heading": "Maximize productivity with AI-powered note-taking.",
         "subheading": "Personalized AI note-taking enhances your productivity",
+        "video_radius": 32,
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 96,
@@ -709,11 +470,108 @@
         "before_label": "Before",
         "after_image": "shopify://shop_images/Frame_26.png",
         "after_label": "After",
-        "heading": "Escape the Chaos. Write.\n Sync. Save Time.",
+        "heading": "Escape the Chaos. Write.Sync. Save Time.",
         "stat_number": "260+",
         "stat_label": "hrs saved per year*",
         "description": "Keep the clarity of real handwriting without the mess. XNote digitizes, organizes, and syncs your notes instantly so you can focus on ideas, not admin.",
         "subdescription": "Estimate based on average time saved from post-handwriting cleanup, note organization, and meeting documentation.",
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80
+      }
+    },
+    "comparison_table_DVRBC4": {
+      "type": "comparison-table",
+      "blocks": {
+        "feature_mRYKKK": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Feature name",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        },
+        "feature_8eLVEH": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Paper-first experience",
+            "column_1_icon": "check",
+            "column_2_icon": "check",
+            "column_3_icon": "minus"
+          }
+        },
+        "feature_H6A6RG": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Feature name",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        },
+        "feature_6nbTHm": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Feature name",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        },
+        "feature_AkgeUd": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Feature name",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        },
+        "feature_7drqqC": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Real-time digitization",
+            "column_1_icon": "check",
+            "column_2_icon": "check",
+            "column_3_icon": "cross"
+          }
+        },
+        "feature_p8axxJ": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "AI summaries & Q&A",
+            "column_1_icon": "check",
+            "column_2_icon": "cross",
+            "column_3_icon": "cross"
+          }
+        }
+      },
+      "block_order": [
+        "feature_mRYKKK",
+        "feature_8eLVEH",
+        "feature_H6A6RG",
+        "feature_6nbTHm",
+        "feature_AkgeUd",
+        "feature_7drqqC",
+        "feature_p8axxJ"
+      ],
+      "name": "Comparison Table",
+      "settings": {
+        "heading": "Comparison",
+        "subheading": "Unlock Xnote Intelligence's full AI capabilities with pro or unlimited plan",
+        "feature_column_title": "Feature",
+        "column_1_title": "XNote Smart Writing Set",
+        "column_1_icon": "shopify://shop_images/Group_1171281200_4c4dbc61-5540-434a-8574-1c4372126bfc.svg",
+        "column_1_bg_color": "#effff2",
+        "column_2_title": "Tablet + Stylus",
+        "column_2_icon": "shopify://shop_images/Group_1171281873.svg",
+        "column_2_bg_color": "#ffffff",
+        "column_3_title": "Traditional Smartpen",
+        "column_3_icon": "shopify://shop_images/Group_1171281874.svg",
+        "column_3_bg_color": "#f9f9f9",
+        "mobile_image": "shopify://shop_images/Group_1171281958.svg",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
@@ -885,6 +743,7 @@
         "logo_ndCXBm": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/Group_1171281122.svg",
             "alt_text": "",
             "link": ""
           }
@@ -892,6 +751,7 @@
         "logo_gGpzdk": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/Group_1171281127.svg",
             "alt_text": "",
             "link": ""
           }
@@ -899,6 +759,7 @@
         "logo_DXMqmJ": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/Group_1171281124.svg",
             "alt_text": "",
             "link": ""
           }
@@ -906,6 +767,7 @@
         "logo_N9MFfM": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/Group_1171281126.svg",
             "alt_text": "",
             "link": ""
           }
@@ -913,6 +775,7 @@
         "logo_8xQYiN": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/Group_1171281123.svg",
             "alt_text": "",
             "link": ""
           }
@@ -932,7 +795,7 @@
         "animation_speed": 30,
         "logo_grayscale": 100,
         "logo_opacity": 50,
-        "background_color": "#ffffff",
+        "background_color": "#f9f9f9",
         "padding_top_mobile": 48,
         "padding_bottom_mobile": 48,
         "padding_top_desktop": 80,
@@ -1062,11 +925,11 @@
   "order": [
     "product_CCFgYF",
     "bento_grid_DwBJxH",
-    "features_grid_myY3Kx",
     "video_showcase_mRzkYr",
     "use_cases_mfRtxd",
     "category_cards_xRkWKG",
     "image_comparison_PCWW77",
+    "comparison_table_DVRBC4",
     "specifications_grid_WGLdaC",
     "logo_marquee_F6a3J9",
     "faq_cLfi3W",

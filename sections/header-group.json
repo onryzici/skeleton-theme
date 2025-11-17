@@ -13,13 +13,16 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
+      "custom_css": [
+        ".text-sm {color: #566e89;}"
+      ],
       "settings": {
         "show_announcement": true,
-        "announcement_text": "Your AI-Powered Starter Kit Ships Free in US. Get yours While it lasts",
+        "announcement_text": "Your AI-Powered Starter Kit Ships <b>Free </b>in US. <b>Get yours While it lasts</b>",
         "announcement_link": "",
         "announcement_icon": "",
-        "bg_color_start": "#7effee",
-        "bg_color_end": "#9cc9ed"
+        "bg_color_start": "#e7faff",
+        "bg_color_end": "#e9f3fc"
       }
     },
     "header": {
