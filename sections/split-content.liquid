@@ -247,14 +247,14 @@
           </div>
 
           {% comment %} Add to Cart Form {% endcomment %}
-          <form action="/cart/add" method="post" enctype="multipart/form-data" class="modal-add-to-cart-form">
+          {% form 'product', modal_product, class: 'modal-product-form' %}
             <input type="hidden" name="id" value="{{ modal_product.selected_or_first_available_variant.id }}">
 
             {% comment %} Variant Selector (if product has variants) {% endcomment %}
             {% if modal_product.variants.size > 1 %}
               <div class="mb-4">
                 <label class="block text-sm mb-2">Select Variant</label>
-                <select name="id" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                <select name="id" class="w-full px-4 py-3 border border-gray-300 rounded-full">
                   {% for variant in modal_product.variants %}
                     <option value="{{ variant.id }}" {% if variant == modal_product.selected_or_first_available_variant %}selected{% endif %}>
                       {{ variant.title }} - ${{ variant.price | money_without_currency }}
@@ -264,13 +264,31 @@
               </div>
             {% endif %}
 
-            <button
-              type="submit"
-              class="w-full px-6 py-4 bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
-            >
-              Add to Cart - ${{ current_variant.price | money_without_currency }}
-            </button>
-          </form>
+            {% comment %} Buttons Grid {% endcomment %}
+            <div class="flex flex-col gap-3">
+              {% comment %} Add to Cart + Shop Pay Row {% endcomment %}
+              <div class="grid grid-cols-2 gap-3">
+                <button
+                  type="submit"
+                  name="add"
+                  class="px-6 py-3.5 bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-300 text-center text-sm lg:text-base"
+                >
+                  Add to Cart
+                </button>
+
+                {% comment %} Shop Pay Button {% endcomment %}
+                {{ form | payment_button }}
+              </div>
+
+              {% comment %} View Full Details Button {% endcomment %}
+              <a
+                href="{{ modal_product.url }}"
+                class="w-full px-6 py-3.5 bg-white text-black border-2 border-black rounded-full hover:bg-gray-50 transition-all duration-300 text-center text-sm lg:text-base"
+              >
+                View Full Details
+              </a>
+            </div>
+          {% endform %}
 
         </div>
 
@@ -306,8 +324,9 @@
       border-radius: 2rem;
       max-width: 1200px;
       width: 100%;
+      height: 600px;
       max-height: 90vh;
-      overflow-y: auto;
+      overflow: hidden;
       position: relative;
       transform: scale(0.9);
       transition: transform 0.3s ease;
@@ -342,7 +361,7 @@
     #product-modal-{{ clean_id }} .modal-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      height: 100%;
     }
 
     @media (min-width: 768px) {
@@ -357,18 +376,42 @@
       align-items: center;
       justify-content: center;
       background: #f9fafb;
+      position: sticky;
+      top: 0;
+      height: 100%;
+      overflow: hidden;
     }
 
     #product-modal-{{ clean_id }} .modal-product-image {
       width: 100%;
       height: auto;
       object-fit: contain;
-      max-height: 500px;
+      max-height: 450px;
     }
 
     #product-modal-{{ clean_id }} .modal-info-section {
       padding: 3rem;
       overflow-y: auto;
+      height: 100%;
+    }
+
+    /* Custom scrollbar for modal content */
+    #product-modal-{{ clean_id }} .modal-info-section::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #product-modal-{{ clean_id }} .modal-info-section::-webkit-scrollbar-track {
+      background: #f3f4f6;
+      border-radius: 4px;
+    }
+
+    #product-modal-{{ clean_id }} .modal-info-section::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+
+    #product-modal-{{ clean_id }} .modal-info-section::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
     }
 
     #product-modal-{{ clean_id }} .modal-product-title {
@@ -430,8 +473,51 @@
       color: #000;
     }
 
+    /* Payment Button Styling */
+    #product-modal-{{ clean_id }} .shopify-payment-button {
+      margin: 0;
+    }
+
+    #product-modal-{{ clean_id }} .shopify-payment-button__button {
+      border-radius: 9999px !important;
+      border: 2px solid #000 !important;
+      background: white !important;
+      min-height: 48px !important;
+      transition: all 0.3s !important;
+    }
+
+    #product-modal-{{ clean_id }} .shopify-payment-button__button:hover {
+      background: #f9fafb !important;
+    }
+
+    #product-modal-{{ clean_id }} .shopify-payment-button__button--unbranded {
+      background: white !important;
+      color: #000 !important;
+    }
+
+    #product-modal-{{ clean_id }} .shopify-payment-button__more-options {
+      margin-top: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
     @media (max-width: 767px) {
-      #product-modal-{{ clean_id }} .modal-image-section,
+      #product-modal-{{ clean_id }} .product-modal-container {
+        height: 90vh;
+      }
+
+      #product-modal-{{ clean_id }} .modal-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+      }
+
+      #product-modal-{{ clean_id }} .modal-image-section {
+        padding: 1.5rem;
+        height: auto;
+        position: relative;
+      }
+
       #product-modal-{{ clean_id }} .modal-info-section {
         padding: 1.5rem;
       }
@@ -442,6 +528,10 @@
 
       #product-modal-{{ clean_id }} .modal-current-price {
         font-size: 1.5rem;
+      }
+
+      #product-modal-{{ clean_id }} .modal-product-image {
+        max-height: 250px;
       }
     }
   </style>
