@@ -108,9 +108,10 @@
           <div class="flex flex-col gap-3 w-full max-w-sm">
             {% if section.settings.primary_button_text != blank %}
               {% if section.settings.modal_product != blank %}
+                {% assign clean_id = section.id | replace: '__', '_' | replace: '-', '_' %}
                 <button
                   type="button"
-                  onclick="openProductModal{{ section.id }}()"
+                  onclick="openProductModal_{{ clean_id }}()"
                   class="px-6 py-3 lg:px-8 lg:py-3.5 bg-black text-white text-sm lg:text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
                 >
                   {{ section.settings.primary_button_text }}
@@ -172,12 +173,13 @@
 {% comment %} Product Quick View Modal {% endcomment %}
 {% if section.settings.modal_product != blank %}
   {% assign modal_product = section.settings.modal_product %}
+  {% assign clean_id = section.id | replace: '__', '_' | replace: '-', '_' %}
 
-  <div id="product-modal-{{ section.id }}" class="product-modal-overlay" style="display: none;">
+  <div id="product-modal-{{ clean_id }}" class="product-modal-overlay" style="display: none;">
     <div class="product-modal-container">
 
       {% comment %} Close Button {% endcomment %}
-      <button type="button" class="modal-close-btn" onclick="closeProductModal{{ section.id }}()" aria-label="Close">
+      <button type="button" class="modal-close-btn" onclick="closeProductModal_{{ clean_id }}()" aria-label="Close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
@@ -279,7 +281,7 @@
 
   <style>
     /* Product Modal Styles */
-    #product-modal-{{ section.id }}.product-modal-overlay {
+    #product-modal-{{ clean_id }}.product-modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -295,11 +297,11 @@
       transition: opacity 0.3s ease;
     }
 
-    #product-modal-{{ section.id }}.product-modal-overlay.active {
+    #product-modal-{{ clean_id }}.product-modal-overlay.active {
       opacity: 1;
     }
 
-    #product-modal-{{ section.id }} .product-modal-container {
+    #product-modal-{{ clean_id }} .product-modal-container {
       background: white;
       border-radius: 2rem;
       max-width: 1200px;
@@ -311,11 +313,11 @@
       transition: transform 0.3s ease;
     }
 
-    #product-modal-{{ section.id }}.active .product-modal-container {
+    #product-modal-{{ clean_id }}.active .product-modal-container {
       transform: scale(1);
     }
 
-    #product-modal-{{ section.id }} .modal-close-btn {
+    #product-modal-{{ clean_id }} .modal-close-btn {
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
@@ -332,24 +334,24 @@
       transition: all 0.2s;
     }
 
-    #product-modal-{{ section.id }} .modal-close-btn:hover {
+    #product-modal-{{ clean_id }} .modal-close-btn:hover {
       background: #f3f4f6;
       transform: rotate(90deg);
     }
 
-    #product-modal-{{ section.id }} .modal-grid {
+    #product-modal-{{ clean_id }} .modal-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
     }
 
     @media (min-width: 768px) {
-      #product-modal-{{ section.id }} .modal-grid {
+      #product-modal-{{ clean_id }} .modal-grid {
         grid-template-columns: 1fr 1fr;
       }
     }
 
-    #product-modal-{{ section.id }} .modal-image-section {
+    #product-modal-{{ clean_id }} .modal-image-section {
       padding: 3rem;
       display: flex;
       align-items: center;
@@ -357,47 +359,47 @@
       background: #f9fafb;
     }
 
-    #product-modal-{{ section.id }} .modal-product-image {
+    #product-modal-{{ clean_id }} .modal-product-image {
       width: 100%;
       height: auto;
       object-fit: contain;
       max-height: 500px;
     }
 
-    #product-modal-{{ section.id }} .modal-info-section {
+    #product-modal-{{ clean_id }} .modal-info-section {
       padding: 3rem;
       overflow-y: auto;
     }
 
-    #product-modal-{{ section.id }} .modal-product-title {
+    #product-modal-{{ clean_id }} .modal-product-title {
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
 
-    #product-modal-{{ section.id }} .modal-product-subtitle {
+    #product-modal-{{ clean_id }} .modal-product-subtitle {
       font-size: 1.125rem;
       color: #6b7280;
       margin-bottom: 1rem;
     }
 
-    #product-modal-{{ section.id }} .modal-price-section {
+    #product-modal-{{ clean_id }} .modal-price-section {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       flex-wrap: wrap;
     }
 
-    #product-modal-{{ section.id }} .modal-compare-price {
+    #product-modal-{{ clean_id }} .modal-compare-price {
       font-size: 1.25rem;
       color: #9ca3af;
       text-decoration: line-through;
     }
 
-    #product-modal-{{ section.id }} .modal-current-price {
+    #product-modal-{{ clean_id }} .modal-current-price {
       font-size: 1.875rem;
     }
 
-    #product-modal-{{ section.id }} .modal-savings-badge {
+    #product-modal-{{ clean_id }} .modal-savings-badge {
       font-size: 0.875rem;
       padding: 0.25rem 0.75rem;
       background: #dcfce7;
@@ -405,23 +407,23 @@
       border-radius: 9999px;
     }
 
-    #product-modal-{{ section.id }} .modal-features {
+    #product-modal-{{ clean_id }} .modal-features {
       color: #374151;
       line-height: 1.75;
     }
 
-    #product-modal-{{ section.id }} .modal-features ul {
+    #product-modal-{{ clean_id }} .modal-features ul {
       list-style: none;
       padding: 0;
     }
 
-    #product-modal-{{ section.id }} .modal-features li {
+    #product-modal-{{ clean_id }} .modal-features li {
       padding-left: 1.5rem;
       position: relative;
       margin-bottom: 0.75rem;
     }
 
-    #product-modal-{{ section.id }} .modal-features li::before {
+    #product-modal-{{ clean_id }} .modal-features li::before {
       content: "•";
       position: absolute;
       left: 0;
@@ -429,24 +431,24 @@
     }
 
     @media (max-width: 767px) {
-      #product-modal-{{ section.id }} .modal-image-section,
-      #product-modal-{{ section.id }} .modal-info-section {
+      #product-modal-{{ clean_id }} .modal-image-section,
+      #product-modal-{{ clean_id }} .modal-info-section {
         padding: 1.5rem;
       }
 
-      #product-modal-{{ section.id }} .modal-product-title {
+      #product-modal-{{ clean_id }} .modal-product-title {
         font-size: 1.5rem;
       }
 
-      #product-modal-{{ section.id }} .modal-current-price {
+      #product-modal-{{ clean_id }} .modal-current-price {
         font-size: 1.5rem;
       }
     }
   </style>
 
   <script>
-    function openProductModal{{ section.id }}() {
-      const modal = document.getElementById('product-modal-{{ section.id }}');
+    function openProductModal_{{ clean_id }}() {
+      const modal = document.getElementById('product-modal-{{ clean_id }}');
       if (modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -458,8 +460,8 @@
       }
     }
 
-    function closeProductModal{{ section.id }}() {
-      const modal = document.getElementById('product-modal-{{ section.id }}');
+    function closeProductModal_{{ clean_id }}() {
+      const modal = document.getElementById('product-modal-{{ clean_id }}');
       if (modal) {
         modal.classList.remove('active');
 
@@ -472,11 +474,11 @@
 
     // Close on overlay click
     document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('product-modal-{{ section.id }}');
+      const modal = document.getElementById('product-modal-{{ clean_id }}');
       if (modal) {
         modal.addEventListener('click', function(e) {
           if (e.target === this) {
-            closeProductModal{{ section.id }}();
+            closeProductModal_{{ clean_id }}();
           }
         });
       }
@@ -485,7 +487,7 @@
     // Close on Escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
-        closeProductModal{{ section.id }}();
+        closeProductModal_{{ clean_id }}();
       }
     });
   </script>
