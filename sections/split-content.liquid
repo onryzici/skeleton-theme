@@ -246,6 +246,14 @@
             {% endif %}
           </div>
 
+          {% comment %} Divider {% endcomment %}
+          <div class="modal-divider"></div>
+
+          {% comment %} Rapi Widget {% endcomment %}
+          <div class="modal-rapi-widget mb-6">
+            <div data-rapi-id="rapi_637b5824d189e0"></div>
+          </div>
+
           {% comment %} Add to Cart Form {% endcomment %}
           {% form 'product', modal_product, class: 'modal-product-form' %}
             <input type="hidden" name="id" value="{{ modal_product.selected_or_first_available_variant.id }}">
@@ -471,6 +479,19 @@
       position: absolute;
       left: 0;
       color: #000;
+    }
+
+    /* Divider */
+    #product-modal-{{ clean_id }} .modal-divider {
+      width: 100%;
+      height: 1px;
+      background: #e5e7eb;
+      margin: 2rem 0;
+    }
+
+    /* Rapi Widget */
+    #product-modal-{{ clean_id }} .modal-rapi-widget {
+      min-height: 40px;
     }
 
     /* Payment Button Styling */
