@@ -210,18 +210,13 @@
             <p class="modal-product-subtitle">{{ modal_product.metafields.custom.subtitle }}</p>
           {% endif %}
 
-          {% comment %} Reviews/Rating (Judge.me or metafield) {% endcomment %}
-          <div class="modal-rating">
-            <div class="flex items-center gap-2 mb-4">
-              <div class="flex gap-0.5">
-                {% for i in (1..5) %}
-                  <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                  </svg>
-                {% endfor %}
-              </div>
-              <span class="text-sm text-gray-600">728 Reviews</span>
+          {% comment %} Reviews/Rating - Judge.me {% endcomment %}
+          <div class="modal-rating mb-4">
+            <!-- Start of Judge.me code -->
+            <div class='jdgm-widget jdgm-preview-badge'>
+              {{ modal_product.metafields.judgeme.badge }}
             </div>
+            <!-- End of Judge.me code -->
           </div>
 
           {% comment %} Price {% endcomment %}
