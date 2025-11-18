@@ -107,13 +107,22 @@
           {% comment %} Buttons {% endcomment %}
           <div class="flex flex-col gap-3 w-full max-w-sm">
             {% if section.settings.primary_button_text != blank %}
-              <button
-                type="button"
-                onclick="openProductModal{{ section.id }}()"
-                class="px-6 py-3 lg:px-8 lg:py-3.5 bg-black text-white text-sm lg:text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
-              >
-                {{ section.settings.primary_button_text }}
-              </button>
+              {% if section.settings.modal_product != blank %}
+                <button
+                  type="button"
+                  onclick="openProductModal{{ section.id }}()"
+                  class="px-6 py-3 lg:px-8 lg:py-3.5 bg-black text-white text-sm lg:text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
+                >
+                  {{ section.settings.primary_button_text }}
+                </button>
+              {% else %}
+                <a
+                  href="{{ section.settings.primary_button_link | default: '#' }}"
+                  class="px-6 py-3 lg:px-8 lg:py-3.5 bg-black text-white text-sm lg:text-base font-sans rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
+                >
+                  {{ section.settings.primary_button_text }}
+                </a>
+              {% endif %}
             {% endif %}
 
             {% if section.settings.secondary_button_text != blank %}
@@ -215,12 +224,13 @@
 
           {% comment %} Price {% endcomment %}
           <div class="modal-price-section mb-6">
-            {% if modal_product.compare_at_price > modal_product.price %}
-              <span class="modal-compare-price">${{ modal_product.compare_at_price | money_without_currency }}</span>
+            {% assign current_variant = modal_product.selected_or_first_available_variant %}
+            {% if current_variant.compare_at_price and current_variant.compare_at_price > current_variant.price %}
+              <span class="modal-compare-price">${{ current_variant.compare_at_price | money_without_currency }}</span>
             {% endif %}
-            <span class="modal-current-price">${{ modal_product.price | money_without_currency }}</span>
-            {% if modal_product.compare_at_price > modal_product.price %}
-              {% assign savings = modal_product.compare_at_price | minus: modal_product.price %}
+            <span class="modal-current-price">${{ current_variant.price | money_without_currency }}</span>
+            {% if current_variant.compare_at_price and current_variant.compare_at_price > current_variant.price %}
+              {% assign savings = current_variant.compare_at_price | minus: current_variant.price %}
               <span class="modal-savings-badge">SAVE +${{ savings | money_without_currency }}</span>
             {% endif %}
           </div>
@@ -256,7 +266,7 @@
               type="submit"
               class="w-full px-6 py-4 bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-300 text-center"
             >
-              Add to Cart - ${{ modal_product.price | money_without_currency }}
+              Add to Cart - ${{ current_variant.price | money_without_currency }}
             </button>
           </form>
 
@@ -538,6 +548,12 @@
       "id": "primary_button_text",
       "label": "Primary button text",
       "default": "Select Options"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link (fallback)",
+      "info": "Used only if no product is selected for modal"
     },
     {
       "type": "text",
