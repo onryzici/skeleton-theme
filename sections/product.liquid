@@ -307,6 +307,7 @@
           </div>
         {% endif %}
       </div>
+      
 
       {% comment %} Right Side - Product Info {% endcomment %}
       <div class="product-info-content">
@@ -328,15 +329,12 @@
 
             {% when 'rating' %}
               {% if block.settings.show_rating %}
-                <div class="flex items-center gap-2 mb-6" {{ block.shopify_attributes }}>
-                  <div class="flex text-yellow-400">
-                    {% for i in (1..5) %}
-                      <svg class="w-4 h-4 lg:w-5 lg:h-5 fill-current" viewBox="0 0 20 20">
-                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                      </svg>
-                    {% endfor %}
+                <div class="mb-6" {{ block.shopify_attributes }}>
+                  <!-- Start of Judge.me code -->
+                  <div class='jdgm-widget jdgm-preview-badge'>
+                    {{ product.metafields.judgeme.badge }}
                   </div>
-                  <span class="text-sm lg:text-base text-gray-600 font-extralight font-sans">{{ block.settings.review_count }} Reviews</span>
+                  <!-- End of Judge.me code -->
                 </div>
               {% endif %}
 
@@ -419,6 +417,13 @@
                   </div>
                 </details>
               </div>
+
+              {% comment %} App Integration - Show after "In the box" section {% endcomment %}
+              {% if block.settings.heading == "In the box" %}
+                <div class="mb-6">
+                  <div data-rapi-id="rapi_637b5824d189e0"></div>
+                </div>
+              {% endif %}
 
             {% when 'variant_picker' %}
               {% if product.has_only_default_variant == false %}
